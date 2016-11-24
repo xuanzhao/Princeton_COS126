@@ -1,0 +1,218 @@
+
+<!-- saved from url=(0078)http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/loops.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="./Programming Assignment Checklist_ Loops_files/seasonal.css">
+<title>
+Programming Assignment Checklist: Loops
+</title>
+</head>
+
+<body data-gr-c-s-loaded="true">
+<h2>
+Programming Assignment Checklist: Conditionals and Loops
+</h2>
+
+<p><br>
+
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Goals</center>
+</font></td></tr></tbody></table>
+
+</p><p>
+The goal of Assignment 1 is to write several short programs so that you get accustomed to:
+
+</p><div class="spring-only">
+<ul>
+<li>Using conditionals and loops.
+</li><li>Nesting conditionals and loops.
+</li><li>Using arrays.
+</li><li>Debugging your code.
+</li></ul>
+</div>
+
+<div class="fall-only">
+<ul>
+<li>Declaring and initializing variables.
+</li><li>Using arithmetic and boolean expressions.
+</li><li>Using conditionals and loops.
+</li><li>Nesting conditionals and loops.
+</li><li>Debugging your code.
+</li></ul>
+</div>
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions</center>
+</font></td></tr></tbody></table>
+
+</p><p>
+<b>What preparation do I need before beginning this assignment?</b>
+<span class="fall-only">Read Sections 1.2 and 1.3 of the textbook.</span>
+<span class="spring-only">Read Sections 1.3 and 1.4 of the textbook.</span>
+You may also find it instructive to work through some of the other
+exercises and look at the solutions on the
+<a href="http://introcs.cs.princeton.edu/">booksite</a> afterwards.
+
+</p><p>
+<b>How should I format my Java code? How much do I need to comment my code?</b>
+Follow the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/faq.html#style">style guideline</a> in the Assignment FAQ.
+Be sure to use the prescribed <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/faq.html#header">header</a> in every file you submit.
+
+</p><div class="spring-only">
+<p>
+<b>I have the magic numbers 6, 10, 51, 60, and 61 sprinkled through my
+<tt>TenDice</tt> program. Is there a better way?</b>
+Yes.
+</p><ul>
+<p></p><li> First, define constant variables (such as <tt>SIDES</tt> and <tt>NUMBER_OF_DICE</tt>) and use
+these symbolic names to refer to the corresponding magic numbers.
+<p></p></li><li>Second, avoid introducing magic numbers that can be derived from existing constants.
+For example, don't introduce the magic number 60; instead, use <tt>SIDES * NUMBER_OF_DICE</tt>.
+</li></ul>
+These two steps will make your code easier to read, maintain, and debug.
+<!-- Beginning on this assignment, you will lose points for not doing so. -->
+
+</div>
+
+<p><b>Do I have to use command-line arguments to read the inputs?</b>
+Yes, or you will lose a substantial number of points.
+
+
+</p><div class="fall-only"><p>
+<b>My output from <code>RGBtoCMYK</code> is almost the same as the sample on the assignment page.  
+Only the last digit or two is different. Why is there this tiny discrepancy, and is my answer wrong?</b>
+Computers work with limited precision, and so different algebraically equivalent solutions can give slightly different answers. When grading, we typically ignore such tiny discrepancies.
+</p></div>
+
+<p><b>The assignment FAQ says that we should handle all "meaningful" inputs
+What does that mean for <tt>RandomWalkers.java</tt>?</b>
+The number of steps <tt>n</tt> is a non-negative integer and the number of
+trials is a positive integer. Of course, if either <tt>n</tt> or <tt>trials</tt> is
+huge, then your program might not finish in a reasonable amount of time.
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Possible Progress Steps
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps. The key to writing correct programs is
+to develop them incrementally, testing and debugging after each step.
+
+
+</p><div class="spring-only">
+<p><b>Noon snooze.</b>
+The integer division and remainder operators are the key to solving
+<tt>NoonSnooze.java</tt>.
+
+</p><ul>
+<p></p><li>Which variables do you need?  You certainly need to know the number of 
+minutes to snooze.  What other information would be useful?  Starting hour? 
+Ending hour? Starting minute? Ending minute?
+
+<p></p></li><li>How will you compute the number of hours since noon?  How will you translate 
+that to an appropriate ending time (using a 12-hour clock)?
+
+<p></p></li><li>
+How will you compute the number of minutes left over?
+
+<p></p></li><li>How will you determine whether to print <tt>am</tt> or <tt>pm</tt>?
+</li></ul>
+</div>
+
+
+<p><b>A drone's flight.</b>
+This is similar in many ways to the gambler's ruin example from 
+the lecture video and textbook. The key to building a larger program
+is developing it incrementally. 
+
+
+
+</p><ul>
+
+<p></p><li><b><tt>RandomWalker.java</tt></b>: 
+First, think about which variables you need to maintain. 
+You certainly need to parse and store the command-line argument <tt>n</tt>.
+You also need to store the current location (<tt>x</tt>, <tt>y</tt>) of the random walker.
+What should be the type of the variables <tt>x</tt> and <tt>y</tt>?
+What should be their initial values?
+To choose a random direction, consider using the idiom from Section 1.2 to
+generate a random integer in a given range.
+
+<p></p></li><li> 
+<b><tt>RandomWalkers.java</tt></b>:
+To get started, copy <tt>RandomWalker.java</tt> to a file <tt>RandomWalkers.java</tt>. 
+Now, think about which additional variables you need to maintain. 
+You certainly need to read and store the command-line arguments <tt>n</tt>
+and <tt>trials</tt>.
+In addition to the current location (<tt>x</tt>, <tt>y</tt>) of the random walker, you
+need an accumulator variable, say <tt>totalSquaredDistance</tt>, that stores the total
+sum of squared distances so far.
+Nest the loop inside an outer loop that repeats <tt>trials</tt> times and add code 
+to update <tt>totalSquaredDistance</tt> after each time through the outer loop.
+
+</li></ul>
+
+
+<div class="spring-only">
+<p><b>Dice and the Gaussian distribution.</b>
+</p><ul>
+
+<p></p><li> 
+Write a program that prints the result of rolling one fair die.
+To generate a random die roll, use the idiom from Section 1.2 to generate a random integer
+between <tt>0</tt> and <tt>n-1</tt>, and modify it slightly to get one in the desired range.
+
+<p></p></li><li>
+Add a loop to print the sum of rolling 10 fair dice.
+
+<p></p></li><li>
+Add a second loop to repeat this <tt>n</tt> times, 
+printing the sum after each trial. (Printing the sum is for testing purposes only;
+be sure to remove it before you submit.)
+
+<p></p></li><li>
+Maintain an array <tt>tally[]</tt> so that 
+<tt>tally[k]</tt> stores the number of times the sum is exactly <tt>k</tt>.
+
+<p></p></li><li>
+Review your code and eliminate unnecessary magic numbers.
+
+</li></ul></div>
+
+
+
+
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Enrichment</center>
+</font></td></tr></tbody></table>
+
+</p><p>
+Here are some famous and not-so-famous 
+<a href="http://www.cs.cmu.edu/~pattis/quotations.html">quotations</a> 
+about learning to program.
+
+
+
+
+
+
+</p></body></html>

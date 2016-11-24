@@ -1,0 +1,345 @@
+
+<!-- saved from url=(0078)http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/tsp.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>COS 126: Traveling Salesperson Problem</title>
+</head>
+<body bgcolor="#FFFFFF" data-gr-c-s-loaded="true">
+<table width="100%" border="0">
+<tbody><tr align="LEFT" valign="BOTTOM">
+<td><strong>COS 126</strong><br><br>
+<strong><font size="+2">Traveling Salesperson Problem
+</font></strong></td>
+<td align="RIGHT" valign="BOTTOM">
+<strong>Programming Assignment</strong><br><br>
+</td></tr></tbody></table>
+<hr>
+
+<!-- ADD METHOD ITH() to TOUR INSTEAD OF SHOW? EASIER TO GRADE, BUT LESS EFFICIENT..  -->
+
+<p>
+Given <em>n</em> points in the plane, the goal of a traveling salesperson
+is to visit all of them (and arrive back home) while keeping the total
+length traveled as short as possible.
+Implement two greedy heuristics to find good (but not optimal) solutions to
+the <em>traveling salesperson problem</em> (TSP).
+
+</p><blockquote>
+<table border="0" cellpadding="2" cellspacing="0">
+<tbody><tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td><img width="300" src="./COS 126_ Traveling Salesperson Problem_files/tsp1000.png" alt="1000 points in the plane"></td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td><img width="300" src="./COS 126_ Traveling Salesperson Problem_files/tsp1000-optimal.png" alt="optimal tour (we think) - 15476.51924889754"></td>
+</tr>
+<tr>
+<td>
+</td><td align="center"><em>1,000 points</em></td>
+<td>
+</td><td align="center"><em>optimal tour</em></td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>
+<b>Perspective.</b>
+The importance of the TSP does not arise from an overwhelming demand
+of salespeople to minimize their travel length, but rather from a
+wealth of other applications such as
+vehicle routing, circuit board drilling, VLSI design, robot control,
+X-ray crystallography, machine scheduling, and computational biology.
+
+
+
+</p><p>
+<b>Greedy heuristics.</b>
+The traveling salesperson problem is a notoriously difficult <em>combinatorial
+optimization</em> problem, In principle, one can enumerate all possible
+tours and pick the shortest one; in practice, the number of tours is so staggeringly
+large (roughly <em>n</em> factorial) that this approach is useless.
+For large <em>n</em>, no one knows an efficient method that can find the shortest
+possible tour for any given set of points. However, many methods have been
+studied that seem to work well in practice, even though they are not
+guaranteed to produce the best possible tour.  Such methods are called
+<i>heuristics</i>.
+Your main task is to implement the <i>nearest neighbor</i>
+and <i>smallest increase</i> insertion heuristics 
+for building a tour incrementally.
+Start with a one-point tour (from the first point back to itself),
+and iterate the following process until there are
+no points left:
+
+</p><ul>
+
+<li><em>Nearest neighbor heuristic:</em>&nbsp;
+Read in the next point, and add it to the
+current tour <em>after</em> the point to which it is closest.
+(If there is more than one point to which it is closest,
+insert it after the first such point you discover.)
+
+<p>
+</p></li><li><em>Smallest increase heuristic:</em>&nbsp;
+Read in the next point, and add it to the current tour
+<em>after</em> the point 
+where it results in the least possible increase in the tour
+length.
+(If there is more than one point,
+insert it after the first such point you discover.)
+
+</li></ul>
+
+<p>
+
+<b>Point data type.</b>
+The <tt>Point</tt> data type represents points in the plane, as described by the following API:
+
+</p><p>
+</p><blockquote>
+<pre><b>public class Point {</b>
+    <b>public        Point(double x, double y)</b>  <font color="gray">//  creates the point (x, y)</font>
+    <b>public double distanceTo(Point that)</b>     <font color="gray">//  returns the Euclidean distance between the two points</font>
+    <b>public   void draw()</b>                     <font color="gray">//  draws this point to standard drawing</font>
+    <b>public   void drawTo(Point that)</b>         <font color="gray">//  draws the line segment between the two points</font>
+    <b>public String toString()</b>                 <font color="gray">//  returns a string representation of this point</font>
+<b>}</b>
+</pre></blockquote>
+
+<!--
+Each <tt>Point</tt> object can
+return the Euclidean distance between itself and another point;
+draw itself to standard drawing;
+draw a line segment from itself to another point using standard drawing; and
+return a string representation of itself.
+-->
+
+Download <a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/Point.java">Point.java</a>;
+<em>do not implement it.</em>
+
+<p><b>Tour data type.</b>
+Your main task is to create a <tt>Tour</tt> data type that represents
+the sequence of points visited in a TSP tour.
+Represent the tour as a <em>circular linked list</em> of nodes, 
+one for each point in the tour.
+Each <tt>Node</tt> contains two references: one to the 
+associated <tt>Point</tt> and the other to the next <tt>Node</tt> in the tour.
+Within <tt>Tour.java</tt>, define a nested class <tt>Node</tt> in the
+standard way:
+</p><blockquote><pre>private class Node {
+    private Point p;
+    private Node next;
+}</pre></blockquote>
+
+Your <tt>Tour</tt> data type must implement the following API:
+
+<p>
+</p><blockquote>
+<pre><b>public class Tour {</b>
+    <b>public        Tour()</b>                                    <font color="gray">//  creates an empty tour</font>
+    <b>public        Tour(Point a, Point b, Point c, Point d)</b>  <font color="gray">//  creates the 4-point tour a-&gt;b-&gt;c-&gt;d-&gt;a (for debugging)</font>
+    <b>public    int size()</b>                                    <font color="gray">//  returns the number of points in this tour</font>
+    <b>public double length()</b>                                  <font color="gray">//  returns the length of this tour</font>
+    <b>public   void draw()</b>                                    <font color="gray">//  draws this tour to standard drawing</font>
+    <b>public   void show()</b>                                    <font color="gray">//  prints this tour to standard output</font>
+    <b>public   void insertNearest(Point p)</b>                    <font color="gray">//  inserts p using the nearest neighbor heuristic</font>
+    <b>public   void insertSmallest(Point p)</b>                   <font color="gray">//  inserts p using the smallest increase heuristic</font>
+<b>}</b>
+</pre></blockquote>
+
+<!--
+Each <tt>Tour</tt> object must be able to
+return its number of points;
+return its length;
+draw itself to standard drawing;
+return a string representation of itself;
+and insert a new point using either of the two heuristics.
+The first constructor creates an empty tour;
+the second constructor creates a 4-point tour (and is solely to assist with debugging).
+-->
+
+<p><em>Standard output format.</em>
+The <tt>show()</tt> method must print the points to standard output,
+one per line, by (implicitly or explicitly) calling the <tt>toString()</tt>
+method for each point, starting with the first point in the tour.
+It should produce no other output.
+
+</p><p><em>Standard drawing format.</em>
+The <tt>draw()</tt> method must draw the tour to standard drawing by
+calling the <tt>drawTo()</tt> method for each pair of consecutive points.
+It should produce no other output.
+
+</p><p><em>Performance requirements.</em>
+All instance methods should take time linear (or better) in the number
+of points currently in the tour.
+Each constructor should take constant time.
+
+</p><p><em>Corner cases.</em>
+You may assume that any <tt>Point</tt> argument is not <tt>null</tt>.
+<!--
+A tour with zero points is a valid tour: its <tt>size()</tt>
+and <tt>length()</tt> methods should return zero;
+its <tt>draw()</tt> and <tt>size()</tt> methods should produce no output.
+-->
+
+</p><p>
+
+
+</p><p><b>Input and testing.</b>
+The input format will begin with two integers <em>w</em> and <em>h</em>,
+followed by pairs of <em>x</em>- and <em>y</em>-coordinates.
+All <em>x</em>-coordinates will be real numbers 
+between 0 and <em>w</em>;
+all <em>y</em>-coordinates will be real numbers
+between 0 and <em>h</em>.
+For example,
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/tsp1000.txt">tsp1000.txt</a>
+contains the following data:
+</p><blockquote><pre>% <b>more tsp1000.txt</b>
+775 768
+185.0411 457.8824
+247.5023 299.4322
+701.3532 369.7156
+563.2718 442.3282
+144.5569 576.4812
+535.9311 478.4692
+383.8523 458.4757
+329.9402 740.9576
+...
+254.9820 302.2548
+</pre></blockquote>
+
+
+After implementing <tt>Tour.java</tt>, use the client program
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/NearestInsertion.java">NearestInsertion.java</a>,
+which reads the points from standard input; runs the nearest neighbor heuristic;
+prints the resulting tour, its length, and its number of points to standard output;
+and draws the resulting tour to standard drawing.
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/SmallestInsertion.java">SmallestInsertion.java</a>
+is analogous but runs the smallest insertion heuristic.
+
+<p><br>
+<table border="0" cellpadding="2" cellspacing="0">
+<tbody><tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td>
+<blockquote><pre>% <b>java-introcs NearestInsertion &lt; tsp1000.txt</b>
+(185.0411, 457.8824)
+(198.3921, 464.6812)
+(195.8296, 456.6559)
+(216.8989, 455.126)
+(213.3513, 468.0186)
+(241.4387, 467.413)
+(259.0682, 473.7961)
+(221.5852, 442.8863)
+...
+(264.57, 410.328)
+Tour length = 27868.7106
+Number of points = 1000
+</pre></blockquote>
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td>
+<blockquote><pre>% <b>java-introcs SmallestInsertion &lt; tsp1000.txt</b>
+(185.0411, 457.8824)
+(195.8296, 456.6559)
+(193.0671, 450.2405)
+(200.7237, 426.3461)
+(200.5698, 422.6481)
+(217.4682, 434.3839)
+(223.1549, 439.8027)
+(221.5852, 442.8863)
+...
+(186.8032, 449.9557)
+Tour length = 17265.6282
+Number of points = 1000
+</pre></blockquote>
+</td>
+</tr>
+<tr>
+<td>
+</td><td><img width="300" height="298" src="./COS 126_ Traveling Salesperson Problem_files/tsp1000-nearest.png" alt="1000 points nearest"></td>
+<td>
+</td><td><img width="300" height="298" src="./COS 126_ Traveling Salesperson Problem_files/tsp1000-smallest.png" alt="1000 points smallest"></td>
+</tr>
+</tbody></table>
+
+
+
+</p><p><b>Analysis.</b>&nbsp;
+In your <tt>readme.txt</tt>,
+estimate the running time of your program as a function of the
+number of points <em>n</em>.
+Use the client 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/TSPTimer.java">TSPTimer.java</a> 
+help collect your data points.
+(It relies on <a href="http://introcs.cs.princeton.edu/java/stdlib/Stopwatch.java.html">Stopwatch.java</a>,
+which is part of <tt>stdlib.jar</tt>.)
+Run the two heuristics for <em>n</em> = 10,000, and repeatedly double <em>n</em>
+until the execution time exceeds 60 seconds.
+
+
+<!-- OLD <p><b>Files provided.</b>&nbsp;
+The file <a href = "ftp://ftp.cs.princeton.edu/pub/cs126/tsp.zip">tsp.zip</a> contains
+<tt>Point.java</tt>; the three clients
+<tt>NearestInsertion.java</tt>, <tt>SmallestInsertion.java</tt>, and <tt>TSPTimer.java</tt>;
+several sample input files;
+and the <tt>readme.txt</tt> templates.-->
+
+</p><p><b>Files provided.</b>&nbsp;
+The file <a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp.zip">tsp.zip</a> contains
+<tt>Point.java</tt>; the four clients <tt>NearestNeighbor.java</tt>, <tt>SmallestInsert.java</tt>, 
+<tt>TspVisualizer.java</tt>  and <tt>TSPTimer.java</tt>;
+several sample input files;
+and the <tt>readme.txt</tt> templates.
+
+
+
+</p><p>
+<b>Submission. </b> &nbsp;
+Submit <tt>Tour.java</tt> and 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/readme.txt">readme.txt</a>
+ (or just the abbreviated partner
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/partner/readme.txt">readme.txt</a>
+if your partner submitted the code).
+
+
+</p><p>
+<b>Extra credit. </b>
+Implement a better TSP heuristic. Here
+are some <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/tspextra.html">ideas</a>.
+
+We will award a special prize to whoever finds the shortest
+tour around <tt>tsp1000.txt</tt>.
+</p><ul>
+<p></p><li><em>API requirements.</em>
+Name your program <tt>TSP.java</tt>.
+The only public method in <tt>TSP.java</tt> should be <tt>main()</tt>,
+which should read a sequence of points from standard input (in the standard format)
+and print the resulting tour to standard output, one point per line.
+
+<p></p></li><li><em>Performance requirement.</em>
+It should solve a 1,000-point instance in at most a few seconds.
+
+<p></p></li><li><em>Submission.</em> Submit the following to the TSP leaderboard:
+<tt>TSP.java</tt>; any accompanying files; and a
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/leaderboard.txt">leaderboard.txt</a>
+file, which describes your heuristic.
+</li></ul>
+
+
+<address><small>Copyright © 2000–2016, <a href="http://www.cs.princeton.edu/~rs/">Robert Sedgewick</a> and
+<a href="http://www.cs.princeton.edu/~wayne">Kevin Wayne</a>.
+</small></address>
+
+</body></html>

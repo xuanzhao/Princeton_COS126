@@ -1,0 +1,43 @@
+/**********************************************************************
+ *  Name:    Kevin Wayne
+ *  NetID:   wayne
+ *  Precept: P00
+ *
+ *  Description:  This TOY program reads two 16-bit integers from
+ *                standard input; computes their product; and prints
+ *                the result to standard output.
+ *
+ *  % java-introcs TOY multiply.toy
+ *  0002
+ *  0003
+ *  0006
+ *
+ *  Note: this is a *slow* way to multiply.
+ *
+ **************************************************************************/
+
+
+-----------------------------------------------------------------------------
+loc value  pseudocode (for the humans)   Java equivalent (optional)
+-----------------------------------------------------------------------------
+10: 8AFF   read R[A]                     a = StdIn.readInt();
+11: 8BFF   read R[B]                     b = StdIn.readInt();
+
+12: 7C00   R[C] <- 0000                  c = 0;
+13: 7101   R[1] <- 0001                  the constant 1
+
+14: CA18   if (R[A] == 0) goto 18        while (a != 0) {
+15: 1CCB   R[C] <- R[C] + R[B]              c += b;
+16: 2AA1   R[A] <- R[A] - R[1]              a -= 1;
+17: C014   goto 14                       }
+
+18: 9CFF   write R[C]                    StdOut.println(c);      
+19: 0000   halt                          
+-----------------------------------------------------------------------------
+
+Note: TOY.java ignores any line that is not of the form 
+
+    XX: YYYY  ... 
+
+where XX are two hex digits, YYYY are four hex digits, and ... are comments.
+The number of spaces is not important.

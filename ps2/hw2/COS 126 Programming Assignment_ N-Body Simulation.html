@@ -1,0 +1,368 @@
+
+<!-- saved from url=(0080)http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/nbody.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>COS 126 Programming Assignment: N-Body Simulation</title>
+<script type="text/javascript" src="./COS 126 Programming Assignment_ N-Body Simulation_files/swfobject.js"></script>
+</head>
+<body bgcolor="#FFFFFF" data-gr-c-s-loaded="true">
+<table width="100%" border="0">
+<tbody><tr align="LEFT" valign="BOTTOM">
+<td><strong>COS 126</strong><br><br>
+<strong><font size="+2">N-Body Simulation</font></strong></td>
+<td align="RIGHT" valign="BOTTOM">
+<strong>Programming Assignment</strong><br><br>
+</td></tr></tbody></table>
+<hr>
+<p>
+In 1687, Isaac Newton formulated the principles governing
+the motion of two particles under the influence of their
+mutual gravitational attraction in his famous <em>Principia</em>.
+However, Newton was unable to solve the problem for three particles.
+Indeed, in general,
+solutions to systems of three or more particles must be approximated via numerical
+simulations.
+Your challenge is to write a program to simulate the motion of
+<em>n</em> particles in the plane,
+mutually affected by gravitational forces, and animate the results.
+Such methods are widely used in cosmology, 
+semiconductors, and fluid dynamics to study complex physical
+systems. Scientists also apply the same techniques to other pairwise
+interactions including Coulombic, Biot–Savart, and van der Waals.
+
+</p><p>
+<b>Program specification.</b>
+Write a program <tt>NBody.java</tt> that:
+</p><ul>
+<p></p><li>Reads two <tt>double</tt> <em>command-line arguments</em>
+<em>Τ</em> and  Δ<em>t</em>.
+<p></p></li><li>Reads in the universe from <em>standard input</em> using <tt>StdIn</tt>,
+using several parallel arrays to store the data.
+<p></p></li><li> Simulates the universe, starting at time <em>t</em> = 0.0,
+and continuing as long as <em>t</em> &lt; <em>Τ</em>,
+using the <em>leapfrog scheme</em> described below.
+<p></p></li><li> Animates the results to <em>standard drawing</em> using <tt>StdDraw</tt>.
+<p></p></li><li> Prints the state of the universe at the end of the simulation
+(in the same format as the input file) to <em>standard output</em> 
+using <tt>StdOut</tt>.
+</li></ul>
+
+<p><b>Input format.</b>
+The input format is a text file that contains the information for a particular universe (in SI units).
+The first value is an integer <em>n</em> which represents the number of particles.
+The second value is a real number <em>radius</em> which represents the
+radius of the universe; it is used to determine the scaling of the drawing window
+(which displays particles with <em>x</em>- and <em>y</em>-coordinates between
+−<em>radius</em> and +<em>radius</em>).
+Next, there are <em>n</em> lines (one for each particle), with each line containing 6 values.
+The first two values are the <em>x</em>- and <em>y</em>-coordinates of
+the initial position;
+the next pair of values
+are the <em>x</em>- and <em>y</em>-components of the initial velocity;
+the fifth value is the mass; the last value is a <tt>String</tt> that is
+the name of an image file used to display the particle.
+The remainder of the file (optionally) contains a description of the universe,
+which your program should ignore.
+As an example, <tt>planets.txt</tt>
+contains real data from part of our Solar System.
+</p><p>
+
+
+</p><blockquote><pre>% <b>more planets.txt</b>
+5
+2.50e+11
+ 1.4960e+11  0.0000e+00  0.0000e+00  2.9800e+04  5.9740e+24    earth.gif
+ 2.2790e+11  0.0000e+00  0.0000e+00  2.4100e+04  6.4190e+23     mars.gif
+ 5.7900e+10  0.0000e+00  0.0000e+00  4.7900e+04  3.3020e+23  mercury.gif
+ 0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  1.9890e+30      sun.gif
+ 1.0820e+11  0.0000e+00  0.0000e+00  3.5000e+04  4.8690e+24    venus.gif
+
+This file contains the sun and the inner 4 planets of our Solar System.</pre></blockquote>
+
+<!--
+<p>
+You should read in <em>exactly</em> as many rows of particle information as are indicated by 
+<em>n</em>, the first value in the file. 
+-->
+
+<p>
+<b>Simulating the universe: the physics.</b>
+We review the equations governing the motion of the particles, according
+to Newton's laws of motion and gravitation.
+Don't worry if your physics is a bit rusty; all of the necessary formulas
+are included below.
+We'll assume for now that the position (<em>p<sub>x</sub>, p<sub>y</sub></em>) and
+velocity (<em>v<sub>x</sub>, v<sub>y</sub></em>) of each particle is known.
+In order to model the dynamics of the system, we must know the net
+force exerted on each particle.
+
+</p><p>
+
+</p><ul>
+
+<p></p><li>
+<b>Pairwise force.</b>
+<em>Newton's law of universal gravitation</em> asserts that
+the strength of the gravitational force between two particles is given by
+the product of their masses divided by the square of the distance
+between them, scaled by the gravitational constant <em>G</em>
+(6.67 × 10<sup>−11</sup> N·m<sup>2</sup>·kg<sup>−2</sup>).
+The pull of one particle towards another acts on the line between them.
+Since we are using Cartesian coordinates to represent the position of
+a particle, it
+is convenient to break up the force into its <em>x</em>- and <em>y</em>-components
+(<em>F<sub>x</sub>, F<sub>y</sub></em>) as illustrated below.
+
+<p>
+</p><center>
+<img src="./COS 126 Programming Assignment_ N-Body Simulation_files/nbody.png" width="550" alt="force diagram">
+</center>
+
+<p></p></li><li>
+<b>Net force.</b>
+The <em>principle of superposition</em> says that
+the net force acting on a particle in the <em>x</em>-  or <em>y</em>-direction is the sum
+of the pairwise forces acting on the particle in that direction.
+
+
+<p></p></li><li>
+<b>Acceleration.</b>
+<em>Newton's second law of motion</em> postulates that
+the accelerations in the <em>x</em>- and <em>y</em>-directions are given by:
+<em>a<sub>x</sub> = F<sub>x</sub> / m,  a<sub>y</sub> = F<sub>y</sub> / m</em>.
+
+</li></ul>
+
+
+<p>
+<b>Simulating the universe: the numerics.</b>&nbsp;
+We use the <em>leapfrog finite difference approximation scheme</em>
+to numerically integrate the above equations: this is the
+basis for most astrophysical simulations of gravitational systems.
+In the leapfrog scheme, we discretize time, and update the time
+variable <em>t</em> in increments of the <em>time quantum</em> Δ<em>t</em>
+(measured in seconds).
+We maintain the position
+(<em>p<sub>x</sub></em>, <em>p<sub>y</sub></em>)
+and velocity
+(<em>v<sub>x</sub></em>, <em>v<sub>y</sub></em>)
+ of each particle at each time step.
+The steps below illustrate
+how to evolve the positions and velocities of the particles.
+
+</p><ul>
+
+<p></p><li><b>Step 1 (compute the forces).</b>
+For each particle: Calculate the net force 
+(<em>F<sub>x</sub>, F<sub>y</sub></em>)
+at the current time <em>t</em>
+acting on that particle using Newton's
+law of gravitation and the principle of superposition. 
+Note that force is a vector (i.e., it has direction).  
+In particular, be aware that Δ<em>x</em> and Δ<em>y</em>
+are signed (positive or negative).  
+In the diagram above, when you compute the force the sun exerts on the earth,
+the sun is pulling the earth up (Δ<em>y</em> positive) and to the 
+right (Δ<em>x</em> positive).
+
+<p></p></li><li><b>Step 2 (compute the new positions).</b>
+For each particle:
+
+<ol type="a">
+<p></p><li>
+Calculate its acceleration (<em>a<sub>x</sub>, a<sub>y</sub></em>) at
+time <em>t</em>
+using the net force computed in Step 1 and Newton's second law of motion:
+<em>a<sub>x</sub> = F<sub>x</sub> / m,  a<sub>y</sub> = F<sub>y</sub> / m</em>.
+
+<p></p></li><li>
+Calculate its new velocity (<em>v<sub>x</sub>, v<sub>y</sub></em>) at the next time
+step by using the acceleration computed in Step 2a
+and the velocity from the old time step:
+Assuming the acceleration remains constant in this interval, the new 
+velocity is 
+(<em>v<sub>x</sub></em> + Δ<em>t</em> <em>a<sub>x</sub></em>,
+ <em>v<sub>y</sub></em> + Δ<em>t</em> <em>a<sub>y</sub></em>).
+
+<p></p></li><li>
+Calculate its new position (<em>p<sub>x</sub>, p<sub>y</sub></em>) at time
+<em>t</em> + Δ<em>t</em> by using the velocity computed in Step 2b
+and its old position at time <em>t</em>:
+Assuming the velocity remains constant in this interval,
+the new position is 
+(<em>p<sub>x</sub></em> + Δ<em>t</em> <em>v<sub>x</sub></em>,
+ <em>p<sub>y</sub></em> + Δ<em>t</em> <em>v<sub>y</sub></em>).
+</li></ol>
+
+<p></p></li><li><b>Step 3 (move the particles).</b>
+For each particle: Draw it using the position computed in Step 2.
+</li></ul>
+
+Note that you should not interleave steps 1 and 2;
+otherwise, you will be computing the forces at time <em>t</em>
+using the positions of some of the particles at time <em>t</em>
+and others at time <em>t</em> + Δ<em>t</em>.
+The simulation is more accurate when Δ<em>t</em> is
+very small, but this comes at the price of more computation.
+
+
+<p><b>Creating an animation.</b>
+Draw each particle at its current position to standard drawing,
+and repeat this process at each time step until the designated stopping time.
+By displaying this sequence of snapshots (or frames) in rapid succession,
+you will create the illusion of movement.
+After each time step (i) draw the background image <tt>starfield.jpg</tt>,
+(ii) redraw all the particles in their new positions,
+and
+(iii)  control the animation speed (about 40 frames per second looks good).
+You will call several methods from the
+<a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdDraw.html">StdDraw</a> library.
+
+
+
+<!-- Maintain several parallel arrays to store the data.
+To make the computer simulation, write a loop that 
+repeatedly updates the position and velocity of the particles.
+Before plotting, use
+<tt>StdDraw.setXscale(-R, +R)</tt> and 
+<tt>StdDraw.setYscale(-R, +R)</tt> to scale the physics
+coordinates to the screen coordinates. -->
+
+</p><p>
+
+<!--
+<p><b>Optional finishing touch.</b>
+For a finishing touch, play the theme to
+<em>2001: A Space Odyssey</em> using the
+<a href = "http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdAudio.html">StdAudio</a> 
+library and the audio file <tt>2001.mid</tt>.
+It's a one-liner using the method <tt>StdAudio.play()</tt>.
+-->
+<!-- If you have trouble doing this, make sure you note it in your <tt>readme.txt</tt>. -->
+
+</p><p><b>Compiling and executing your program.</b>
+
+If you used our autoinstaller, you will use the commands
+<code>java-introcs</code> and <code>javac-introcs</code> 
+(instead of <code>java</code> and <code>javac</code>) to compile and execute your programs.
+These versions provide access to the standard libraries.
+</p><p>
+To compile your program <em>from the command line</em>, type the following in your terminal application
+(Command Prompt or Terminal):
+
+</p><blockquote><pre>% <b>javac-introcs NBody.java</b>
+</pre></blockquote>
+
+<p>
+
+To execute your program <em>from the command line</em>,
+redirecting from the file <tt>planets.txt</tt> to standard input,
+type:
+</p><p>
+</p><blockquote>
+<pre>% <b>java-introcs NBody 157788000.0 25000.0 &lt; planets.txt</b>
+</pre>
+</blockquote>
+
+
+
+<!--
+<p>
+<blockquote>
+<a href = "nbody-files/nbody-planets.jpg">
+<IMG SRC="nbody-files/nbody-planets.jpg" width=256 height=256 alt = "N-body simulation of planets.txt">
+</a>
+</blockquote>
+
+<p>
+It produces <a href = "nbody-files/nbody-planets.mov">this animation</a>.
+-->
+
+<p>
+</p><blockquote>
+<p id="preview"><embed type="application/x-shockwave-flash" src="player.swf" width="500" height="520" style="undefined" id="player" name="player" quality="high" allowfullscreen="true" allowscriptaccess="always" flashvars="file=nbody-files/NbodyPlanetsSound.mov&amp;image=nbody-files/NbodyPlanetsSound.jpg&amp;screencolor=ffffff&amp;stretching=none"></p>
+<script type="text/javascript">
+var s1 = new SWFObject('player.swf','player','500','520','9.0.124');
+s1.addParam('allowfullscreen','true');
+s1.addParam('allowscriptaccess','always');
+s1.addParam('flashvars','file=nbody-files/NbodyPlanetsSound.mov&image=nbody-files/NbodyPlanetsSound.jpg&screencolor=ffffff&stretching=none');
+s1.write('preview');
+</script>
+</blockquote>
+
+After the animation stops, your program should output the final state
+of the universe in the same format as the input, e.g.:
+<blockquote><pre>5
+2.50e11
+ 1.4925e+11 -1.0467e+10  2.0872e+03  2.9723e+04  5.9740e+24    earth.gif
+-1.1055e+11 -1.9868e+11  2.1060e+04 -1.1827e+04  6.4190e+23     mars.gif
+-1.1708e+10 -5.7384e+10  4.6276e+04 -9.9541e+03  3.3020e+23  mercury.gif
+ 2.1709e+05  3.0029e+07  4.5087e-02  5.1823e-02  1.9890e+30      sun.gif
+ 6.9283e+10  8.2658e+10 -2.6894e+04  2.2585e+04  4.8690e+24    venus.gif
+</pre></blockquote>
+
+<p><br>
+<b>Getting started.</b>
+Before you begin coding, do the following:
+
+</p><ul>
+<p></p><li><em>Get familiar with the command line.</em>
+If you used our autoinstaller
+[ <a href="http://introcs.cs.princeton.edu/java/mac/">Mac OS X</a> ·
+<a href="http://introcs.cs.princeton.edu/java/windows">Windows</a> ],
+your command line is ready to go.
+Review steps 4–6 on how to compile and execute a program from the command line.
+Use the <tt>javac-introcs</tt> and <tt>java-introcs</tt> commands to access the
+standard libraries.
+
+<p></p></li><li><em>Get familiar with the standard libraries.</em>
+To use our standard libraries, you need to have
+<a href="http://introcs.cs.princeton.edu/java/stdlib/stdlib.jar">stdlib.jar</a>
+available both to <em>DrJava</em> and your terminal application.
+If you used our autoinstaller, you should be all set.
+The standard libraries include 
+<a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdIn.html">StdIn</a>
+(for reading data from standard input),
+<a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdOut.html">StdOut</a>
+(for writing data to standard output),
+<a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdDraw.html">StdDraw</a>
+(for drawing results to standard drawing), and
+<a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdAudio.html">StdAudio</a>
+(for sending sound to standard audio).
+The <a href="http://introcs.cs.princeton.edu/java/11cheatsheet/#stdlib">Java cheatsheet</a>
+has a compact summary of these APIs.
+
+<p></p></li><li><em>Download the data files.</em>
+To test your program, you will need 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/nbody/planets.txt">planets.txt</a>
+and the accompanying image and sound files.
+The ZIP file
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/nbody.zip">nbody.zip</a>
+contains these files, along with a 
+<tt>readme.txt</tt> template and additional test universes.
+
+</li></ul>
+
+<p>
+<b>Submission.</b>
+Submit <tt>NBody.java</tt> and a completed 
+<!--<tt><a href = "ftp://ftp.cs.princeton.edu/pub/cs126/nbody/readme.txt">readme.txt</a></tt>-->
+<tt>readme.txt</tt> file.
+
+
+</p><p>
+<b>Challenge for the bored.</b>
+There are limitless opportunities for additional excitement and discovery here.
+Create an alternate universe (using the same input format).
+Try adding other features, such as supporting elastic or inelastic collisions.
+Or, make the simulation three-dimensional by doing calculations for <em>x</em>-,
+<em>y</em>-, and <em>z</em>-coordinates, then using the <em>z</em>-coordinate
+to vary the sizes of the planets.
+Add a rocket ship that launches from one planet and has to land on another.
+Allow the rocket ship to exert force with the consumption of fuel.
+<br><br>
+
+</p><address><small>Copyright © 1999–2010, <a href="http://www.cs.princeton.edu/~rs/">Robert Sedgewick</a> and
+<a href="http://www.cs.princeton.edu/~wayne">Kevin Wayne</a>.
+
+
+</small></address></body></html>

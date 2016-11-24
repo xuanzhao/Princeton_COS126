@@ -1,0 +1,475 @@
+
+<!-- saved from url=(0079)http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/markov.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+Programming Assignment Checklist: Markov Model of Natural Language
+</title>
+</head>
+
+<body data-gr-c-s-loaded="true">
+<h3>
+Programming Assignment Checklist: Markov Model of Natural Language 
+</h3>
+
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (general)</center>
+</font></td></tr></tbody></table>
+
+</p><p><b>What are the main goals of this assignment?</b>
+Use a symbol table, learn about natural language processing,
+and learn about Markov models.
+
+</p><p><b>What preparation do I need before beginning this assignment?</b>
+Review the beginning of Section 4.4 (pages 608–617) on using symbol tables
+in client code.
+For reference, here is a
+<a href="http://introcs.cs.princeton.edu/java/11cheatsheet/#ST">partial API</a>
+of the <tt>ST</tt> data type.
+Also review the material on the textbook on parameterized data type 
+and generics (pages 566–570).
+The <tt>Key</tt> type can be any comparable type, such as
+<tt>String</tt> or <tt>Integer</tt>.
+
+
+</p><p><b>What is the origin of the Markov text generator?</b>
+It was first described by Claude Shannon in 1948.
+The first computer version was apparently written by Don P.
+Mitchell, adapted by Bruce Ellis, and popularized by 
+A. K. Dewdney in the <em>Computing Recreations</em>
+section of Scientific American.
+Brian Kernighan and Rob Pike revived the program in a
+University setting and described it as an example of design
+in <em>The Practice of Programming</em>.
+The program is also described in
+Jon Bentley's <em>Programming Pearls</em>.
+
+
+</p><p><b>Do I have to implement the prescribed API?</b>
+Yes, or you will lose a substantial number of points.
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (MarkovModel)</center>
+</font></td></tr></tbody></table>
+
+</p><p><b>My program won't compile because the compiler can't find the symbol "ST." How can I fix that?</b>
+The <tt>ST</tt> data type is not part of Java or <tt>stdlib.jar</tt>. You need to download
+<tt>ST.java</tt>&amp;mdashit's part of <tt>markov.zip</tt>—and put it in the same directory
+as <tt>MarkovModel.java</tt>.
+
+</p><p><b>I want to refer to the magic number 128 in more than one method. Any advice?</b>
+You can define a global constant, as follows:
+
+</p><blockquote><pre>private static final int ASCII = 128;
+</pre></blockquote>
+
+This code should appear inside the class block, but before any instance variables or methods.
+By convention, constant variable names should be <tt>ALL_UPPERCASE</tt>.
+The <tt>static</tt> modifier means that every instance method will refer to the same
+variable (as opposed to instance variables, for which there is one variable per object);
+the <tt>final</tt> modifier means that you can't change its value, once initialized.
+
+<!--
+Your static <em>constants</em> must be initialized immediately (and never modified).
+They must not be read in from standard input or the command-line.
+-->
+
+<p>
+<b>How do I extract a substring of a given string?</b>
+The method call <tt>s.substring(i, i+k)</tt> returns the the <tt>k</tt>-character substring
+of <tt>s</tt>, starting at <tt>i</tt>. Note that it includes the left endpoint
+but excludes the right endpoint.
+
+</p><p><b>How do I emulate the behavior of a circular string?</b>
+There are a number of approaches. One way is to
+append the first <em>k</em> characters of the input text to the input text.
+
+</p><p><b>How do I convert a <tt>char</tt> to an <tt>int</tt>?</b>
+A <tt>char</tt> is a 16-bit (unsigned) integer. Java will automatically
+promote a <tt>char</tt> to an <tt>int</tt> if you use it as an index
+into an array.
+
+</p><p><b>How do I use <tt>StdRandom.discrete()</tt>?</b>
+There are two overloaded methods named <tt>StdRandom.discrete()</tt>.
+One takes a floating-point array <tt>p[]</tt> and returns index <tt>i</tt> with probability 
+equal to <tt>p[i]</tt>. (The array entries must be nonnegative and sum to 1.)
+The other takes an integer array <tt>freq[]</tt> and returns index <tt>i</tt>
+with probability proportional to <tt>freq[i]</tt>.
+(The array entries must be nonnegative and not all zero.)
+
+
+<!--
+<p><b>My <tt>random()</tt> method calls <tt>StdRandom.discrete()</tt> 
+but I get an <tt>IllegalArgumentException</tt>.  What does that mean?</b>
+It means that the probabilities don't sum up to 1.  Double check how you
+are computing the values for the array you send to <tt>StdRandom.discrete()</tt>.
+The array elements are the probabilities of each possible event, so the
+sum of the array elements should be 1.
+(To learn how to use assertions, see pp. 446-447.)
+-->
+
+
+<!--
+<p><b>What is a <tt>StringBuilder</tt> object?</b> <tt>StringBuilder</tt> 
+is part of the standard Java library.  It is an object that we use because
+of its more efficient handling of large strings &mdash; we saw 
+<a href="../precepts/Repeat.pdf">earlier</a> that repeatedly concatenating
+characters to a <tt>String</tt> takes quadratic time, whereas this takes linear
+time for a <tt>StringBuilder</tt>.  Here is a subset of the
+<tt>StringBuilder</tt> API with some methods you might find useful for this 
+assignment. You do not need to use all of them.
+<blockquote><pre>
+public class StringBuilder
+-------------------------------------------------------------------------------------------------------
+              StringBuilder(String s) // create a StringBuilder initialized to the contents of String s
+StringBuilder append(char c)          // append the string representation of the char to this sequence
+String        toString()              // returns a String representing the data in this sequence
+String        substring(int i, int j) // returns the length (j-i) substring including position i, 
+                                      // up to and excluding position j (like String.substring())
+
+</pre></blockquote>
+-->
+
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (TextGenerator)</center>
+</font></td></tr></tbody></table>
+
+
+</p><p><b>Should my program generate a different output each time I run it?</b>
+Yes.
+
+</p><p><b>How can I read in the input text from standard input?</b>
+Use <tt>StdIn.readAll()</tt>. Do not remove whitespace.
+
+</p><p>
+<b>My random text ends in the middle of a sentence. Is that OK?</b>
+Yes, that's to be expected.
+
+</p><p><b>For which values of <i>k</i> should my program work?</b>
+It should work for all well defined values of <em>k</em>, from
+0 up to, and including, the length of the input text.
+As <em>k</em> gets larger,
+your program will use more memory and take longer.
+
+</p><p><b>My program is slow when <tt>T</tt> is large because I am concatenating
+the <tt>T</tt> characters, one at a time, to form string of length <tt>T</tt>.
+What else can I do?</b>
+Do you need to form the entire string? Why not print the characters, one at a time,
+as you generate them?
+<!--
+(When necessary, you should use the <a href = "https://docs.oracle.com/javase/7/docs/api/java/lang/StringBuilder.html">StringBuilder</a>
+data type for this kind of string concatenation.)
+-->
+
+
+</p><p><b>I get an <tt>OutOfMemoryException</tt>. 
+How do I tell Java to use more of my computer's memory?</b>
+Depending on your operating system, you may have to ask the Java Virtual
+Machine for more main memory beyond the default.
+</p><pre><blockquote>% <b>java-introcs -Xmx500m TextGenerator 7 1000 &lt; input.txt</b>
+</blockquote></pre>
+The <tt>500m</tt> means 500MB, and you should adjust this number
+depending on the size of the input text.
+
+
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Testing (MarkovModel)</center>
+</font></td></tr></tbody></table>
+
+</p><p> 
+Thoroughly test your <tt>MarkovModel</tt>. We provide a <tt>main()</tt>
+as a start to your testing.
+</p><blockquote><pre>    public static void main(String[] args) {
+        String text1 = "banana";
+        MarkovModel model1 = new MarkovModel(text1, 2);
+        StdOut.println("freq(\"an\", 'a')    = " + model1.freq("an", 'a'));
+        StdOut.println("freq(\"na\", 'b')    = " + model1.freq("na", 'b'));
+        StdOut.println("freq(\"na\", 'a')    = " + model1.freq("na", 'a'));
+        StdOut.println("freq(\"na\")         = " + model1.freq("na"));
+        StdOut.println();
+
+        String text2 = "one fish two fish red fish blue fish"; 
+        MarkovModel model2 = new MarkovModel(text2, 4);
+        StdOut.println("freq(\"ish \", 'r') = " + model2.freq("ish ", 'r'));
+        StdOut.println("freq(\"ish \", 'x') = " + model2.freq("ish ", 'x'));
+        StdOut.println("freq(\"ish \")      = " + model2.freq("ish "));
+        StdOut.println("freq(\"tuna\")      = " + model2.freq("tuna"));
+    }
+</pre></blockquote>
+If your method is working properly, you will get the following output:
+<blockquote><pre>% <b>java-introcs MarkovModel</b>
+freq("an", 'a')    = 2
+freq("na", 'b')    = 1
+freq("na", 'a')    = 0
+freq("na")         = 2
+
+freq("ish ", 'r') = 1
+freq("ish ", 'x') = 0
+freq("ish ")      = 3
+freq("tuna")      = 0
+</pre></blockquote>
+
+<p> To test <tt>random()</tt>,
+write a loop that calls <tt>random()</tt> repeatedly, and
+count how many times a particular character is returned.
+For example, with <tt>model1</tt> above, <tt>random("na")</tt> should return
+<tt>'b'</tt> about one-half of the time;
+with <tt>model2</tt> above, <tt>random("fish")</tt> should return <tt>'o'</tt>
+about one-quarter of the time.
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Testing (TextGenerator)</center>
+</font></td></tr></tbody></table>
+
+</p><p>
+Be sure to test <tt>TextGenerator</tt> with different values of <tt>k</tt>.
+
+</p><p>
+</p><ul>
+<p></p><li>
+An order-0 Markov model generates a random sequence of letters where
+each letter appears with probability proportional to its frequency in the
+input text. For 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/markov/input17.txt">input17.txt</a>
+there are 9 g's, 7 a's, and 1 c.
+So we want the probability of generating a <tt>'g'</tt> to be 9/17,
+an <tt>'a'</tt> to be 7/17, and a <tt>'c'</tt> to be be 1/17.
+In a sequence of 100
+characters, we'd therefore expect on average about 53 g's, 41 a's, and 6 c's.
+
+<blockquote><pre>% <b>java-introcs TextGenerator 0 100 &lt; input17.txt</b>
+gaaagaacagcagacgacggaagaaggaggaaaaggaggggaggggggaggaggaagggagaaaggagacagcggaggggacgggaggagaggaggagag
+</pre></blockquote>
+
+<p></p></li><li>
+As documented in the assignment specification, in an order 2 model for
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/markov/input17.txt">input17.txt</a>,
+the next character after <tt>"ga"</tt> is <tt>'a'</tt> with probability 1/5 and
+<tt>'g'</tt> with probability 4/5.  So, if you run the following command 10 times,
+you should expect (on average)
+to see <tt>"gag"</tt> approximately 8 times and <tt>"gaa"</tt> approximately 2 times.
+
+<blockquote><pre>% <b>java-introcs TextGenerator 2 3 &lt; input17.txt</b>
+gag
+</pre></blockquote>
+
+</li></ul>
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Possible Progress Steps (MarkovModel)</center>
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+
+</p><ol>
+<p></p><li> Download and unzip <tt>markov.zip</tt>.
+Make sure that <tt>ST.java</tt> and the  testing <tt>.txt</tt> files
+are in the same directory as the <tt>.java</tt> files you are writing. 
+
+<p></p></li><li>
+Review the material in the textbook on symbol tables as well as
+<a href="http://introcs.cs.princeton.edu/42sort/IntegerSort.java.html">IntegerSort.java</a>.
+
+<p></p></li><li> Create one or more instance variables to support the two <tt>freq()</tt> methods.
+One strategy is to maintain two symbol tables—one for the
+one-argument <tt>freq()</tt> method and one for the two-argument <tt>freq()</tt> method.
+For each <em>k</em>-gram (a string), the first symbol table tells you how many times
+it appears in the text (an integer).
+For each <em>k</em>-gram (a string), the second symbol table tells you how many times
+each ASCII character succeeds the <em>k</em>-gram in the text (an array of 128 integers).
+
+<!--
+
+<p><li> An alternative strategy is to maintain a single symbol to support both <tt>freq()</tt>
+methods.
+For each <em>k</em>-gram (a string), the symbol table stores another symbol table.
+For each character (a character), the symbol table associated with a given <em>k</em>-gram tells you 
+how many times that character succeeds the <em>k</em>-gram in the text (an integer).
+In this approach, you will have  one symbol table for each <em>k</em>-gram!
+</ul>
+-->
+
+
+<p></p></li><li> Write the constructor to create the <em>circular</em> version of the
+input text. Then initialize and populate your symbol tables,
+using the symbol-table methods <tt>contains()</tt>, <tt>get()</tt>,
+and <tt>put()</tt>. This will be a substantial amount of code, relative to the 
+other methods in this class.
+
+<p>
+Do not save the original text (or the circular text) as an 
+instance variable because no instance method will
+need this information after the symbol table is initialized.
+
+
+</p><p></p></li><li> <em>Optional</em>:
+Test your constructor by printing the non-zero frequency for each character
+for each <em>k</em>-gram entry in your symbol table.
+This can help you debug <em>small</em> test cases.
+Use the enhanced for loop to access each key–value pair in your symbol table:
+<pre>   // st is the symbol table object 
+   for (String key : st) {
+       StdOut.print (key + ": ")
+       ... value = st.get(key);
+
+       // print non-zero frequency for each character in the entry
+       ...
+   }
+</pre>
+
+  You can implement your test code by either:
+<ul>
+  <li> defining a private "helper" method that you invoke from the <tt>main()</tt> in
+       <tt>MarkovModel</tt>, or
+  </li><li> accessing <tt>MarkovModel</tt>'s private instance variables from the the <tt>main()</tt>
+       in <tt>MarkovModel</tt>.
+</li></ul>
+<p>
+
+</p><pre>Sample output 1 for model1:
+ab: 1
+an: 2
+ba: 1
+na: 2
+
+Sample output 2 for model1:
+ab: (a, 1)
+an: (a, 2)
+ba: (n, 1)
+na: (b, 1) (n, 1)
+</pre>
+
+<p></p></li><li> Write the <tt>order()</tt> method. This should be a one-liner.
+
+<p></p></li><li> Using the symbol table instance variables, write the two 
+<tt>freq()</tt> methods.
+
+<p></p></li><li> Use the <tt>main()</tt> provided above to test your code before continuing.
+You may wish to add more testing of the constructor and <tt>freq()</tt> methods.
+
+<p></p></li><li> Write the <tt>random()</tt> method. 
+To generate a random character with probability proportional to its frequency 
+you may call either of the two
+<a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdRandom.html#discrete(double[])">StdRandom.discrete()</a>
+methods.
+
+<p></p></li><li> It may not be obvious from your final results whether <tt>random()</tt> is
+working as intended, so be sure to test it thoroughly.
+Next, test your complete <tt>MarkovModel</tt> data type before continuing.
+</li></ol>
+
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Possible Progress Steps (TextGenerator)</center>
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+
+</p><ol>
+
+<p></p><li> Read in <em>k</em> and <em>T</em> from the command line; read the input
+text from standard input.
+
+<p></p></li><li> Create a <tt>MarkovModel</tt> object of order <tt>k</tt>
+using the input text.
+
+<p></p></li><li> To generate a trajectory of length <em>T</em>, use the
+first <em>k</em> characters in the input text as the initial <em>k</em>-gram
+and print the initial <em>k</em>-gram.
+Then, repeatedly generate and print a new random character according
+to the Markov model and update the <em>k</em>-gram to store the last <em>k</em>
+characters printed.
+
+
+<p></p></li><li>Make sure to test your program on large inputs (we provide several),
+large outputs, and different values of <tt>k</tt>.
+<!--
+If the order and input size are fixed, your program should run in time
+that is linear in the output size. If the order and output size are fixed,
+your program should run in time that is linear in the input size. 
+-->
+
+</li></ol>
+
+
+<p>
+<table id="enrichment" border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Enrichment</center>
+</font></td></tr></tbody></table>
+</p><p>
+
+
+
+
+</p><p></p><li>
+Here's a website that 
+<a href="https://pdos.csail.mit.edu/archive/scigen/">generate
+pseudo-random computer science papers</a>. It uses something
+called a <em>context free grammar</em> instead of a 
+Markov chain, but otherwise is similar in spirit to what
+you are doing on this assignment.
+
+<p></p></li><li>
+Here are <a href="http://joshmillard.com/garkov/">
+Garfield comics</a> generated by a Markov chain.
+
+<p></p></li><li>
+What else can I do with a random text generator?
+One former COS 126 student recited its output during the
+<a href="http://www.cnn.com/2005/POLITICS/05/10/princeton.filibuster/index.html">Frist filibuster</a>.
+
+<p></p></li><li>We are implementing the model Shannon described in his landmark paper. 
+But the "one reads until this letter is encountered" method
+in his quote on the assignment page is, ironically,
+not a statistically accurate 
+example of his model. If we run your program with input
+<tt>"wawawaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaawy"</tt> then <tt>'w'</tt> should be followed by <tt>'a'</tt> 75% of the time, 
+while the "read until" model will follow <tt>'w'</tt> with <tt>'a'</tt> only 15% of the time. What would
+be involved in simulating this other model? Which one do you think gives more realistic text?
+
+
+
+
+
+
+
+</li></body></html>

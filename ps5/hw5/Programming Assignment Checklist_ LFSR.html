@@ -1,0 +1,520 @@
+
+<!-- saved from url=(0077)http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/lfsr.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+Programming Assignment Checklist: LFSR
+</title>
+</head>
+
+<body data-gr-c-s-loaded="true">
+<h3>
+Programming Assignment Checklist: LFSR
+</h3>
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Preparation
+</font></td></tr></tbody></table>
+
+</p><p><b>What are the goals of this assignment?</b>
+To introduce you to object-oriented programming and to reinforce the
+message of Lecture 0. 
+
+</p><p><b>Where can I review the concepts involved?</b>
+Review <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/lectures.html">Lecture 0</a>
+to reacquaint yourself with the basic ideas behind LFSRs. 
+Read Sections 3.1 and 3.2 of the textbook
+to learn the basics of object-oriented programming and how to use
+<a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/lfsr.html#color">Color</a> and <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/lfsr.html#picture">Picture</a> data types.
+
+
+<!--
+<p id="optfiles"><b>What optional files are available for this assignment?</b>
+<ul style="margin-top: -0.8em;">
+<li>
+If you want some help getting started with <tt>LFSR</tt>, we 
+provide a template <a href="ftp://ftp.cs.princeton.edu/pub/cs126/lfsr/LFSR.java">LFSR.java</a>.
+It saves you from copying and pasting the signatures of the API.
+</li>
+<li>
+The file <a href="ftp://ftp.cs.princeton.edu/pub/cs126/lfsr/lfsr.zip">lfsr.zip</a>
+includes a number of sample <tt>.png</tt> files, including original images and encrypted versions.
+As usual, you should put the <tt>.png</tt> files in
+the <em>same</em> directory as <tt>LFSR.java</tt> and <tt>PhotoMagic.java</tt>.
+</li>
+-->
+
+
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (LFSR)
+</font></td></tr></tbody></table>
+
+
+</p><p><b>Does the API that I define for <code>LFSR</code>
+need to be exactly the same as the one prescribed?</b>
+Yes, we will be testing the methods in the API directly.
+If your method has a different signature or does not behave as specified
+you will lose a substantial number of points.
+Producing undocumented side effects (such as printing to
+standard output in any of the construcor or instance methods)
+is also an API violation.
+You may not add public methods to the API; however, you may add private methods 
+(which are accessible only in the class in which they are declared).
+
+</p><p><b>How should I represent the LFSR?</b>
+There are several possible approaches. One approach
+is to use an <tt>int[]</tt> array of length <tt>n</tt>, each entry of which is either 0 or 1.
+If you follow this approach, the constructor amounts to creating the array and
+converting the <tt>char</tt> values in the string to <tt>int</tt> values for the 
+array (and initializing your other instance variables). However, you are allowed to
+use any efficient representation that you like.
+
+</p><p><b>How do I create an instance variable that is an array if I don't know its
+length at compile time?</b>
+Declare it as an instance variable, but initialize it in constructor (where you will
+know its length).
+For example, see Program 3.2.3 in the textbook.
+
+</p><p><b>What extra comments should I include when writing object-oriented programs?</b>
+You must comment the purpose of every method, using the names of the argument 
+variables in your description.
+Additionally, you must comment the purpose of each instance variable.
+
+
+</p><p><b>In the initial register, <tt>fill.charAt(0)</tt> is the 
+leftmost bit.  But in the Lecture 1 slides and the assignment page, bit 0
+is the rightmost bit.  Do I have to arrange the bits in my register array
+that way?</b>
+Strings are always indexed from left to right (the way we read English).  
+Traditionally, binary digits are indexed from right to left, with bit 0 as the lowest order or 
+rightmost bit.  
+You are welcome to use either approach here—just be careful to do it
+correctly and consistently.
+
+</p><p><b>How do I convert the <tt>char</tt> values in the <tt>String</tt> argument
+to <tt>int</tt> values for the array?</b>
+The characters zero and one are represented by the char literals <tt>'0'</tt>
+and <tt>'1'</tt>.
+The <tt>char</tt> data type is a Java primitive type, so you can compare two
+of them with <tt>if (c == '0')</tt>.
+
+</p><p><b>Why am I getting 48s and 49s when I print out 
+values for debugging?</b>
+Internally, characters are represented as integers. The code
+for <tt>'0'</tt> is <tt>48</tt>, and the code for <tt>'1'</tt> is <tt>49</tt>. (Read about 
+<a href="http://en.wikipedia.org/wiki/ASCII">ASCII</a>
+or
+<a href="http://en.wikipedia.org/wiki/Unicode">Unicode</a> for more information.)
+When you perform arithmetic operations on values of type <tt>char</tt>, they
+are promoted to type <tt>int</tt>. 
+So, the expressions <tt>'0' + 1</tt> and <tt>'1' ^ '1' ^ '1'</tt> both
+evaluate to the value <tt>49</tt> of type <tt>int</tt>. We recommend converting
+from the characters <tt>'0'</tt> and <tt>'1'</tt> to the integers <tt>0</tt> and <tt>1</tt>,
+so that you don't have to deal with such type conversion anomalies.
+
+</p><p><b>In <tt>toString()</tt>, I loop the right number of times,
+but the returned String looks too short. What can cause this?</b>
+This can be the reverse of the problem above. If you take the integer 0 or 1 and 
+cast it to a <tt>char</tt>, it is a special control character that may
+appear blank when printed.
+
+</p><p><b>My <tt>generate()</tt> method is producing 19 for the binary number 
+11001. What am I doing wrong?</b>
+You are calculating the bits in reverse order. 19 is the decimal value of the
+binary number 10011.
+
+</p><p>
+<b>My <tt>generate()</tt> works with the 11 bit fill and the tap at position 8, but
+when I try <tt>generate()</tt>with the 20 bit fill and the tap at position 16, I get
+a different answer from the one shown in the example. What am I doing wrong?</b>
+Make sure you are not hardwiring 11 or 8 in your code.  The <tt>LFSR</tt>
+constructor arguments must set the size of the register and the tap position. 
+
+</p><p><b>The <tt>toString()</tt> is not explicitly called in the test 
+client code, but it still gets called. How does this work?</b>
+</p><blockquote><pre>      LFSR lfsr = new LFSR("01101000010", 8);
+      StdOut.println(lfsr);
+</pre></blockquote>
+<p>Every object in Java has a <tt>toString()</tt> method, which is automatically
+called by <tt>StdOut.println()</tt>.
+
+</p><p>
+<b>I get an <tt>ArrayOutOfBounds</tt> or <tt>NullPointerException</tt> error. What could cause this?</b>
+Do your constructors initialize all of the instance variables
+(e.g., <tt>n</tt>, <tt>reg</tt>, and <tt>tap</tt>)?
+Did you allocate memory for your array with <tt>new</tt>?
+Did you inadvertently re-declare <tt>int n</tt> or <tt>int[] reg</tt>
+in a method or constructor, thereby hiding the instance variable with the
+same name?
+
+</p><p><b>How do I do exclusive or (XOR) in Java?</b>
+Use the <tt>^</tt> operator.
+</p><ul>
+<p></p><li>
+If <tt>a</tt> and <tt>b</tt> are of type <tt>int</tt>,
+the expression <tt>a ^ b</tt> evaluates to a <tt>int</tt> whose value is the
+bit-by-bit exclusive or of the two operands.
+<p></p></li><li>If <tt>a</tt> and <tt>b</tt> are of type <tt>boolean</tt>,
+the expression <tt>a ^ b</tt> evaluates to a <tt>boolean</tt> whose value
+is the exclusive or of the two operands.
+</li></ul>
+
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (PhotoMagic)
+</font></td></tr></tbody></table>
+
+</p><p><b>Does the API that I define for <code>PhotoMagic</code>
+need to be exactly the same as the one prescribed?</b>
+Yes, we will be testing the methods in the API directly.
+If your method has a different signature or does not behave as specified,
+you will lose a substantial number of points.
+Producing undocumented side effects (such as printing to
+standard output or mutating the <tt>Picture</tt> argument to <tt>transform()</tt>)
+is also an API violation.
+You may not add public methods to the API; however, you may add private methods 
+(which are accessible only in the class in which they are declared).
+
+</p><p><b>Why must I create a new <tt>Picture</tt> object in <tt>transform()</tt>, instead of
+mutating the one passed in as argument?</b>
+The API does not specify this is an allowable side effect, so it is not permitted.
+In practice, a client might be very annoyed if an object they passed to a method was
+mutated with proper documentation.
+ 
+</p><p><b>Why are we using the .png format instead of .jpg?</b>
+It is a lossless format that preserves the precise bits in the colors. 
+
+</p><p><b>How do I read and process the .png files?</b>
+Use the <code>Color</code> and <code>Picture</code> data types
+described in Section 3.1 of the textbook.
+Review Program 3.1.3 (<a href="http://introcs.cs.princeton.edu/31datatype/Luminance.java.html">Luminance.java</a>)
+for using the <tt>Color</tt> data type; review
+either Program 3.1.4 (<a href="http://introcs.cs.princeton.edu/31datatype/Grayscale.java.html">Grayscale.java</a>)
+or <a href="http://introcs.cs.princeton.edu/31datatype/ColorSeparation.java.html">ColorSeparation.java</a>
+for using the <tt>Picture</tt> data type.
+
+</p><p><b>Sometimes my encrypted picture looks like a shadowy version of the original.
+How do I pick a good tap number?</b>  Here are suggested tap numbers for
+maximizing the cycle of
+different size linear feedback shift registers:
+5-bit (tap 2), 6-bit (tap 4), 9-bit (tap 4),
+10-bit (tap 6), 11-bit (tap 8), 20-bit (tap 16), 30-bit (tap 22),
+36-bit (tap 24), 48-bit (tap 42), 60 bit (tap 58),
+100 bit (tap 62), and 150 bit (tap 96).
+</p><p>
+<!-- http://www.xilinx.com/support/documentation/application_notes/xapp052.pdf -->
+
+</p><p><b>How can I save an Picture that is displayed in a window?</b>
+Select <em>File -&gt; Save -&gt; filename.png</em>
+from the menu in the window where the image is displayed, where <em>filename</em>
+is whatever name you want to give the image.
+
+</p><p><b>What is a <tt>java.awt.HeadlessException</tt> and how did I cause it?</b>
+The assignment specifies that you should call <tt>show()</tt> only once, in <tt>PhotoMagic.main()</tt>. 
+Calling it in other places can give this error.
+
+
+
+</p><p>
+<table id="color" border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Using the <tt>Color</tt> data type
+</center>
+</font></td></tr></tbody></table>
+</p><p>
+
+</p><p>The <a href="https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html">Color</a>
+ data type is built into Java in the "Abstract Window Toolkit" package.
+</p><ul>
+<p></p><li>To access it, type the following at the top of your program:
+<pre>import java.awt.Color;
+</pre>
+
+<p></p></li><li>Now, you can create <tt>Color</tt> variables and objects:
+
+<pre>Color princetonOrange = new Color(244, 111, 27); // constructor args are R, G, B
+</pre>
+
+<p></p></li><li>
+This <a href="http://introcs.cs.princeton.edu/java/11cheatsheet/#Color">abbreviated API</a>
+documents all of the methods that you will need for this assignment.
+
+</li></ul>
+
+<p>
+<table id="picture" border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Using the <tt>Picture</tt> data type
+</center>
+</font></td></tr></tbody></table>
+</p><p>
+
+The <a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/Picture.html">Picture</a>
+data type was created for this course. 
+
+</p><ul>
+<p></p><li>
+If you used the autoinstaller, the <tt>Picture</tt> data type should already be
+available in Java (and you will not need to use an <tt>import</tt> statement).
+To check if it is available, type the following command in your terminal application:
+
+<blockquote><pre>% <b>java-introcs Picture http://introcs.cs.princeton.edu/java/31datatype/baboon.png</b></pre></blockquote>
+
+If it's working (and you have an Internet connection), you will see an image of a baboon displayed in a window
+and the text output <tt>298-by-298</tt> at the command line.
+
+<p></p></li><li>If <tt>Picture</tt> does not seem to be installed correctly, one solution
+is to copy <a href="http://introcs.cs.princeton.edu/java/stdlib/Picture.java.html">Picture.java</a>
+to the same directory as your other files for this assignment. 
+</li>
+
+<p></p><li>
+You can create <tt>Picture</tt> variables and objects as follows:
+<blockquote><pre><font color="gray">// create a picture from a URL (Internet connection required)</font>
+Picture picture1 = new Picture("http://introcs.cs.princeton.edu/java/31datatype/baboon.png");
+
+<font color="gray">// create a picture from a file (baboon.png must be in working directory)</font>
+Picture picture2 = new Picture("baboon.png");
+
+<font color="gray">// display pictures in separate windows</font>
+picture1.show();
+picture2.show();
+</pre></blockquote>
+</li>
+
+<p></p><li>
+This <a href="http://introcs.cs.princeton.edu/java/11cheatsheet/#Picture">abbreviated API</a>
+documents all of the methods that you will need for this assignment.
+</li>
+
+</ul>
+
+
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Testing
+</font></td></tr></tbody></table>
+
+<p>
+Be sure to thoroughly test each piece of your code as you write it.
+We offer some suggestions in the assignment specification.
+You should also test your data type with other parameters.
+
+
+</p><ul>
+
+<p></p><li><em>LFSR.</em> Use the following code to test <tt>generate()</tt> with a 20-bit fill
+and a tap of <tt>16</tt>.
+
+<blockquote><pre>LFSR lfsr20 = new LFSR("01101000010100010000", 16);
+StdOut.println(lfsr20);
+for (int i = 0; i &lt; 10; i++) {
+    int r = lfsr20.generate(8);
+    StdOut.println(lfsr20 + " " + r);
+}
+</pre>
+
+</blockquote>
+
+It outputs:
+
+<blockquote><pre>01101000010100010000
+01010001000000101010 42
+00000010101011011001 217
+10101101100100010111 23
+10010001011111000001 193
+01111100000100011010 26
+00010001101010011100 156
+10101001110010011100 156
+11001001110011100111 231
+11001110011110000111 135
+01111000011110111101 189
+</pre></blockquote>
+
+
+<p></p></li><li><em>PhotoMagic.</em>  Here are the (red, green, blue) values of the first 4 pixels, both before and after encoding. You can put debug (or trace) statements in your code to check that you are getting the same values:
+
+<blockquote><pre>% <b>java-introcs PhotoMagic pipe.png 01101000010100010000 16</b>
+</pre></blockquote>
+<pre>Before: 135 98 80
+After: 173 187 71
+Before: 141 104 86
+After: 76 114 202
+Before: 146 109 91 
+After: 14 138 220
+Before: 146 109 91
+After: 47 214 254
+</pre>
+
+</li><li><p><em>PhotoMagic.</em> Here are a few sample executions
+of <tt>PhotoMagic.java</tt> along with the desired output.
+
+</p><blockquote><pre>% <b>java-introcs PhotoMagic pipe.png 01101000010100010000 16</b>
+<img src="./Programming Assignment Checklist_ LFSR_files/Xpipe.png" style="height:100px">
+
+% <b>java-introcs PhotoMagic Xpipe.png 01101000010100010000 16</b>
+<img src="./Programming Assignment Checklist_ LFSR_files/pipe.png" style="height:100px">
+
+% <b>java-introcs PhotoMagic Xpipe-gray.png 10010111101011101111 16</b>
+<img src="./Programming Assignment Checklist_ LFSR_files/pipe-gray.png" style="height:100px">
+
+% <b>java-introcs PhotoMagic Xbaboon-gray.png   01101000010100010000 16</b>
+<img src="./Programming Assignment Checklist_ LFSR_files/baboon-gray.png" style="height:100px">
+
+% <b>java-introcs PhotoMagic Xbaboon-red.png   01101000010100010000 16</b>
+<img src="./Programming Assignment Checklist_ LFSR_files/baboon-red.png" style="height:100px">
+
+% <b>java-introcs PhotoMagic Xbaboon-green.png 01101000010100010000 16</b>
+<img src="./Programming Assignment Checklist_ LFSR_files/baboon-green.png" style="height:100px">
+
+% <b>java-introcs PhotoMagic Xbaboon-blue.png  01101000010100010000 16</b>
+<img src="./Programming Assignment Checklist_ LFSR_files/baboon-blue.png" style="height:100px">
+
+% <b>java-introcs PhotoMagic Xshield.png 010101010101010101010101010101 22</b>
+<img src="./Programming Assignment Checklist_ LFSR_files/shield.png" style="height:100px">
+
+% <b>java-introcs PhotoMagic Xscarpet-cookies.png 01101000010100010000 16</b>
+[ picture of something delicious ]
+
+% <b>java-introcs PhotoMagic Xjava.png 001110001111000100001101010010000100010010000000001100000100 58</b>
+[ picture of something you could drink with cookies ]
+</pre></blockquote>
+
+<!--
+<p><li><em>PhotoMagicDeluxe.</em>  Here is a sample execution
+of <tt>PhotoMagicDeluxe.java</tt> along with the desired output.
+
+
+<blockquote><pre>
+% <b>java-introcs PhotoMagicDeluxe Xjava.png OPENSESAME 58</b>
+[ picture of something you could drink with cookies ]
+</pre></blockquote>
+-->
+
+</li></ul>
+
+<p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Possible Progress Steps
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+
+</p><ol>
+
+<p></p><li>
+Do the reading specified at the top of this page.
+
+<p></p></li><li>
+Read the template
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/lfsr/LFSR.java">LFSR.java</a>.
+Your program will resemble it. You will need to specify the instance variables
+and fill in the constructor and methods.
+
+<p></p></li><li>
+One reasonable way to represent the LFSR is to use an <code>int[]</code> array
+and the following instance variables:
+<blockquote><pre>private int n;           // number of bits in the LFSR
+private int[] reg;       // reg[i] = ith bit of LFSR, reg[0] is rightmost bit
+private int tapPosition; // tap position
+</pre></blockquote>
+
+<p></p></li><li>
+Write the constructor.
+Your constructor for <tt>LFSR</tt> will initialize all the instance variables.
+Use <tt>new</tt> to allocate memory for the <tt>int[]</tt> array.
+Observe that you must
+do this in the constructor (and not when you declare the instance variables)
+since otherwise you wouldn't know how big to make the array.
+
+<p></p></li><li>
+Write the <tt>toString()</tt> method. This will enable you to test the constructor.
+
+<p>
+As you fill in the methods for <tt>LFSR</tt>, use the test code described in
+the assignment.
+
+</p><p></p></li><li>Write the <tt>step()</tt> method.  Test.
+
+<p></p></li><li>Write the <tt>generate()</tt> method.  Test.
+
+<p></p></li><li><em>PhotoMagic.</em>
+Your <tt>PhotoMagic</tt> class is a client of the <tt>Picture</tt>, <tt>Color</tt>, 
+and <tt>LFSR</tt> classes.
+<!--By placing the line
+<br><pre> <tt>import java.awt.Color;</tt></pre> 
+above the line where you 
+declare
+<tt>public class PhotoMagic</tt>, the compiler will know that you are going to use
+the <tt>Color</tt> class.
+--> Place <tt>LFSR.java</tt> in the same directory as
+<tt>PhotoMagic.java</tt>, so the compiler will be able 
+to find both of them. <!-- (<tt>Picture</tt> is part of <tt>stdlib.jar</tt>, so if you
+used the installer, your compiler knows how to find it.  If not, you may need to 
+download <tt>Picture.java</tt> from the Booksite and save it to the same 
+directory where you have <tt>LFSR</tt> and <tt>PhotoMagic</tt>.)-->
+See also the sections on using the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/lfsr.html#color">Color</a> and <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/lfsr.html#picture">Picture</a>
+data types.
+
+</li></ol>
+
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Enrichment</center>
+</font></td></tr></tbody></table>
+</p><p>
+
+
+</p><ul>
+
+
+<p></p><li>
+Read more about 
+<a href="http://en.wikipedia.org/wiki/Linear_feedback_shift_register">Linear 
+Feedback Shift Registers</a>.
+</li>
+<!--
+<li>
+Look at the 
+<a href = "http://introcs.cs.princeton.edu/stdlib/Picture.java.html">
+implementation of the <code>Picture</code> class</a>.
+-->
+
+</ul>
+
+
+
+
+</body></html>

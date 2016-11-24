@@ -1,0 +1,282 @@
+
+<!-- saved from url=(0085)http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/sierpinski.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Recursive Graphics Assignment</title>
+
+<!--
+<SCRIPT LANGUAGE="JavaScript" type="text/javascript" src="flash-detect.js"></SCRIPT>
+-->
+
+</head>
+
+<body bgcolor="#FFFFFF" data-gr-c-s-loaded="true">
+
+<table width="100%" border="0">
+<tbody><tr align="LEFT" valign="BOTTOM">
+<td><strong>COS 126</strong><br><br>
+<strong><font size="+2">Recursive Graphics</font></strong></td>
+<td align="RIGHT" valign="BOTTOM">
+<strong>Programming Assignment</strong><br><br>
+</td></tr></tbody></table>
+<hr>
+<p>
+Write a program that plots a Sierpinski triangle, as illustrated below.
+ Then, develop a program that plots a recursive pattern of your own design.
+
+</p><p>
+</p><blockquote>
+<table border="0" cellpadding="0" cellspacing="0" width="95%">
+<tbody><tr>
+<td align="center"><img src="./Recursive Graphics Assignment_files/sierpinski1.png" width="125" alt="Sierpinski triangle of order 1">
+</td><td align="center"><img src="./Recursive Graphics Assignment_files/sierpinski2.png" width="125" alt="Sierpinski triangle of order 2">
+</td><td align="center"><img src="./Recursive Graphics Assignment_files/sierpinski3.png" width="125" alt="Sierpinski triangle of order 3">
+</td><td align="center"><img src="./Recursive Graphics Assignment_files/sierpinski4.png" width="125" alt="Sierpinski triangle of order 4">
+</td><td align="center"><img src="./Recursive Graphics Assignment_files/sierpinski5.png" width="125" alt="Sierpinski triangle of order 5">
+</td><td align="center"><img src="./Recursive Graphics Assignment_files/sierpinski6.png" width="125" alt="Sierpinski triangle of order 6">
+</td></tr>
+<tr>
+<td align="center"><em>order 1</em></td>
+<td align="center"><em>order 2</em></td>
+<td align="center"><em>order 3</em></td>
+<td align="center"><em>order 4</em></td>
+<td align="center"><em>order 5</em></td>
+<td align="center"><em>order 6</em></td>
+</tr>
+</tbody></table>
+</blockquote>
+
+
+<!--
+<p>
+<center>
+<IMG SRC="sierpinski-files/sierpinski9.png" width = 500 height = 500 alt = "Sierpinski triangle of order 9">
+</center>
+-->
+
+
+<!--
+<p><script language="JavaScript">
+insert_flash("sierpinski_anim.swf",400,360," align=right");
+</script>
+<noscript>
+    <table width=400 height=400 align= align=right><tr><td align=center>
+    <font color=#ff0000>Please enable java script and get flash to view this  animation</font>
+    </td></tr></table>
+</noscript>
+
+<script language="JavaScript">
+insert_flash("sierpinski_triangle_draw.swf",400,360," align=left");
+</script>
+<noscript>
+    <table width=400 height=350 align= align=left><tr><td align=center>
+    <font color=#ff0000>Please enable java script and get flash to view this  animation</font>
+    </td></tr></table>
+</noscript>
+
+<p><a href = "http://mathematica.ludibunda.ch/mathematicians12.html">Reference</a>.
+-->
+
+
+<p><b>Part 1. </b> &nbsp;
+The <em>Sierpinski triangle</em> 
+is another example of a fractal pattern like the H-tree pattern from Section 2.3
+of the textbook.
+The Polish mathematician Wacław Sierpiński described the pattern in 1915,
+but it has appeared in Italian art since the 13th century.
+Though the Sierpinski triangle looks complex, it can be generated with a
+short recursive function.
+Your main task is to write a recursive function <tt>sierpinski()</tt> that plots a
+Sierpinski triangle of order <em>n</em> to standard drawing.
+Think recursively: <tt>sierpinski()</tt> should draw one filled equilateral triangle
+(pointed downwards) and then call itself recursively three times
+(with an appropriate stopping condition).
+It should draw
+1 filled triangle for <em>n</em> = 1;
+4 filled triangles for <em>n</em> = 2; and
+13 filled triangles for <em>n</em> = 3; and so forth.
+<!-- Your function may be nearly (or completely) debugged when you get to this point. -->
+
+<!--
+-->
+
+<!--Instrument your program to take <em>one</em> integer command-line argument <tt>n</tt>, to 
+control the depth of the recursion.
+ and a non-recursive function <tt>main()</tt> that takes an integer
+command-line argument <tt>n</tt> and calls <tt>sierpinski()</tt> once, with appropriate 
+arguments.
+-->
+
+</p><p><b>API specification.</b> 
+When writing your program, exercise modular design by organizing it into four
+functions,
+<!-- &mdash;<tt>height()</tt>, <tt>filledTriangle()</tt>, <tt>sierpinski()</tt>, and <tt>main()</tt>&mdash; -->
+as specified in the following API:
+
+
+</p><p>
+</p><blockquote>
+<pre><b>public class Sierpinski {</b>
+
+    <font color="gray">//  Height of an equilateral triangle whose sides are of the specified length.</font>
+    <b>public static double height(double length)</b>
+
+    <font color="gray">//  Draws a filled equilateral triangle whose bottom vertex is (x, y)</font>
+    <font color="gray">//  of the specified side length.</font>
+    <b>public static void filledTriangle(double x, double y, double length)</b>
+
+    <font color="gray">//  Draws a Sierpinski triangle of order n, such that the largest filled</font>
+    <font color="gray">//  triangle has bottom vertex (x, y) and sides of the specified length.</font>
+    <b>public static void sierpinski(int n, double x, double y, double length)</b>
+
+    <font color="gray">//  Takes an integer command-line argument n;</font>
+    <font color="gray">//  draws the outline of an equilateral triangle (pointed upwards) of length 1;</font>
+    <font color="gray">//  whose bottom-left vertex is (0, 0) and bottom-right vertex is (1, 0); and</font>
+    <font color="gray">//  draws a Sierpinski triangle of order n that fits snugly inside the outline.</font>
+    <b>public static void main(String[] args)</b>
+<b>}</b>
+</pre></blockquote>
+
+<p><em>Restrictions</em>: Do not change either the scale or size of the drawing window.
+
+</p><p><b>Examples.</b>
+Below are the target Sierpinski triangles for different values of <em>n</em>.
+
+</p><p>
+</p><blockquote>
+<table border="0" cellpadding="0" cellspacing="0" width="95%">
+<tbody><tr>
+<td>&nbsp;&nbsp;</td>
+<td><tt>% <b>java-introcs Sierpinski 1</b></tt>
+</td><td><tt>% <b>java-introcs Sierpinski 2</b></tt>
+</td><td><tt>% <b>java-introcs Sierpinski 3</b></tt>
+</td></tr>
+<tr>
+<td>&nbsp;&nbsp;</td>
+<td><img src="./Recursive Graphics Assignment_files/sierpinski1.png" alt="Sierpinski triangle of order 1">
+</td><td><img src="./Recursive Graphics Assignment_files/sierpinski2.png" alt="Sierpinski triangle of order 2">
+</td><td><img src="./Recursive Graphics Assignment_files/sierpinski3.png" alt="Sierpinski triangle of order 3">
+</td></tr>
+<!--
+<tr><td>&nbsp;</tr>
+<tr><td>&nbsp;</tr>
+<tr>
+<td>&nbsp;&nbsp;</td>
+<td><tt>% <b>java-introcs Sierpinski 4</b></tt>
+<td><tt>% <b>java-introcs Sierpinski 5</b></tt>
+<td><tt>% <b>java-introcs Sierpinski 6</b></tt>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;</td>
+<td><IMG SRC="sierpinski-files/sierpinski4.png" alt = "Sierpinski triangle of order 4">
+<td><IMG SRC="sierpinski-files/sierpinski5.png" alt = "Sierpinski triangle of order 5">
+<td><IMG SRC="sierpinski-files/sierpinski6.png" alt = "Sierpinski triangle of order 6">
+</tr>
+-->
+</tbody></table>
+</blockquote>
+
+
+<p>
+</p><p><br><b>Fractal dimension (optional diversion).</b> &nbsp;
+In grade school, you learn that the dimension of a line segment is 1,
+the dimension of a square is 2, and the dimension of a cube is 3.
+But you probably didn't learn what is really meant by the term <em>dimension</em>.
+How can we express what it means mathematically or computationally?
+Formally, we can define the <em>Hausdorff dimension</em>
+or <em>similarity dimension</em>
+of a self-similar figure by partitioning the figure into
+a number of self-similar pieces of smaller size.
+We define the dimension to be the 
+log (# self similar pieces) / log (scaling factor in each spatial direction).
+For example, we can decompose the unit square into 4 smaller
+squares, each of side length 1/2; or we can decompose it into 25 squares,
+each of side length 1/5.
+Here, the number of self-similar pieces is 4 (or 25) and 
+the scaling factor is 2 (or 5).
+Thus, the dimension of a square is 2 since
+log (4) / log(2) = log (25) / log (5) = 2.
+We can decompose the unit cube into 8 cubes,
+each of side length 1/2; or we can decompose it into 125 cubes,
+each of side length 1/5.
+Therefore, the dimension of a cube is log(8) / log (2) = log(125) / log(5) = 3.
+
+</p><p>
+We can also apply this definition directly to the (set of white
+points in) Sierpinski triangle.
+We can decompose the unit Sierpinski triangle into 3 Sierpinski triangles,
+each of side length 1/2.
+Thus, the dimension of a Sierpinski triangle is log (3) / log (2) ≈ 1.585.
+Its dimension is fractional—more than a line segment, but less than a square!
+With Euclidean geometry, the dimension is always an integer;
+with fractal geometry, it can be something in between.
+Fractals are similar to many physical objects;
+for example, the coastline of Britain resembles
+a fractal; its fractal dimension has been 
+<a href="https://en.wikipedia.org/wiki/List_of_fractals_by_Hausdorff_dimension#Random_and_natural_fractals">measured</a>
+to be approximately 1.25.
+
+</p><p><b>Part 2. </b> &nbsp;
+In this part you will create 
+a program <tt>Art.java</tt> that 
+produces a recursive drawing of your own design.
+It must take
+<em>one</em> integer command-line argument <em>n</em>
+that controls the depth of recursion.
+It must stay within the drawing window when <em>n</em> is between 1 and 7.
+It can be a geometric pattern, a random construction, or
+anything else
+that takes advantage of recursive functions.
+For full marks, 
+it must not be something that could be easily rewritten to 
+use loops in place of recursion,
+and some aspects of the recursive function-call tree (or how parameters or overlapping are used)
+must be distinct from the in-class examples (<tt>HTree</tt>, 
+<tt>Sierpinski</tt>, <tt>NestedCircles</tt>, <tt>Brownian</tt>).
+
+</p><p><em>Additional requirements</em>: Your program must be organized into at least three separate functions, including <tt>main()</tt>.
+All functions except <tt>main()</tt> must be <tt>private</tt>.
+
+
+</p><p><em>Restrictions</em>: Do not change the size of the drawing window
+(but you may change the scale).
+
+<!--Originality and creativity in the design will be a factor in your grade.-->
+
+</p><p>
+<b>Submission. </b> &nbsp;
+Submit <tt>Sierpinski.java</tt> and <tt>Art.java</tt>. Do <em>not</em> add sound to either file.
+If your <tt>Art.java</tt> requires any supplementary image files, submit them as well.
+Finally, submit a 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/sierpinski/readme.txt">readme.txt</a>
+file and answer the questions therein.
+
+
+
+
+</p><p>
+<b>Challenge for the bored. </b> &nbsp;
+Write a program that plots Sierpinski triangles without using recursion.
+
+<!--
+<P>
+<b>Extra Credit B. </b> &nbsp;
+Create an image to display on the Display Wall in the Frist Student Center.
+This requires no programming and can be alot of fun!
+Follow these <a href = "../displaywall.html">
+display wall instructions</a> to show off your artwork.
+Name your resulting JPEG file <tt>login.jpg</tt> where <tt>login</tt>
+is replaced by your email name.
+-->
+
+<!--
+<br><br>
+<ADDRESS><SMALL>
+Copyright &copy; 2000
+<A HREF="/~rs/">Robert Sedgewick</A> 
+</SMALL>
+</ADDRESS>
+-->
+
+
+
+</p></body></html>

@@ -1,0 +1,610 @@
+
+<!-- saved from url=(0079)http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/atomic.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+Programming Assignment Checklist: Atomic Nature of Matter
+</title>
+</head>
+
+<body data-gr-c-s-loaded="true">
+<h3>
+Programming Assignment Checklist: Atomic Nature of Matter
+</h3>
+
+<p><br>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (general)</center>
+</font></td></tr></tbody></table>
+
+</p><p><b>Do I need to follow the prescribed APIs?</b>
+Yes, we will be testing the methods in an API directly. If your method has a different 
+signature or does not behave as specified, you will lose a substantial number of points.
+You may not add public methods to an API; you may, however, add private methods 
+(which are accessible only in the class in which they are declared).
+
+</p><p><b>Am I allowed to use Java's built-in packages?</b>
+No.
+This assignment is intended as a capstone project, requiring you to combine programming
+techniques that you learned during the class.
+There is no need to use any of the libraries in <tt>java.util</tt>.
+
+</p><p><b>My answers match the reference answers, except sometimes 
+they are off by 0.0001. Why could cause this?</b>
+It is likely a combination of floating-point roundoff error and printing only
+4 digits after the decimal point. For example, this discrepancy can arise if one solution
+computes the value 0.12345 (which gets rounded up to 0.1235)
+and another computes the value 0.1234999999999 (which gets rounded down to 0.1234).
+You need not worry about such discrepanices on this assignment.
+
+
+</p><p><b>Are the PowerPoint slides from precept available?</b>
+Yes, in <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/atomic-files/atomic-20160428v4.pdf">pdf</a> 
+or in <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/atomic-files/atomic-20160428v4.ppt">ppt</a>.
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (Blob)</center>
+</font></td></tr></tbody></table>
+
+
+</p><p><b>How can I implement the <tt>toString()</tt> method to format the numbers?</b>
+Use <tt>String.format()</tt>. It works like <tt>System.out.printf()</tt>, but 
+returns the resulting string instead of printing it.
+Here is our <tt>toString()</tt> method in <tt>Blob</tt>.
+
+</p><blockquote><pre>public String toString() {
+    return String.format("%2d (%8.4f, %8.4f)", mass, cx, cy);
+}
+</pre></blockquote>
+See p. 125 of the textbook to learn more about formatted printing.
+
+
+<p><b>Which value should <tt>distanceTo()</tt> return if the mass of one or both blobs is zero?</b>
+We recommend <tt>Double.NaN</tt>.
+Since this corner case is not specified in the API, we won't test it.
+
+</p><p><b>What should <tt>toString()</tt> return if the mass is zero?</b>
+We recommend <tt>"0 (NaN, NaN)"</tt>.
+Since this corner case is not specified in the API, we won't test it.
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (BeadFinder)</center>
+</font></td></tr></tbody></table>
+
+
+</p><p><b>How should I read a JPEG file?</b>
+Use the <a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/Picture.html">Picture</a>
+data type.
+
+<!--
+To see it in action, program <a href = "http://introcs.cs.princeton.edu/31datatype/Threshold.java.html">Threshold.java</a>
+takes the name of a picture file
+as a command-line argument, displays it on the screen, converts
+all pixels to a luminance value, and displays all those pixels with a 
+luminance value &ge; 180 in white.
+It relies on the helper program <a href = "http://introcs.cs.princeton.edu/31datatype/Luminance.java.html">Luminance.java</a>
+(Program 3.1.3) to convert from color to luminance.
+-->
+
+</p><p><b>Are diagonal pixels considered adjacent?</b>
+No, use only the four ordinal neighbors (N, E, S, and W).
+
+</p><p><b>Must I print the beads and displacements in the same 
+order as shown in the assignment specification?</b>
+No, the order is not specified.
+
+</p><p><b>How can I specify the name of a subdirectory in Windows?</b>
+Use the backslash character (<tt>\</tt>) instead of the 
+forward slash character (<tt>/</tt>).
+
+</p><p><b>Can I execute my program from within DrJava?</b>
+No, use either Terminal or Command Prompt.
+DrJava does not support using wildcards such as <tt>*.jpg</tt>.
+DrJava also requires that you escape each <tt>\</tt> character.
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (BeadTracker)</center>
+</font></td></tr></tbody></table>
+
+</p><p><b>What should I do if several of the beads in frame <tt>t+1</tt> 
+have the same
+bead in frame <tt>t</tt> as their closest bead?</b>
+That happens only rarely, so you should not worry about it—just let
+the bead in frame <tt>t</tt> get paired a second time.
+<!--
+For our  purposes, it is fine 
+to ignore this case since the
+beads aren't supposed to get too close. If they do get close,
+there's no good way to track them anyway.  Our posted solutions do not 
+check for that rare case and we just let the same bead in frame 
+<tt>t</tt> get paired a second time.
+-->
+
+</p><p><b>I am able to find beads and blobs correctly, but my BeadTracker gives
+a few errors, despite that it is mostly working. Why could this be?</b>
+</p><ul>
+
+<p></p><li>
+Check that, for each bead in frame <em>t</em> + 1, you are
+finding the closest bead in frame <em>t</em>, and not vice versa.
+
+<p></p></li><li>Be sure to discard distances greater than <em>delta</em>,
+not greater than or equal to <em>delta</em>.
+</li></ul>
+
+<p><b>Why do I have to compare each bead in frame <em>t</em> + 1 to each 
+bead in frame <em>t</em>?  Why can't I do it the other way around?</b>  
+It's an arbitrary choice, but one that you must follow because it is 
+prescribed in the assignment specification.
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (Avogadro)</center>
+</font></td></tr></tbody></table>
+
+</p><p><b>How accurate of an estimate should I get?</b>
+You should get within 10% or so of the exact value for Avogadro's number
+(6.022142 × 10<sup>23</sup>).
+The standard deviation of the radius of the beads is about 10%,
+so you shouldn't expect results more accurate than this.
+Your output, however, should agree <em>exactly</em> with ours.
+
+
+</p><p><b>My physics is a bit rusty. Do I need to worry about converting units?</b>
+Not much, since all of the constants are in SI units.
+The only conversion you should need to do is to convert from
+distances measured in pixels (the radial displacements) to distances measured in 
+meters, by using the conversion factor of 0.175 × 10<sup>−6</sup>
+meters per pixel.
+
+
+</p><p><b>Can I assume that the dimensions of all of the images are 640-by-480 pixels
+and that all of the runs consist of 200 frames?</b>
+No, do not hardwire these constants into your program.
+Use <tt>picture.width()</tt> and <tt>picture.height()</tt> for the
+width and height; use <tt>args.length</tt> for the number of command-line arguments.
+
+
+</p><p><b>How can I specify 200 image names on the command line?</b>
+One way is to type them all in.
+</p><blockquote><pre>% <b>java-introcs BeadTracker 25 180.0 25.0 run_1/frame00000.jpg run_1/frame00001.jpg run_1/frame00002.jpg ...</b>
+</pre></blockquote>
+
+An easier alternative is to use the <em>wildcard</em> capability of your 
+command line. For example, the following specifies (in alphabetical order)
+all <tt>.jpg</tt> files in the <tt>run_1</tt> directory.
+<blockquote><pre>% <b>java-introcs BeadTracker 25 180.0 25.0 run_1/*.jpg</b>
+</pre></blockquote>
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (performance analysis)</center>
+</font></td></tr></tbody></table>
+
+
+</p><p><b>How can I estimate the running time of my <tt>BeadTracker</tt> 
+program?</b>
+Use the <a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/Stopwatch.html">Stopwatch</a>
+data type from Section 4.1.  Remember to remove
+it and any additional print statements from your submitted version of 
+<tt>BeadTracker.java</tt>.  
+
+<!-- Alternatively, you may use the command-line switch
+<tt>java-introcs -Xprof BeadTracker</tt> (usually the flat profile is the most appropriate).
+  Either way,
+-->
+When you execute <tt>BeadTracker</tt>, <em>redirect
+the output to a file</em> to avoid measuring the time to print the output
+to the terminal.  Run <tt>BeadTracker</tt> with a variety of input sizes
+which allow you to get good timing data and form a doubling hypothesis.
+
+</p><p><b>How can I run <tt>BeadTracker</tt> with a variety of input sizes?  Don't
+all the runs have 200 frames?</b>
+They do, but when you are performing timing experiments, you can simply use
+a subset of them.
+On OS X, you can use the wildcard capability of the command-line to run
+10 frames, 20 frames, 40 frames, 80 frames, and 160 frames, as follows:
+
+</p><blockquote><pre>% <b>java-introcs BeadTracker 25 180.0 25.0 run_1/frame000[0]*.jpg    &gt; temp.txt</b>
+
+% <b>java-introcs BeadTracker 25 180.0 25.0 run_1/frame000[0-1]*.jpg  &gt; temp.txt</b>
+
+% <b>java-introcs BeadTracker 25 180.0 25.0 run_1/frame000[0-3]*.jpg  &gt; temp.txt</b>
+
+% <b>java-introcs BeadTracker 25 180.0 25.0 run_1/frame000[0-7]*.jpg  &gt; temp.txt</b>
+
+% <b>java-introcs BeadTracker 25 180.0 25.0 run_1/frame000*.jpg run_1/frame001[0-5]*.jpg &gt; temp.txt</b>
+</pre></blockquote>
+
+<p>
+On Windows, one simple way is to create several subdirectories with the desired
+number of frames.  Another way is to use the limited wildcard capability of 
+command prompt to run 100, 200 and 400 frames.
+</p><blockquote><pre>&gt; <b>java-introcs BeadTracker 25 180.0 25.0 run_1\frame000*.jpg      &gt; temp.txt</b>
+
+&gt; <b>java-introcs BeadTracker 25 180.0 25.0 run_1\*.jpg              &gt; temp.txt</b>
+
+&gt; <b>java-introcs BeadTracker 25 180.0 25.0 run_1\*.jpg run_1\*.jpg  &gt; temp.txt</b>
+</pre></blockquote>
+
+
+<p><b>How long should <tt>BeadTracker</tt> take?</b>
+It depends on the speed of your computer, but processing 200 frames should take 
+around 10 seconds or less.
+
+</p><p>
+<b>How much memory should my program use?</b>
+Our program uses less than 5 MB. You will receive a deduction if you use
+substantially more. The most common way to waste memory is to hold
+references to an array of <tt>Picture</tt> objects
+in <tt>BeadTracker</tt> instead of only two at a time.
+You can use the <tt>-Xmx</tt> option to limit how much memory
+Java uses: for example, the following command limits the
+memory available to Java to 5 MB.
+
+</p><blockquote><pre>% <b>java-introcs -Xmx5m BeadTracker 25 180.0 25.0 run_1/*.jpg</b>
+</pre></blockquote>
+
+<p><b>When I test with a very small luminance threshold, I get a <tt>StackOverflowError</tt>,
+but my code works for larger luminance thresholds. What does this mean?</b> Since
+DFS is recursive, it consumes memory proportional to the height of the
+function-call tree. If the luminance threshold is small, the blobs can be very
+big, and the height of the function-call tree may be very large.
+We won't test your program on inputs with such big blobs.
+If, however, you are determined to get it to work on such cases,
+use the command-line option <tt>-Xss20m</tt> to increase the stack space.
+
+</p><blockquote><pre>% <b>java-introcs -Xss20m BeadTracker 25 18.0 25.0 run_1/*.jpg</b>
+</pre></blockquote>
+
+
+<p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Input, Output, and Testing
+</font></td></tr></tbody></table>
+
+</p><p><b>Testing.</b>
+For testing, create <tt>main()</tt> methods in
+<tt>BeadFinder</tt>, <tt>BeadTracker</tt>, and <tt>Avogadro</tt>.
+
+</p><ul>
+
+<li><em>BeadFinder</em>.
+The assignment page shows the output from running <tt>BeadFinder</tt> with 
+<tt>run_1/frame00001.jpg</tt>.
+Note that the order in which you print the beads is not important.
+Here are the results for <tt>run_1/frame00000.jpg</tt>:
+
+<blockquote><pre>% <b>java-introcs BeadFinder 0 180.0 run_1/frame00000.jpg</b>
+37 (220.0270, 122.8919)
+ 1 (254.0000, 223.0000)
+17 (255.4118, 233.8824)
+23 (265.8261, 316.4348)
+36 (297.8333, 394.5000)
+39 (312.3077, 215.8205)
+23 (373.0000, 357.1739)
+19 (390.8421, 144.8421)
+31 (433.7742, 375.4839)
+32 (475.5000,  44.5000)
+31 (525.2903, 443.2903)
+24 (591.0000, 399.5000)
+35 (632.7714, 154.5714)
+
+% <b>java-introcs BeadFinder 25 180.0 run_1/frame00000.jpg</b>
+37 (220.0270, 122.8919)
+36 (297.8333, 394.5000)
+39 (312.3077, 215.8205)
+31 (433.7742, 375.4839)
+32 (475.5000,  44.5000)
+31 (525.2903, 443.2903)
+35 (632.7714, 154.5714)
+</pre></blockquote>
+
+<p>Here are the results for <tt>run_6/frame00010.jpg</tt>:
+
+</p><blockquote><pre>% <b>java-introcs BeadFinder 0 180.0 run_6/frame00010.jpg</b>
+ 1 ( 25.0000, 373.0000)
+ 1 ( 26.0000, 372.0000)
+ 1 ( 27.0000, 373.0000)
+ 1 ( 29.0000, 369.0000)
+63 ( 34.2063,  32.3175)
+ 9 ( 97.0000, 341.0000)
+65 (141.4615,  54.0615)
+70 (165.8571, 165.2857)
+60 (173.5667, 200.5333)
+50 (198.7000, 113.0200)
+ 1 (254.0000, 223.0000)
+89 (276.9101, 306.6629)
+24 (296.3750,  82.9583)
+62 (306.6774, 474.6774)
+59 (339.1356,  81.5932)
+68 (358.9706, 159.0588)
+40 (397.0750,  39.2000)
+86 (573.3488, 427.0581)
+51 (611.7451, 143.8235)
+53 (636.1132, 230.6038)
+14 (634.5000, 421.7143)
+26 (636.5000,  35.0000)
+
+% <b>java-introcs BeadFinder 25 180.0 run_6/frame00010.jpg</b>
+63 ( 34.2063,  32.3175)
+65 (141.4615,  54.0615)
+70 (165.8571, 165.2857)
+60 (173.5667, 200.5333)
+50 (198.7000, 113.0200)
+89 (276.9101, 306.6629)
+62 (306.6774, 474.6774)
+59 (339.1356,  81.5932)
+68 (358.9706, 159.0588)
+40 (397.0750,  39.2000)
+86 (573.3488, 427.0581)
+51 (611.7451, 143.8235)
+53 (636.1132, 230.6038)
+26 (636.5000,  35.0000)
+</pre></blockquote>
+
+
+<p>Finally, 
+the file
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/atomic/beads-run_1.txt">
+beads-run_1.txt</a> lists all of 
+the <em>beads</em> in each frame (using <em>tau</em> = 180.0 and <em>min</em> = 25).
+<!-- and was generated by a different client program using <tt>BeadFinder</tt>:
+for convenience it lists  the reference frame for each set of beads.
+-->
+
+
+</p><p></p></li><li><em>BeadTracker</em>.
+For reference, 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/atomic/displacements-run_1.txt">
+displacements-run_1.txt</a> 
+and
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/atomic/displacements-run_2.txt">
+displacements-run_2.txt</a> 
+contain a list of all of
+the displacements (using <em>tau</em> = 180.0 and <em>min</em> = 25) for
+<tt>run_1</tt> and <tt>run_2</tt>, respectively.
+They were obtained by running
+<blockquote><pre><b> java-introcs BeadTracker 25 180.0 25.0 run_1/*.jpg</b>      <b>java-introcs BeadTracker 25 180.0 25.0 run_2/*.jpg</b>
+ 7.1833                                                  5.1818
+ 4.7932                                                  7.6884
+ 2.1693                                                  6.7860
+ 5.5287                                                  6.4907
+ 5.4292                                                  4.2102
+ 4.3962                                                  1.1412
+ ...                                                     4.4724
+                                                         7.5191
+                                                         3.0659
+                                                         4.4238
+                                                         5.0600
+                                                         1.7280
+                                                         ...
+</pre></blockquote>
+
+<p></p></li><li><em>Avogadro</em>.
+The assignments gives the output for <tt>run_1</tt>. Below
+is the output for <tt>run_2</tt>.
+
+<blockquote><pre>% <b>java-introcs BeadTracker 25 180.0 25.0 run_2/*.jpg | java-introcs Avogadro</b>
+Boltzmann = 1.4200e-23
+Avogadro  = 5.8551e+23
+
+% <b>java-introcs BeadTracker 25 180.0 25.0 run_6/*.jpg | java-introcs Avogadro</b>
+Boltzmann = 1.3482e-23
+Avogadro  = 6.1670e+23
+</pre></blockquote>
+
+</li></ul>
+
+
+
+<p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Possible Progress Steps
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+
+</p><ul>
+
+<p></p><li> Download the files from the assignment page using the specified ZIP file.
+It contains the data files and
+<tt>Luminance.java</tt>.
+Each directory <tt>run_[1-9]</tt> contains a sequence of 200 JPEG images.
+In total, these data files consume 70MB of space.
+The file <tt>beads-run_1.txt</tt> lists the beads found
+in each frame of <tt>run_1</tt> (using <em>tau</em> = 180.0 and <em>min</em> = 25).
+The files <tt>displacements-run_1.txt</tt> and
+<tt>displacements-run_2.txt</tt> are the output of <tt>BeadTracker</tt>
+for those runs.
+
+<p></p></li><li> <em>Blob data type.</em> 
+Implement the <tt>Blob</tt> data type.
+You do not need to store all of the 
+individual pixels that comprise a blob; instead, store three numbers:
+<ul>
+<p></p><li> (number of pixels, <em>x</em>-coordinate center of mass, and 
+     <em>y</em>-coordinate center of mass) or 
+<p></p></li><li> (number of pixels, sum of <em>x</em>-coordinates, and sum of <em>y</em>-coordinates) 
+     needed to compute the center-of-mass.
+</li></ul>
+
+<p>
+Be sure to thoroughly test your data type before proceeding.
+
+</p><p></p></li><li> <em>BeadFinder data type.</em> 
+Implement the <tt>BeadFinder</tt> data type. This is the most 
+difficult part.
+
+<ul>
+
+<p></p><li>
+Review Section 2.4 in the textbook, especially the part on depth-first search.
+Finding all the pixels in a blob is similar to finding a percolating
+path.
+
+<p></p></li><li>
+The crux of this part is to write a <em>private</em> recursive 
+method <tt>dfs()</tt>
+that locates all of the foreground pixels in the same blob as the foreground
+pixel (<em>x</em>, <em>y</em>).
+To do this, use <em>depth-first search</em>: mark pixel (<em>x</em>, <em>y</em>)
+as in the current
+blob, then recursively mark all of its foreground neighbors as in the current
+blob (but don't recur if the pixel has previously been marked or the pixel
+indices are out-of-bounds). <i>It's up to you to decide which arguments would be useful for this method.</i>
+
+<p></p></li><li>
+Now, implement a <em>private</em> nonrecursive helper method 
+<tt>findBlobs()</tt> that runs 
+<tt>dfs()</tt> from each unmarked pixel (<em>x</em>, <em>y</em>). All of the pixels 
+you encounter by calling <tt>dfs()</tt> comprise one blob. 
+
+<!--
+<p><li>
+Here's a simple way to avoid blobs that abut the 1-pixel border of the image frame:
+set the color of all pixels in the 1-pixel border to white, but treat the
+resulting connected component as a non-bead.
+-->
+
+
+<p></p></li><li>
+Next, implement a <em>private</em> method   
+<tt>countBeads(int minPixels)</tt> that counts the number of beads
+(blobs that contain at least the specified number of pixels).
+
+<p></p></li><li>
+Next, implement the method 
+<tt>getBeads()</tt> that searches through 
+the blobs and stores all of the beads (blobs of sufficient size) in a 
+<tt>Blob</tt> array. The length of the array should be equal to the
+number of beads.
+
+<p></p></li><li>
+Implement a <tt>main()</tt> method that takes as command-line arguments 
+<em>min</em>, <em>tau</em>, and the name 
+of a JPEG file.  The <tt>main()</tt> method prints 
+the list of beads.
+
+
+</li></ul>
+
+<p></p></li><li> <em>BeadTracker client.</em>
+The <tt>main()</tt> method in <tt>BeadTracker</tt> takes an arbitrary number
+of command-line arguments, <tt>args[0]</tt>, <tt>args[1]</tt>, and so forth.
+You need to consider only two frames at a time,
+so don't store all of the frames at the same time.
+
+<p></p></li><li> <em>Avogadro client.</em>
+The <tt>main()</tt> method in <tt>Avogadro</tt> reads a sequence of
+floating-point numbers from standard input and prints the estimate of
+Avogadro's number using the formulas provided in the assignment.
+To calculate σ<sup>2</sup>, use the second formula listed 
+with radial displacements; these are the results from <tt>BeadTracker</tt>.
+
+</li></ul>
+
+
+
+
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Enrichment
+</font></td></tr></tbody></table>
+<p>
+
+</p><p><b>What is polystyrene?</b>
+It's an inexpensive plastic that is used in many everyday things
+including plastic forks, drinking cups, and
+the case of your desktop computer.
+Styrofoam is a popular brand of polystyrene foam.
+Computational biologists use micron size polystyrene beads
+(also known as microspheres and latex beads)
+to "capture" a single DNA molecule, e.g., for a DNA test.
+
+
+
+</p><p><b>What's the history of measuring Avogadro's number?</b>
+In 1811, Avogadro hypothesized that the number of molecules in a liter of gas at
+a given temperature and pressure is the same for all gases. 
+Unfortunately, he was never able to determine this number that would later be
+named after him.
+Johann Josef Loschmidt, an Austrian physicist, gave the first
+estimate for this number using the kinetic gas theory.
+In 1873 Maxwell estimated the number of be around 4.3 × 10<sup>23</sup>;
+later Kelvin estimated it to be around 5 × 10<sup>23</sup>.
+Perrin gave the first "accurate" estimate (6.5–6.8 × 10<sup>23</sup>)
+of, what he coined, Avogadro's number. Here's
+a <a href="http://www.chem.uu.nl/fcc/www/reports/karel3.pdf">reference</a>
+on estimating Avogadro's number.
+The most accurate estimates for Avogadro's number and Boltzmann's constant
+are computed using x-ray crystallography:
+Avogadro's number is approximately 6.022142 × 10<sup>23</sup>;
+Boltzmann's constant is approximately 1.3806503 × 10<sup>−23</sup>.
+
+</p><p><b>Where can I learn more about Brownian motion?</b>
+Here's the <a href="http://en.wikipedia.org/wiki/Brownian_motion">Wikipedia entry</a>.
+You can learn about the theory in ORF 309. It may be the first subject you'll
+be asked about if you interview on Wall Street.
+
+
+
+<!--
+<p><b>What is Brownian motion??</b>
+Here's one
+<a href = "http://www.rpi.edu/~kramep/Public/BrownianNL3281.pdf">reference</a>.
+
+<p>
+
+Diffusion constant might be over-estimated because of hydrodynamic effects
+(e.g., coupling between particle and the microscope cover slip,
+coupling between charged particle and its surrounding)
+<p>  
+<a href = "http://www.physics.nyu.edu/grierlab/methods/node11.html">reference</a>
+<p>
+<a href = "http://www.uic.edu/classes/phys/phys461/phys450/MARKO/N004.html">reference</a>
+
+-->
+
+
+
+
+
+
+</p></body></html>

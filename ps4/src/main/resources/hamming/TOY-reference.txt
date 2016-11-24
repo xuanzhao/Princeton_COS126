@@ -1,0 +1,41 @@
+
+             TOY REFERENCE CARD
+
+
+INSTRUCTION FORMATS
+             
+            | . . . . | . . . . | . . . . | . . . .|
+Format RR:  | opcode  |    d    |    s    |    t   |  (0-6, A-B)
+Format A:   | opcode  |    d    |       addr       |  (7-9, C-F)
+
+
+ARITHMETIC and LOGICAL operations
+    1: add              R[d] <- R[s] +  R[t]
+    2: subtract         R[d] <- R[s] -  R[t]
+    3: and              R[d] <- R[s] &  R[t]
+    4: xor              R[d] <- R[s] ^  R[t]
+    5: shift left       R[d] <- R[s] << R[t]
+    6: shift right      R[d] <- R[s] >> R[t]
+
+TRANSFER between registers and memory
+    7: load address     R[d] <- addr
+    8: load             R[d] <- M[addr]
+    9: store            M[addr] <- R[d]
+    A: load indirect    R[d] <- M[R[t]]
+    B: store indirect   M[R[t]] <- R[d]
+
+CONTROL
+    0: halt             halt
+    C: branch zero      if (R[d] == 0) PC <- addr
+    D: branch positive  if (R[d] >  0) PC <- addr
+    E: jump register    PC <- R[d]
+    F: jump and link    R[d] <- PC; PC <- addr
+
+
+Register 0 always reads 0.
+Loads from M[FF] come from stdin.
+Stores to  M[FF] go to stdout.
+
+16-bit registers (using two's complement notation)
+16-bit memory locations
+ 8-bit program counter

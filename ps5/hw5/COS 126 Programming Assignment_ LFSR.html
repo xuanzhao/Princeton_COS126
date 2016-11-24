@@ -1,0 +1,356 @@
+
+<!-- saved from url=(0079)http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/lfsr.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>COS 126 Programming Assignment: LFSR</title></head>
+<body bgcolor="#FFFFFF" data-gr-c-s-loaded="true">
+<table width="100%" border="0">
+<tbody><tr align="LEFT" valign="BOTTOM">
+<td><strong>COS 126</strong><br><br><strong><font size="+2">
+Linear Feedback Shift Register
+</font></strong></td>
+<td align="RIGHT" valign="BOTTOM">
+<strong>Programming Assignment</strong><br><br>
+</td></tr></tbody></table>
+<hr>
+
+
+<p>
+Write a program that produces pseudo-random bits by simulating a linear feedback
+shift register, and then use it to implement a simple form of encryption
+for digital pictures.
+
+</p><p><b>LFSR review.</b>&nbsp;
+A <em>linear feedback shift register</em> (LFSR) is a register of
+bits that performs discrete <em>step</em> operations that
+</p><ul>
+<li>shifts the bits one position to the left and</li>
+
+<p></p><li>replaces the vacated bit by the <em>exclusive or </em>(<em>xor</em>) of the
+bit shifted off and the bit previously at a given <em>tap</em> position in the register.</li>
+</ul>
+
+<p>
+A LFSR has three parameters that characterize the sequence of bits it
+produces: the number of bits <em>n</em>, the initial <em>seed</em>
+(the sequence of bits that initializes the register),
+and the tap position <em>tap</em>.
+As in the example in Lecture 0, the following illustrates one step
+of an 11-bit LFSR with initial seed 01101000010 and tap position 8. 
+
+</p><p>
+</p><center>
+<table border="0" cellpadding="0" cellspacing="0" width="640">
+<tbody><tr>
+<td align="center"><img src="./COS 126 Programming Assignment_ LFSR_files/lfsr.png" width="450" alt="one step of an LFSR"></td>
+<td width="50">
+</td>
+<td align="top"><img src="./COS 126 Programming Assignment_ LFSR_files/xor.png" width="140" alt="one step of an LFSR"></td>
+</tr>
+</tbody></table>
+</center>
+
+
+<p><b>LFSR data type.</b>&nbsp;
+Your first task is to write a data type that simulates the operation of a 
+LFSR by implementing the following API:
+
+</p><blockquote>
+<pre><b>public class LFSR {</b>
+   <b>public        LFSR(String seed, int tap)</b>  <font color="gray">// creates an LFSR with the specified seed and tap</font>
+   <b>public    int step()</b>                      <font color="gray">// simulates one step and return the new bit (as 0 or 1)</font>
+   <b>public    int generate(int k)</b>             <font color="gray">// simulates k steps and return the k bits as a k-bit integer</font>
+   <b>public String toString()</b>                  <font color="gray">// returns a string representation of this LFSR</font>
+
+   <b>public static void main(String[] args)</b>    <font color="gray">// unit tests this class</font>
+<b>}</b>
+</pre></blockquote>
+
+<p>
+To do so, you need to choose the internal representation (instance 
+variables), implement the constructor, and implement the three instance methods.
+These are interrelated activities and there are several viable approaches.
+
+<!--
+<p>
+For this assignment, we recommend 
+that you represent the LFSR as an array of <tt>int</tt> variables, each of which
+is either <tt>0</tt> or <tt>1</tt>.
+If you follow this approach, the constructor amounts to
+creating the array and converting 
+the <tt>char</tt> values in the string to <tt>int</tt> values for the array
+(and initializing your other instance variables). 
+-->
+
+</p><ul>
+<p></p><li><em>Constructor.</em>
+The constructor takes the initial seed as a
+<tt>String</tt> argument, which is composed of 
+<tt>'0'</tt> and <tt>'1'</tt> characters.
+The number of bits <em>n</em> in the LFSR is equal to the length of the seed. 
+We will generate each new bit by <em>xor</em>ing the leftmost bit and 
+the tap bit.
+The index of the tap bit is specified as the second constructor argument. 
+For example, the following code creates the LFSR described above.
+
+<blockquote><pre>LFSR lfsr = new LFSR("01101000010", 8);
+</pre></blockquote>
+
+<p></p></li><li><em>String representation.</em>
+The <tt>toString()</tt> method returns a string representation of the LFSR
+by concatenating the values in the registers. For example,
+
+<blockquote><pre>LFSR lfsr0 = new LFSR("01101000010", 8);
+StdOut.println(lfsr0);
+</pre></blockquote>
+
+outputs
+
+<blockquote><pre>01101000010
+</pre></blockquote>
+
+<p></p></li><li><em>Simulate one step.</em>
+The <tt>step()</tt> method simulates one step of the LFSR and returns
+the rightmost bit as an integer (0 or 1).
+For example,
+
+<blockquote><pre>LFSR lfsr1 = new LFSR("01101000010", 8);
+StdOut.println(lfsr1);
+for (int i = 0; i &lt; 10; i++) {
+    int bit = lfsr1.step();
+    StdOut.println(lfsr1 + " " + bit);
+}
+</pre></blockquote>
+
+outputs
+
+<blockquote><pre>01101000010
+11010000101 1
+10100001011 1
+01000010110 0
+10000101100 0
+00001011001 1
+00010110010 0
+00101100100 0
+01011001001 1
+10110010010 0
+01100100100 0
+</pre></blockquote>
+
+<p></p></li><li><em>Extracting multiple bits.</em>&nbsp; 
+The method <tt>generate()</tt> takes a positive integer <em>k</em> as an argument 
+and returns a <tt>k</tt>-bit integer obtained by simulating <em>k</em>
+steps of the LFSR.
+This task is easy to accomplish with a little arithmetic:
+initialize a variable to zero and, for each bit extracted, 
+double the variable and add the bit returned by <tt>step()</tt>.
+For example, extracting (from left to right) each bit from the sequence <tt>1 1 0 0 1</tt>, the variable takes on the values 1, 3, 6, 12, and 25, 
+ending with the binary representation of the bit sequence. 
+For example,
+
+<blockquote><pre>LFSR lfsr2 = new LFSR("01101000010", 8);
+StdOut.println(lfsr2);
+for (int i = 0; i &lt; 10; i++) {
+    int r = lfsr2.generate(5);
+    StdOut.println(lfsr2 + " " + r);
+}
+</pre></blockquote>
+
+outputs
+
+<blockquote><pre>01101000010
+00001011001 25
+01100100100 4
+10010011110 30
+01111011011 27
+01101110010 18
+11001011010 26
+01101011100 28
+01110011000 24
+01100010111 23
+01011111101 29
+</pre></blockquote>
+
+<p>
+Implement the <tt>generate()</tt> method by calling the
+<tt>step()</tt> method <em>k</em> times and performing the necessary arithmetic.
+
+
+</p><p></p></li><li><em>Corner cases.</em> 
+You may assume that the arguments to the constructor and instance methods are valid.
+For example, you may assume that constructor argument <tt>seed</tt> is a
+string comprised of only the characters <tt>'0'</tt> and <tt>'1'</tt>
+and that <tt>tap</tt> is an integer between 0 and <tt>seed.length() - 1</tt>.
+You may also assume that the argument <em>k</em> to <tt>generate()</tt> is a positive
+integer.
+
+<p></p></li><li><em>Testing.</em> 
+Your <tt>main()</tt> must contain code that tests all of the methods. 
+To make development easiest, each time you write a new method or chunk of code, 
+add a test to <tt>main()</tt> to show that the new code works properly and 
+you didn't break any existing functionality. You should experiment with developing 
+your own test cases; in addition, you can use the tests that we give you on this page 
+and the checklist.
+</li></ul>
+
+<p>
+<b>A client to encrypt and decrypt images.</b>&nbsp;
+Your final task is write a LFSR client <tt>PhotoMagic.java</tt> 
+that can encrypt and decrypt <em>pictures</em>, by implementing the following API:
+
+</p><p>
+</p><blockquote>
+<pre><b>public class PhotoMagic {</b>
+
+   <font color="gray">// Returns a transformed copy of the specified picture, using the specified LFSR.</font>
+   <b>public static Picture transform(Picture picture, LFSR lfsr)</b>
+
+   <font color="gray">// Takes the name of an image file and</font>
+   <font color="gray">// a description of an LFSR as command-line arguments;</font>
+   <font color="gray">// displays a copy of the image that is "encrypted" using the LFSR.</font>
+   <b>public static void main(String[] args)</b>
+<b>}</b>
+</pre></blockquote>
+
+Here are a few more details about the API.
+
+<ul>
+
+<p></p><li><em>Manipulating pictures.</em>&nbsp; 
+The <a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/Picture.html">Picture</a>
+data type is part of <tt>stdlib.jar</tt>;
+the <a href="https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html">Color</a>
+data type is a Java library.
+
+
+<p></p></li><li><em>The transform method.</em>&nbsp; 
+The <tt>transform()</tt> method takes a 
+<code>Picture</code> and an <tt>LFSR</tt> as arguments and returns a
+<em>new</em> <tt>Picture</tt> object that is the result
+of transforming the argument picture using the LFSR as follows:
+For each pixel (<em>col</em>, <em>row</em>), in
+<em>column-major order</em>—(0, 0), (0, 1), (0, 2), ... —extract the red, green, and blue components of the color 
+(each component is an integer between 0 and 255). 
+Then, <em>xor</em> the red component with a newly-generated 8-bit integer.  Do the same 
+for the green (using another new 8-bit integer) and, finally, the blue.
+Create a new <tt>Color</tt> object using
+the result of the <em>xor</em> operations, and set the pixel in the new
+picture to that color. 
+
+<p></p></li><li><em>Main method.</em>
+The <tt>main()</tt> method takes three command-line
+arguments: the name of an image file, a binary password (the initial LFSR seed), 
+and an integer (the tap position).
+It must display the transformed picture on the screen,
+using the <tt>show()</tt> method in the <tt>Picture</tt> data type.
+For example, the command
+<blockquote><pre>% <b>java-introcs PhotoMagic pipe.png 01101000010100010000 16</b>
+</pre></blockquote>
+<p>
+takes as input the picture <a href="./COS 126 Programming Assignment_ LFSR_files/pipe.png">pipe.png</a> (left)
+and displays as output the transformed picture
+<a href="./COS 126 Programming Assignment_ LFSR_files/Xpipe.png">Xpipe.png</a> (right).
+
+
+</p><p>
+</p><blockquote>
+<table border="0" cellpadding="0" cellspacing="0" width="700">
+<tbody><tr>
+<td>&nbsp;&nbsp;</td>
+<td><a href="./COS 126 Programming Assignment_ LFSR_files/pipe.png"><img src="./COS 126 Programming Assignment_ LFSR_files/pipe.png" width="300" height="200" alt="Magritte pipe"></a>
+</td><td><a href="./COS 126 Programming Assignment_ LFSR_files/Xpipe.png"><img src="./COS 126 Programming Assignment_ LFSR_files/Xpipe.png" width="300" height="200" alt="Noise"></a>
+</td></tr>
+
+</tbody></table>
+</blockquote>
+
+<p>
+Now, here's the magic: running the
+<em>same</em> program with the 
+<em>same</em> binary password and tap on the transformed picture recovers the original picture!
+For example, typing
+
+</p><blockquote><pre>% <b>java-introcs PhotoMagic Xpipe.png 01101000010100010000 16</b>
+</pre></blockquote>
+<p>
+
+takes as input the tranformed picture <a href="./COS 126 Programming Assignment_ LFSR_files/Xpipe.png">Xpipe.png</a> (left)
+and displays as output the original picture
+<a href="./COS 126 Programming Assignment_ LFSR_files/pipe.png">pipe.png</a> (right).
+
+
+</p><p>
+</p><blockquote>
+<table border="0" cellpadding="0" cellspacing="0" width="700">
+<tbody><tr>
+<td>&nbsp;&nbsp;</td>
+<td><a href="./COS 126 Programming Assignment_ LFSR_files/Xpipe.png"><img src="./COS 126 Programming Assignment_ LFSR_files/Xpipe.png" width="300" height="200" alt="Noise"></a>
+</td><td><a href="./COS 126 Programming Assignment_ LFSR_files/XXpipe.png"><img src="./COS 126 Programming Assignment_ LFSR_files/XXpipe.png" width="300" height="200" alt="Magritte pipe"></a>
+</td></tr>
+
+</tbody></table>
+</blockquote>
+
+Anyone knowing this password and tap can recover the original picture, but another 
+password won't work. If you're not convinced, try it.
+Thus, for example, you can post a transformed picture on the web,
+but only friends who have the password (and your program) can see the original.
+
+
+
+<p></p></li><li><em>Corner cases.</em>
+You may assume that the arguments to <tt>transform()</tt> are not <tt>null</tt>.
+</li></ul>
+
+
+<p><b>Files for this assignment.</b>
+The file 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/lfsr.zip">lfsr.zip</a>
+contains a number of sample PNG files, including the ones used above;
+an optional template for getting started with <tt>LFSR.java</tt>;
+and this week's
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/lfsr/readme.txt">readme.txt</a>
+template.
+
+</p><p>
+<b>Style. </b> &nbsp; When implementing a class,
+include a comment next to each instance variable
+indicating its purpose, and one above each instance method documenting 
+what it does.
+
+</p><p>
+<b>Submission. </b> &nbsp;
+Submit <tt>LFSR.java</tt>, <tt>PhotoMagic.java</tt>, and a completed 
+<tt>readme.txt</tt> file. 
+
+</p><p>
+<b>Challenge for the bored 1.</b>&nbsp;
+Using a short binary password is weak protection and using a long one is inconvenient.
+Write a client with the same API as <tt>PhotoMagic.java</tt>, but use a short
+<em>alphanumeric</em> password instead of a long binary one. For example, if your
+password works over a 64-character alphabet
+
+</p><blockquote><pre>String base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+</pre></blockquote>
+
+then a length <em>n</em> alphanumeric will provide as much security as a
+length-6<em>n</em> binary one.
+
+
+<p><b>Challenge for the bored 2.</b>&nbsp;
+Write a program that takes the filename of an encrypted picture and the 
+number of bits <em>n</em> in the password as command-line arguments,
+tries all possible binary passwords of length <em>n</em>
+and all possible taps, and decrypts the picture.
+All but the correct seed and tap will
+produce pseudo-random colors, so you can track the frequencies
+of each 8-bit value and pick the seed and tap that results
+in the frequencies that deviate the most from 128.  
+
+
+</p><hr>
+<small><i> This assignment was created by Robert Sedgewick.
+</i></small>
+<address><small>Copyright © 2008.</small>
+</address>
+
+</body></html>

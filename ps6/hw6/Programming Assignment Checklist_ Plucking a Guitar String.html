@@ -1,0 +1,566 @@
+
+<!-- saved from url=(0079)http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/guitar.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+Programming Assignment Checklist: Plucking a Guitar String
+</title>
+</head>
+
+<body data-gr-c-s-loaded="true">
+<h3>
+Programming Assignment Checklist: Plucking a Guitar String 
+</h3>
+
+
+<p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (general)
+</font></td></tr></tbody></table>
+
+</p><p><b>What are the goals of this assignment?</b>
+To learn how to create user-defined data types in Java
+and to learn about digital audio.
+
+</p><p><b>Do I need to follow the prescribed API?</b>
+Yes, we will be testing the methods in the API directly.
+If your method has a different signature or does not behave as specified,
+you will lose a substantial number of points.
+You may not add public methods to the API; however, you may add private 
+instance variables or methods 
+(which are only accessible in the class in which they are declared).
+
+</p><p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (RingBuffer)
+</font></td></tr></tbody></table>
+
+</p><p><b>Which instance variables should I use to represent a <tt>RingBuffer</tt>?</b>
+There are many viable approaches, including one suggested in the assignment specification.
+Be sure that your representation allows you to implement each operation efficiently
+(because the <tt>GuitarHero</tt> client will call the methods 44,100 times per second).
+
+
+</p><p><b>How do I determine the length of an array?</b>
+If you're asking this, you probably need to review Section 1.4.
+
+</p><p><b>Is the size of a <tt>RingBuffer</tt> equal to its capacity?</b>
+No. The size of a <tt>RingBuffer</tt> is the number of elements currently in it;
+the capacity of a <tt>RingBuffer</tt> is its maximum possible size.
+
+</p><p><b>Is the size of a <tt>RingBuffer</tt> equal to the number of its nonzeros elements?</b>
+No. Some of the elements in the buffer can be zero.
+<!--
+To get an accurate count, increment the instance variable <tt>size</tt>
+each time you call <tt>enqueue()</tt> and decrement it each
+time you call <tt>dequeue()</tt>.
+-->
+
+</p><p><b>How do I throw a <tt>RuntimeException</tt> with a custom message?</b>
+Read the <em>Exceptions</em> paragraph on pp. 465–466 of the textbook.
+
+</p><p><b>I get an <tt>ArrayOutOfBounds</tt> or <tt>NullPointerException</tt>.
+What could cause this?</b>
+Does your constructor correctly initialize all of the instance variables?
+Did you allocate memory for your array?
+Did you inadvertently re-declare an instance variable
+in a method or constructor, thereby shadowing the instance variable with the
+same name?
+
+
+</p><p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (GuitarString)
+</font></td></tr></tbody></table>
+
+</p><p><b>When generating random values between −0.5 and +0.5, should I include
+the two endpoints?</b>
+The assignment specification does not specify,
+so you are free to choose whichever convention you find most convenient.
+In Java, we typically include the left endpoint of an interval and exclude the right endpoint.
+For example, <tt>StdRandom.uniform(-0.5, 0.5)</tt> generates a uniformly random
+value in the interval [−0.5, 0.5) and
+<tt>s.substring(i, j)</tt> returns the substring of the string <tt>s</tt> beginning at 
+index <tt>i</tt> and ending at index <tt>j-1</tt>.
+
+</p><p>
+<b>How do I round a <tt>double</tt> up to the nearest <tt>int</tt>?</b>
+Use <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Math.html#ceil(double)">Math.ceil()</a>
+and cast the result to an integer.
+<!--
+Why not round to the nearest integer instead?</b>
+The reason for using this is that it causes the natural resonance
+frequency of your guitar string's ring buffer to be as close as possible 
+to the desired one.
+-->
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (GuitarHero)
+</font></td></tr></tbody></table>
+
+</p><p><b>Where do I enter keystrokes in GuitarHeroLite and GuitarHero?</b>
+Be sure that the standard drawing window has focus by clicking in it.
+Then, type the keystrokes.
+
+</p><p><b>When I run from DrJava, even though I have clicked in the standard drawing window, 
+the program seems to ignore my keystrokes.  What is wrong?</b>
+Try clicking on DrJava, then clicking in the standard drawing window, again.
+If that does not work, close the standard drawing window and run from the Terminal or Command Prompt.
+
+
+</p><p><b>
+What happens if I call <tt>StdAudio.play(x)</tt> where <tt>x</tt> is
+greater than 1 or less than −1?</b>
+The value is <em>clipped</em>—it is replaced by the value +1.0 or −1.0,
+respectively.
+This is fine and can happen when you play chords.
+
+
+</p><p>
+<b>I get a <tt>RuntimeException</tt> or an <tt>ArrayIndexOutOfBoundsException</tt> in <tt>GuitarHeroLite</tt>
+before I type any keystrokes. Why?</b>
+Did you forget to initialize the ring buffer to contain <tt>n</tt> zeros
+in your <tt>GuitarString</tt> constructor?
+
+</p><p>
+<b>When I run <tt>GuitarHeroLite</tt> for the first time, I hear no sound. What am 
+I doing wrong?</b> 
+Make sure you have tested with the <tt>main()</tt> provided for <tt>GuitarString</tt>.
+If that works, it is likely something wrong with <tt>pluck()</tt> since 
+the <tt>main()</tt> provided for <tt>GuitarString</tt> does not test that
+method. To diagnose the problem, print the values of <tt>sample()</tt>
+and check that they become nonzero after you type the <em>lowercase</em>
+characters <tt>'a'</tt> and <tt>'c'</tt>.
+
+</p><p>
+<b>When I run <tt>GuitarHeroLite</tt>, I hear static (either just one click, 
+and then silence or continual static). What am I doing wrong?
+</b>
+It's likely that <tt>pluck()</tt> is working, but <tt>tic()</tt> is 
+not. The best test is to run the <tt>main()</tt> provided for <tt>GuitarString</tt>.
+
+
+</p><p>
+<b>How do I use <tt>keyboard.indexOf(key)</tt>?</b>
+If <tt>keyboard</tt> is a <tt>String</tt> and <tt>key</tt> is a character,
+then <tt>keyboard.indexOf(key)</tt> returns the integer index of the first occurrence
+of the character <tt>key</tt> in the string <tt>keyboard</tt>, or –1 if it does
+not occur. You can read about it in the <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html#indexOf(int)">String Javadoc page</a>.
+
+
+</p><p><b>Can I hardwire the constants 44,100, 440.0, and 37 in my program?</b>
+As usual, we may deduct style points for using an unnamed constant, especially if you use it more than once.
+We recommend using the name <tt>SAMPLING_RATE</tt> for 44,100 and <tt>CONCERT_A</tt> for 440.0
+and the expression <tt>keyboard.length()</tt> for 37.
+You do not need to name all of the constants in the formula 2<sup>(<em>i</em> − 24) / 12</sup>.
+
+
+</p><p>
+
+<a name="testing">
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Testing
+</font></td></tr></tbody></table>
+
+</a></p><p><a name="testing">
+Be sure to thoroughly test each piece of your code as you write it.
+We offer some suggestions below, but these are only partial tests.
+Write code to test each constructor and each method of each class, especially in <tt>RingBuffer</tt>. 
+
+</a></p><ul><a name="testing">
+<p></p><li><em>Ring buffer.</em>
+You can test your <tt>RingBuffer</tt> data type on the following <tt>main()</tt>.
+It enqueues the numbers 1 through <tt>n</tt>,
+and then repeatedly dequeues the first two, and enqueues their sum.
+
+<blockquote>
+<table border="0" cellspacing="0" bgcolor="#DDDDDD">
+<tbody><tr><td><pre>
+  public static void main(String[] args) {
+      int n = Integer.parseInt(args[0]);
+      RingBuffer buffer = new RingBuffer(n);  
+      for (int i = 1; i &lt;= n; i++) {
+          buffer.enqueue(i);
+      }
+      double t = buffer.dequeue();
+      buffer.enqueue(t);
+      System.out.println("Size after wrap-around is " + buffer.size());
+      while (buffer.size() &gt;= 2) {
+          double x = buffer.dequeue();
+          double y = buffer.dequeue();
+          buffer.enqueue(x + y);
+      }
+      System.out.println(buffer.peek());
+  }
+
+</pre></td></tr>
+</tbody></table>
+</blockquote>
+
+<blockquote><pre>% <b>java-introcs RingBuffer 10</b>
+Size after wrap-around is 10
+55.0
+
+
+% <b>java-introcs RingBuffer 100</b>
+Size after wrap-around is 100
+5050.0
+</pre></blockquote>
+
+
+<p></p></li><li><em>Guitar string.</em>
+You can test your <tt>GuitarString</tt> data type with the following
+<tt>main()</tt>:
+
+
+
+<blockquote>
+<table border="0" cellspacing="0" bgcolor="#DDDDDD">
+<tbody><tr><td><pre>
+  public static void main(String[] args) {
+      double[] samples = { 0.2, 0.4, 0.5, 0.3, -0.2, 0.4, 0.3, 0.0, -0.1, -0.3 };  
+      GuitarString testString = new GuitarString(samples);
+      int m = 25; // 25 tics
+      for (int i = 0; i &lt; m; i++) {
+          double sample = testString.sample();
+          System.out.printf("%6d %8.4f\n", i, sample);
+          testString.tic();
+      }
+  }
+
+</pre></td></tr>
+</tbody></table>
+</blockquote>
+
+<blockquote><pre>% <b>java-introcs GuitarString</b>
+     0   0.2000
+     1   0.4000
+     2   0.5000
+     3   0.3000
+     4  -0.2000
+     5   0.4000
+     6   0.3000
+     7   0.0000
+     8  -0.1000
+     9  -0.3000
+    10   0.2988
+    11   0.4482
+    12   0.3984
+    13   0.0498
+    14   0.0996
+    15   0.3486
+    16   0.1494
+    17  -0.0498
+    18  -0.1992
+    19  -0.0006
+    20   0.3720
+    21   0.4216
+    22   0.2232
+    23   0.0744
+    24   0.2232
+</pre></blockquote>
+
+<p>Next, using your implementations of <tt>RingBuffer</tt> and
+<tt>GuitarString</tt>, compile and execute <tt>GuitarHeroLite</tt>.
+
+</p><p></p></li><li><em>Guitar Hero.</em>
+Type the following into your guitar to get the beginning
+of Led Zeppelin's <em>Stairway to Heaven</em>. Multiple notes
+in a column are dyads and chords.
+
+<blockquote><pre>                                              w q q
+        8       u       7       y             o p p
+i p z v b z p b n z p n d [ i d z p i p z p i u i i
+</pre></blockquote>
+
+What is this familiar melody? (<tt><b>S</b></tt> = space)
+<blockquote><pre>nn//<b>SS</b>/ ..,,mmn //..,,m //..,,m nn//<b>SS</b>/ ..,,mmn
+</pre></blockquote>
+
+Here is a round that you can practice with 3 friends:
+<blockquote><pre>x c v x x c v x v g n   v g n   nmngv x nmngv x x p x   x p x
+                x c v x x c v x v g n   v g n   nmngv x nmngv x x p x   x p x
+                                x c v x x c v x v g n   v g n   nmngv x nmngv x x p x   x p x
+                                                x c v x x c v x v g n   v g n   nmngv x nmngv x x p x   x p x
+</pre></blockquote>
+
+
+</li></a></ul><a name="testing">
+
+
+<p>
+
+<table id="pps" border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Possible Progress Steps (RingBuffer)
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+
+</p></a><ul><a name="testing">
+</a><li><a name="testing"> Download the files for this week, including the <tt>readme.txt</tt>
+and <tt>GuitarHeroLite.java</tt> from the assignment page.
+Additionally, 
+we provide optional templates for 
+</a><a href="ftp://ftp.cs.princeton.edu/pub/cs126/guitar/RingBuffer.java">
+RingBuffer.java</a>
+ and 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/guitar/GuitarString.java">
+GuitarString.java</a>.
+
+
+<p></p></li><li>
+Review the material in the textbook
+on digital audio (pp. 147–151, 202–206).
+
+<p></p></li><li>
+Start with the 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/guitar/RingBuffer.java">RingBuffer.java</a> template.
+You will need to fill in the instance variables, constructors, and instance methods.
+
+<p></p></li><li>
+As indicated in the assignment specification, we recommend defining the instance variables as follows:
+<blockquote><pre>    private double[] rb;          <font color="gray">// items in the buffer</font>
+    private int first;            <font color="gray">// index for the next dequeue or peek</font>
+    private int last;             <font color="gray">// index for the next enqueue</font>
+    private int size;             <font color="gray">// number of items in the buffer</font>
+</pre></blockquote>
+
+<p></p></li><li>
+Your constructor for <tt>RingBuffer</tt> will need to allocate and initialize
+an array of <tt>double</tt> using <tt>new</tt>. Observe that you have to
+do this in the constructor (and not when you declare the instance variables)
+because you don't know the length of the array until the constructor is called.
+
+<p></p></li><li> Develop <tt>RingBuffer</tt> in an incremental and iterative manner:
+implement one method at a time, together with a corresponding test in <tt>main()</tt>.
+Test using some <em>small</em> examples, perhaps a <tt>RingBuffer</tt> of
+capacity 4.
+You might also want to implement a <tt>private</tt> helper method that prints
+a <tt>RingBuffer</tt> object, i.e., prints the current values for <tt>first</tt>,
+<tt>last</tt>, and <tt>size</tt>.
+This can be very useful to help you debug!
+
+<p></p></li><li>
+After you implement all the methods for <tt>RingBuffer</tt>, test it 
+using the test client in the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/guitar.html#testing">testing section</a>. 
+Do not proceed until you have throughly tested your <tt>RingBuffer</tt> 
+data type.
+
+</li></ul>
+
+<p>
+
+<table id="pps" border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Possible Progress Steps (GuitarString)
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+
+</p><ul>
+
+<p></p><li>
+Start with the
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/guitar/GuitarString.java">GuitarString.java</a>
+template.
+You will need to fill in the instance variables, constructors, and instance methods.
+
+<p></p></li><li>The constructors should initialize the instance variables.
+You can call the <tt>enqueue()</tt> method to do so.
+
+<p></p></li><li>Implement the <tt>GuitarString(double frequency)</tt> constructor. 
+
+<p></p></li><li>Implement the <tt>length()</tt> method. 
+
+<p></p></li><li>Implement the <tt>sample()</tt> method.  Use <tt>peek()</tt>.
+
+ <p></p></li><li>Test:  In <tt>main</tt>, test the <tt>GuitarString(double frequency)</tt> constructor: 
+<ol>
+  <li> Instantiate a few different   <tt>GuitarString</tt> objects.
+  </li><li> Invoke <tt>length()</tt> on each object.  Is the value returned by <tt>length</tt>  what you expect?  
+  </li><li> Invoke <tt>sample()</tt> on each object.  Is the value returned by <tt>sample</tt>  what you expect?  
+
+</li></ol>
+
+<p></p></li><li>Implement the <tt>GuitarString(double[])</tt> constructor. 
+
+ <p></p></li><li>Test:  In <tt>main</tt>, test the <tt>GuitarString(double[])</tt> constructor: 
+<ol>
+  <li> Instantiate a few different   <tt>GuitarString</tt> objects.
+  </li><li> Invoke <tt>length()</tt> on each object.  Is the value returned by <tt>length</tt>  what you expect?  
+  </li><li> Invoke <tt>sample()</tt> on each object.  Is the value returned by <tt>sample</tt>  what you expect?  
+
+</li></ol>
+
+
+<p></p></li><li> Implement <tt>pluck()</tt>. Use a combination of
+<tt>RingBuffer</tt> methods including <tt>dequeue()</tt> and
+<tt>enqueue()</tt> to replace the buffer with values between −0.5 and 0.5.
+
+<p></p></li><li> Test: In <tt>main</tt>:
+<ol>
+   <li> Instantiate a <tt>GuitarString</tt> object. 
+   </li><li> Invoke <tt>length()</tt> and <tt>sample()</tt> on this object.
+   </li><li> Next invoke <tt>pluck()</tt> on this object.
+  </li><li>  Next invoke <tt>length()</tt> and <tt>sample()</tt> again on each object.  Are the values returned  what you expect?  
+  </li><li> Try this with a few <tt>GuitarString</tt> objects.
+
+</li></ol>
+
+<p></p></li><li>Implement <tt>tic()</tt>. Use a combination of <tt>enqueue()</tt>, <tt>dequeue()</tt>, and <tt>peek()</tt>.
+<p></p></li><li> Test: In <tt>main</tt>:
+<ol>
+   <li> Instantiate a <tt>GuitarString</tt> object. 
+   </li><li> Invoke <tt>length()</tt> and <tt> sample() </tt> on this object.
+   </li><li> Next invoke <tt>tic()</tt> on this object.
+  </li><li>  Next invoke <tt>length()</tt> and <tt>sample()</tt> again on each object.  Are the values returned  what you expect?  
+  </li><li> Try this with a few <tt>GuitarString</tt> objects.
+
+</li></ol>
+    
+<p></p></li><li>After you implement the methods for <tt>GuitarString</tt>,
+run <tt>GuitarString</tt> 
+using the test client in the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/guitar.html#testing">testing section</a>. 
+
+<p></p></li><li>Now test using <tt>GuitarHeroLite</tt>. Which additional constructor and method does that test? 
+
+</li></ul>
+
+<p>
+
+<table id="pps" border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Possible Progress Steps (GuitarHero)
+</font></td></tr></tbody></table>
+
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+
+</p><ul>
+
+<p></p><li>
+To develop <tt>GuitarHero.java</tt>, use <tt>GuitarHeroLite.java</tt> as a starting point.
+
+<p></p></li><li>
+Create an array of <tt>GuitarString</tt> objects.
+Remember, to create an array of objects, you need to create the array, then
+you need to create each individual object.
+
+<p></p></li><li>
+Can you play individual notes? Do the notes have the correct frequencies? Can you play a chord?
+
+</li></ul>
+
+
+
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Enrichment
+</font></td></tr></tbody></table>
+<p>
+
+
+Here are some concrete ideas for synthesizing other instruments.
+Some come from the
+<a href="http://www.jstor.org/stable/10.2307/3680062">paper</a> of Karplus and Strong.
+</p><ul>
+
+<p></p><li> Harp strings: Flipping the sign of the new value before enqueueing it
+in <tt>tic()</tt> will change the sound from guitar-like to harp-like. You may
+want to play with the decay factors to improve the realism,
+and adjust the buffer sizes by a factor of two since the natural resonance
+frequency is cut in half by the <tt>tic()</tt> change.
+
+<p></p></li><li> Drums: Flipping the sign of a new value with probability 0.5 before
+enqueueing it in <tt>tic()</tt> will produce a drum sound. 
+A decay factor of 1.0 (no decay) will yield a better sound, and 
+you will need to adjust the set of frequencies used.
+
+<p></p></li><li> Guitars
+play each note on one of six physical strings.
+To simulate this 
+you can divide your <tt>GuitarString</tt> instances 
+into 6 groups, and when a string is plucked, zero out
+all other strings in that group.
+
+<p></p></li><li> Pianos come with a damper pedal which can be used to make
+the strings stationary. You can implement this by, on iterations where a 
+certain key (such as Shift) is <a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdDraw.html#isKeyPressed(int)">held down</a>, changing the decay factor.
+
+<p></p></li><li> While we have used <a href="http://en.wikipedia.org/wiki/Equal_temperament">equal temperament,</a>
+the ear finds it more pleasing when musical intervals follow the small
+fractions in the
+<a href="http://en.wikipedia.org/wiki/Just_intonation">just intonation</a>
+system.
+For example, when a musician uses a brass instrument to
+play a <a href="http://en.wikipedia.org/wiki/Perfect_fifth">
+perfect fifth</a> harmonically,
+the ratio of frequencies is 3/2 = 1.5 rather than 2<sup>7/12</sup> ∼ 1.498. Write a program where each successive pair of notes has just intonation.
+</li></ul>
+
+<p>
+
+Here is some cool stuff that is closely related.
+</p><ul>
+
+<p></p><li><em>ChucK</em>. 
+<a href="http://chuck.cs.princeton.edu/">ChucK</a> as specialized
+programming language for real-time synthesis, composition, and performance
+originated by <a href="https://ccrma.stanford.edu/~ge">Ge Wang</a>
+and <a href="http://www.cs.princeton.edu/~prc/">Perry Cook</a>
+at Princeton University.
+Here's the <a href="http://chuck.cs.princeton.edu/doc/examples/deep/plu.ck">
+Karplus–Strong algorithm in ChucK</a>.
+
+<p></p></li><li><em>Slide flute.</em>
+Here's a description of a physically modeled
+<a href="http://ccrma.stanford.edu/software/clm/compmus/clm-tutorials/pm.html">
+slide flute</a> by Perry Cook.
+
+<p></p></li><li><em>Electric guitar synthesis.</em>
+In COS 325, Charlie Sullivan '87 extended the Karplus–Strong algorithm to synthesize
+electric guitar timbres with distortion and feedback.
+Here's his Jimi Hendrix-ified version of the
+<a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/CharlieSullivanStar.mp3">The Star Spangled Banner</a>.
+</li></ul>
+
+
+
+
+
+
+</body></html>

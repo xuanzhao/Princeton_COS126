@@ -1,0 +1,485 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<!-- saved from url=(0081)http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/guitar.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+COS 126 Programming Assignment: Plucking a Guitar String
+</title></head>
+
+
+<body bgcolor="#ffffff" data-gr-c-s-loaded="true">
+<table width="100%" border="0" left="" valign="BOTTOM">
+<tbody><tr><td><strong>COS 126</strong><br><br>
+<strong><font size="+2">Plucking a Guitar String 
+</font></strong></td>
+<td align="right" valign="bottom">
+<strong>Programming Assignment</strong><br><br>
+</td></tr></tbody></table>
+
+<hr size="2" width="100%" align="center">
+
+<em>This assignment allows <em>partnering</em>. If you choose to work with a partner,
+you must follow the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/syllabus.html#pair-programming">pair programming guidelines</a>.
+Please note that writing code with a partner without following the pair
+programming instructions is a violation of the course collaboration policy.
+All writing of code (including comments), the readme, and uploading to dropbox.cs
+must be done together,
+from start to finish. 
+If you come to office hours alone, you can get advice, but you may not change any code until both partners are together.
+</em>
+<hr>
+
+<p>
+Write a program to simulate plucking a guitar string using
+the <em>Karplus–Strong</em> algorithm. This algorithm played a seminal
+role in the emergence of physically modeled sound synthesis (where
+a physical description of a musical instrument is used to synthesize
+sound electronically).
+
+</p><p><b>Digital audio.</b>
+Before reading this assignment, review the material in the textbook
+on digital audio (pp. 155–159, 211–215).
+
+
+</p><p><b>Simulate the plucking of a guitar string.</b>
+When a guitar string is plucked, the string vibrates and creates sound.
+The length of the string determines its <em>fundamental frequency</em> of vibration.
+We model a guitar string by sampling its <em>displacement</em> (a real
+number between –1/2 and +1/2) at <em>n</em>
+equally spaced points in time. The integer <em>n</em> equals
+the <em>sampling rate</em> (44,100 Hz) divided by the desired fundamental
+frequency, rounded <em>up</em> to the nearest integer.
+
+</p><ul>
+<p>
+</p><blockquote>
+&nbsp; <img src="./COS 126 Programming Assignment_ Plucking a Guitar String_files/guitar-samples.png" alt="Sampling from Karplus-Strong">
+</blockquote>
+</ul>
+
+<!--
+the displacement made in the string moves at the speed of sound
+continuously in both directions and then bounces back. 
+direction and to calculate the gradual change in displacement in a discrete
+manner.<br>
+<font color=blue>Insert illustration of bump moving along string here.</font>
+-->
+
+
+<p>
+<!--
+A guitar-player can shorten the vibrating portion of a string by pressing
+the string against one of the frets.
+The guitar vibrates at a different frequency, depending on this length.
+-->
+
+
+</p><ul>
+<li><em>Plucking the string.</em>
+The excitation of the string can contain energy at any frequency.
+We simulate the excitation with <em>white noise</em>:
+set each of the <em>n</em> displacements
+to a random real number between –1/2 and +1/2.
+<!-- This represents the "initial harmonic transients found in the attack of a real guitar." -->
+
+
+<p>
+</p><blockquote>
+<img src="./COS 126 Programming Assignment_ Plucking a Guitar String_files/white-noise.png" alt="White noise">
+</blockquote>
+<p>
+
+
+</p><p></p></li><li><em>The resulting vibrations.</em>
+After the string is plucked, the string vibrates.
+The pluck causes a displacement that spreads wave-like over time.
+The Karplus–Strong algorithm simulates this vibration by maintaining
+a <em>ring buffer</em> of the <em>n</em> samples: the algorithm
+repeatedly deletes the first sample from the ring buffer 
+and adds to the end of the ring buffer the average of the deleted sample and the first sample,
+scaled by an <em>energy decay factor</em> of 0.996. For example:
+
+
+<p>
+</p><blockquote>
+<img src="./COS 126 Programming Assignment_ Plucking a Guitar String_files/karplus-strong.png" width="500" alt="the Karplus-Strong update">
+</blockquote>
+<p>
+
+</p></li></ul>
+
+<p><b>Why it works?</b>
+The two primary components that make the Karplus–Strong algorithm
+work are the ring buffer feedback mechanism and the averaging operation.
+
+</p><ul>
+<li><em>The ring buffer feedback mechanism.</em>
+The ring buffer models the medium (a string tied down at both ends)
+in which the energy travels back and forth.
+The length of the ring buffer determines the fundamental frequency
+of the resulting sound.  Sonically, the feedback  
+mechanism reinforces only the fundamental frequency and its  
+harmonics (frequencies at integer multiples of the fundamental).  The  
+energy decay factor (0.996 in this case)
+models the slight dissipation in energy as the wave makes a  
+round trip through the string.
+
+<p></p></li><li><em>The averaging operation.</em>
+The averaging operation serves as a gentle <em>low-pass filter</em>
+(which removes higher frequencies while allowing lower frequencies to pass).
+Because it is in the path of the  
+feedback, this has the effect of gradually attenuating the higher  
+harmonics while keeping the lower ones, which corresponds closely to
+the sound that a guitar string makes when plucked.
+
+</li></ul>
+
+From a mathematical physics viewpoint, the Karplus–Strong algorithm approximately solves
+the <a href="http://en.wikipedia.org/wiki/Wave_equation">1D wave equation</a>,
+which describes the transverse motion of the string as a function of time.
+
+<!--
+At a high level, the Karplus&ndash;Strong algorithm approximately solves
+the <a href = "http://en.wikipedia.org/wiki/Wave_equation">1D wave equation</a>,
+which describes the motion of the string as a function of time.
+The wave shape spreads out over time.
+The vibration gradually eliminates those frequencies introduced by the
+pluck that don't match the string's fundamental frequency of the string,
+with the higher frequencies decaying faster than the lower ones.
+Eventually, the wave shape will be sinusoidal with frequency equal
+to the string's fundamental frequency.
+The Karplus&ndash;Strong averaging formula is an extremely simplified
+method that results in a similar effect, though it remains a bit
+of a mystery even to experts.
+-->
+<!-- The energy decay factor models the friction at the string end points. -->
+
+
+<p><b>Ring buffer.</b>
+Your first task is to create a data type to model the ring buffer.
+Write a class named <tt>RingBuffer</tt> that implements the following API:
+
+</p><p>
+</p><blockquote>
+<pre><b>public class RingBuffer {</b>
+    <b>public         RingBuffer(int capacity)</b>  <font color="gray">//  creates an empty ring buffer with the specified capacity</font>
+    <b>public     int capacity()</b>                <font color="gray">//  returns the capacity of this ring buffer</font>
+    <b>public     int size()</b>                    <font color="gray">//  returns the number of items currently in this ring buffer</font>
+    <b>public boolean isEmpty()</b>                 <font color="gray">//  is this ring buffer empty (size equals zero)?</font>
+    <b>public boolean isFull()</b>                  <font color="gray">//  is this ring buffer full (size equals capacity)?</font>
+    <b>public    void enqueue(double x)</b>         <font color="gray">//  adds item x to the end of this ring buffer</font>
+    <b>public  double dequeue()</b>                 <font color="gray">//  deletes and returns the item at the front of this ring buffer</font>
+    <b>public  double peek()</b>                    <font color="gray">//  returns the item at the front of this ring buffer</font>
+
+    <b>public static void main(String[] args)</b>   <font color="gray">//  unit tests the constructor and all methods in this class</font>
+<b>}</b>
+</pre></blockquote>
+
+<ul>
+<li><em>Corner cases.</em> Throw a <tt>RuntimeException</tt> with a custom message
+if the client calls either <tt>dequeue()</tt> or <tt>peek()</tt> when the ring buffer is empty
+or <tt>enqueue()</tt> when the ring buffer is full.
+
+
+<p></p></li><li><em>Performance requirements.</em> The constructor must take time at most proportional
+to the capacity. Every other operation must take constant time.
+
+<p></p></li><li><em>Possible implementation.</em>
+Since the ring buffer has a known maximum capacity, you
+can implement it using a <tt>double</tt> array of that length.
+For efficiency, use <em>cyclic wrap-around</em>: 
+maintain one integer instance variable <tt>first</tt> that stores the index
+of the least recently inserted item and maintain a second integer instance
+variable <tt>last</tt> that stores the index one beyond the most recently
+inserted item.
+<p>
+</p><blockquote>
+<img src="./COS 126 Programming Assignment_ Plucking a Guitar String_files/ring-buffer.png" width="500" alt="Ring buffer">
+</blockquote>
+
+
+To insert an item, put it at index <tt>last</tt> and increment <tt>last</tt>.
+To remove an item, take it from index <tt>first</tt> and increment <tt>first</tt>.
+When either index equals <tt>capacity</tt>, make it wrap-around by changing
+the index to <tt>0</tt>.
+To determine the size of the ring buffer (and whether it is full or empty), you
+will also need a third integer instance variable <tt>size</tt>
+that stores the number of items currently in the ring buffer.
+
+</li></ul>
+
+<p><b>Guitar string.</b>
+Next, create a data type to model a vibrating guitar string.
+Write a class named <tt>GuitarString</tt> that implements the following API:
+  
+</p><p>
+</p><blockquote>
+<pre><b>public class GuitarString {</b>
+    <b>public         GuitarString(double frequency)</b>  <font color="gray">//  creates a guitar string of the specified frequency, using a sampling rate of 44,100</font>
+    <b>public         GuitarString(double[] init)</b>     <font color="gray">//  creates a guitar string whose length and initial values are given by the specified array</font>
+    <b>public     int length()</b>                        <font color="gray">//  returns the number of samples in the ring buffer</font>
+    <b>public    void pluck()</b>                         <font color="gray">//  plucks this guitar string (by replacing the ring buffer with white noise)</font>
+    <b>public    void tic()</b>                           <font color="gray">//  advances the Karplus-Strong simulation one time step</font>
+    <b>public  double sample()</b>                        <font color="gray">//  returns the current sample</font>
+    
+    <b>public static void main(String[] args)</b>         <font color="gray">//  unit tests both constructors and all instance methods in this class</font>
+<b>}</b>
+</pre></blockquote>
+
+<ul>
+
+<p></p><li><em>Constructors.</em>
+There are two ways to create a <tt>GuitarString</tt> object.
+
+<ul>
+
+<p></p><li>
+The first constructor creates a <tt>RingBuffer</tt> of the
+desired capacity <em>n</em>
+(the <em>sampling rate</em> 44,100 divided by the <em>frequency</em>,
+rounded <em>up</em> to the nearest integer),
+and initializes it to represent a guitar string at rest by enqueueing
+<em>n</em> zeros.
+
+<p></p></li><li>
+The second constructor creates a <tt>RingBuffer</tt> of capacity equal
+to the length <em>n</em> of the array, and initializes the 
+contents of the ring buffer to the corresponding values in the array.
+In this assignment, this constructor's main purpose is to facilitate testing and debugging.
+
+</li></ul>
+
+<p></p></li><li><em>Length.</em> Return the number of samples <em>n</em> in the <tt>RingBuffer</tt>.
+
+<p></p></li><li><em>Pluck.</em> Replace the <em>n</em> items in the ring buffer with 
+<em>n</em> random values between −0.5 and +0.5.
+<!-- (Inclusive or exclusive of these endpoints, does not matter.) -->
+
+<p></p></li><li><em>Tic.</em> Apply the Karplus–Strong update: delete the sample at the 
+front of the ring buffer and add to the end of the ring buffer the average of the first 
+two samples, multiplied by the energy decay factor.
+
+<p></p></li><li><em>Sample.</em> Return the value of the item at the front of the ring buffer.
+
+
+<!--
+<p><li><em>Time.</em> Return the total number of times <tt>tic()</tt> was called on this instance.
+-->
+
+</li></ul>
+
+
+<!--
+<p>Again, your test client may contain the tests we give you, 
+ones you write yourself, or a combination thereof.
+-->
+
+
+<p><b>Interactive guitar player.</b>
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/guitar/GuitarHeroLite.java">GuitarHeroLite.java</a>
+is a sample <tt>GuitarString</tt> client
+that plays the guitar in real time, using the
+keyboard to input notes. When the user types the lowercase
+letter <tt>'a'</tt> or <tt>'c'</tt>, the program plucks the
+corresponding string. Since the combined result of several sound waves
+is the <em>superposition</em> of the individual sound waves, it plays the 
+sum of the two string samples.
+
+</p><blockquote>
+<table border="0" cellspacing="0" bgcolor="#DDDDDD">
+<tbody><tr><td><pre>
+  public class GuitarHeroLite {
+      public static void main(String[] args) {
+
+          <font color="gray">// create two guitar strings, for concert A and concert C</font>
+          double CONCERT_A = 440.0;
+          double CONCERT_C = CONCERT_A * Math.pow(2, 3.0/12.0); 
+          GuitarString stringA = new GuitarString(CONCERT_A);
+          GuitarString stringC = new GuitarString(CONCERT_C);
+
+          while (true) {
+
+              <font color="gray">// check if the user has typed a key; if so, process it</font>
+              if (StdDraw.hasNextKeyTyped()) {
+                  char key = StdDraw.nextKeyTyped();
+                  if      (key == 'a') stringA.pluck();
+                  else if (key == 'c') stringC.pluck();
+              }
+
+              <font color="gray">// compute the superposition of samples</font>
+              double sample = stringA.sample() + stringC.sample();
+  
+              <font color="gray">// play the sample on standard audio</font>
+              StdAudio.play(sample);
+  
+              <font color="gray">// advance the simulation of each guitar string by one step  </font>
+              stringA.tic();
+              stringC.tic();
+          }
+       }
+  }
+
+</pre></td></tr>
+</tbody></table>
+</blockquote>
+
+
+Write a program <tt>GuitarHero</tt> that is similar to <tt>GuitarHeroLite</tt>,
+but supports a total of 37 notes on the chromatic scale from
+110 Hz to 880 Hz. Use the following 37 keys to represent the keyboard,
+from lowest note to highest note:
+
+<!--ake the <em>i</em>th character of the string-->
+
+<blockquote><pre>String keyboard = "q2we4r5ty7u8i9op-[=zxdcfvgbnjmk,.;/' ";
+</pre></blockquote>
+
+This keyboard arrangement imitates a piano keyboard:
+The "white keys" are on the <tt>qwerty</tt> and <tt>zxcv</tt>
+rows and the "black keys" on the <tt>12345</tt> and <tt>asdf</tt> rows of the
+keyboard.
+
+<p>
+</p><center>
+<img src="./COS 126 Programming Assignment_ Plucking a Guitar String_files/keyboard.png" width="80%" alt="Piano keyboard">
+</center>
+
+<p><br>
+<!--The <em>i</em>th character of the string
+corresponds to a frequency of 440 &times; 1.05956<sup>(<em>i</em> &minus; 24)</sup>,
+so that the character <tt>'q'</tt> is approximately 110 Hz,  <tt>'i'</tt> is close to 220 Hz,
+<tt>'v'</tt> is close to 440 Hz, and  <tt>' '</tt> is close to 880 Hz.
+(The reason these numbers are not exact has to do with the fact that we are using finite
+frequency precision, instead of the theoretical and perfect infinite frequency precision.
+We make some adjustments so that our abbreviated computation still results 
+in a nice on-pitch sound.)-->
+
+The <em>i</em>th character of the string <tt>keyboard</tt>
+corresponds to a frequency of 440 × 2<sup>(<em>i</em> − 24) / 
+12</sup>,
+so that the character <tt>'q'</tt> is 110 Hz,  <tt>'i'</tt> is 220 Hz,
+<tt>'v'</tt> is 440 Hz, and  <tt>' '</tt> is 880 Hz.
+
+Don't even think of including 37 individual <tt>GuitarString</tt> variables
+or a 37-way <tt>if</tt> statement!
+Instead, create and initialize an array of 37 <tt>GuitarString</tt> objects
+and use <tt>keyboard.indexOf(key)</tt> to figure out which key was typed.
+Make sure your program does not crash if a keystroke does not 
+correspond to one of the 37 possible notes.
+
+</p><p><b>Files for this assignment.</b>
+The file <a href="ftp://ftp.cs.princeton.edu/pub/cs126/guitar.zip">guitar.zip</a>
+contains <tt>GuitarHeroLite.java</tt>;
+optional API templates for <tt>RingBuffer.java</tt> and <tt>GuitarString</tt>;
+and this week's <tt>readme.txt</tt> template.
+
+
+</p><p>
+<b>Submission. </b> &nbsp;
+Submit <tt>RingBuffer.java</tt>, <tt>GuitarString.java</tt>, <tt>GuitarHero.java</tt>,
+and a completed 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/guitar/readme.txt">readme.txt</a>.
+If your partner is submitting, you should submit a completed
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/guitar/partner/readme.txt">partner readme.txt</a>.
+
+
+<!------ 
+Too many people have StdAudio problems for this one to be fair:
+<p><b>Extra credit 1.</b>
+Write a program <tt>GuitarHeroVisualizer.java</tt>
+(by modifying <tt>GuitarHero.java</tt>)
+that plots the sound wave in real-time, as the user is playing the
+keyboard guitar. The output should look something like this:
+
+<a name='visvideo'></a>
+<div style='margin:0px auto'>
+<div style='width:620px; margin:0px auto'>
+<iframe width="616" height="264" src="//www.youtube.com/embed/W8sp0OkV_o4?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+
+To get credit, your program must 
+(1) draw something for every sample, 
+(2) run smoothly in real-time with no effects on the audio, and 
+(3) run at a minimum of 24 frames per second.
+Depending on your computer, you might be able to do 60 FPS or more, 
+but this is not required.
+Part of what is necessary to accomplish this is
+the usage of animation mode as described in the 
+<a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/StdDraw.html"
+>StdDraw documentation</a>, since deferring the on-screen display until
+an entire frame is complete helps make the StdDraw calls fast enough to
+not distort
+the audio. You can add extra embellishments if you like so long
+as your program satisfies 
+all three aformentioned requirements.
+--->
+
+</p><p><b>Extra credit.</b>
+Write a program <tt>AutoGuitar.java</tt> that will <em>automatically</em> play
+music using <tt>GuitarString</tt> objects. A few ground rules:
+
+</p><ul>
+<p></p><li> We will execute your program with the following command:
+<pre>% java-introcs AutoGuitar</pre>
+
+Your program may not accept command-line arguments.
+Your program may not use standard input, standard output, or standard drawing.
+You may, however, submit an accompanying <tt>.txt</tt> file and read it using
+the <a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/In.html">In</a> data type.
+
+<p></p></li><li> Your composition must be between 10 and 120 seconds in length. 
+Since the sampling rate is 44,100 Hz, this translates to
+between 441,000 and 5,292,000 calls to <tt>StdAudio.play()</tt>.
+No infinite loops.
+
+<p></p></li><li> Your program must behave consistenly on different machines.
+<!--
+Use either 
+the <a href="http://introcs.cs.princeton.edu/java/stdlib/javadoc/Stopwatch.html">Stopwatch</a>
+data type or 
+the fact that approximately 1/44100 of
+a second elapses between successive calls to <tt>StdAudio.play()</tt>.
+-->
+
+</li></ul>
+
+
+<p>
+You may create chords, repetition, and phrase structure using loops, conditionals,
+arrays, and functions. Also, feel free to incorporate randomness.
+You may also create a new music instrument by modifying the
+Karplus–Strong algorithm; 
+consider changing the excitation of the string (from white noise to something
+more structured)
+or changing the averaging formula (from the average of the first two samples
+to a more complicated rule) or anything else you might imagine.
+See the checklist for some concrete ideas.
+
+
+
+</p><p>
+You may submit additional <tt>.java</tt> or <tt>.txt</tt> files to support the extra credit,
+(but do not modify <tt>RingBuffer.java</tt>,
+<tt>GuitarString.java</tt>, or <tt>GuitarHero.java</tt>).
+If you are working with a partner, you
+can do this part together or solo, but you must decide <em>before</em> you begin.
+
+
+<!--
+<p><b>In-class live concert (optional).</b>
+Perform a musical piece on your synthetic guitar (or other instrument of your design), either as solo artist or in an ensemble.
+The concert will take place in the class meeting on Thursday, April 7. To request a peformance slot, 
+please use <a href="http://goo.gl/forms/lyNPJTZM8a">this form</a>.
+-->
+
+
+
+</p><address><small>
+This assignment was developed by Andrew Appel, Jeff Bernstein,
+Maia Ginsburg, Ken Steiglitz, Ge Wang, and Kevin Wayne.
+<br>Copyright © 2005
+</small>
+</address>
+
+
+</body></html>

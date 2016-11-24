@@ -1,0 +1,631 @@
+
+<!-- saved from url=(0081)http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/markov.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>Markov Model of Natural Language</title></head>
+
+
+
+<body bgcolor="#FFFFFF" data-gr-c-s-loaded="true">
+
+<table width="100%" border="0">
+<tbody><tr align="LEFT" valign="BOTTOM">
+<td><strong>COS 126</strong><br><br>
+<strong><font size="+2">Markov Model of Natural Language 
+</font></strong></td>
+<td align="RIGHT" valign="BOTTOM">
+<strong>Programming Assignment</strong><br><br>
+</td></tr></tbody></table>
+<hr>
+
+<p>
+
+Use a Markov chain to create a statistical model of a piece of English text.
+Simulate the Markov chain to generate stylized pseudo-random text.
+
+</p><p><strong>Perspective.</strong>
+In the 1948 landmark paper
+<a href="http://cm.bell-labs.com/cm/ms/what/shannonday/shannon1948.pdf">
+A Mathematical Theory of Communication</a>,
+Claude Shannon founded the field of information theory and
+revolutionized the telecommunications industry, laying the groundwork for today's
+Information Age.
+In this paper, Shannon proposed using a <em>Markov chain</em> to create a statistical
+model of the sequences of letters in a piece of English text.
+Markov chains are now widely used in
+speech recognition, handwriting recognition, information retrieval, 
+data compression, and spam filtering.
+They also have many scientific computing applications including
+<!-- psychology, queuing theory, statistics, modeling population processes, 
+cryptography,
+-->
+the genemark algorithm for gene prediction, the Metropolis
+algorithm for measuring thermodynamical properties, 
+and Google's PageRank algorithm for web search.
+For this assignment, we consider a whimsical variant—generating
+stylized pseudo-random text.
+</p><p>
+
+</p><p><b>Markov model of natural language.</b>
+Shannon approximated the statistical structure of a piece of text using
+a mathematical model known as a <em>Markov model</em>.
+A Markov model of <em>order</em> 0 predicts that each letter in the
+alphabet occurs with a fixed probability.
+<!-- independent of previous letters.  -->
+We can fit a Markov model of order 0 to a specific piece of text by
+counting the number of occurrences of each letter in that text,
+and using those frequencies as probabilities.
+For example, suppose that the input text is <tt>"gagggagaggcgagaaa"</tt>.
+Then, the Markov model of order 0 predicts that each letter is
+<tt>'a'</tt> with probability 7/17,
+<tt>'c'</tt> with probability 1/17,
+and 
+<tt>'g'</tt> with probability 9/17
+because these are the fraction of times each letter occurs.
+The following sequence of characters
+is a typical example generated from this model:
+
+</p><blockquote><pre>g a g g c g a g a a g a g a a g a a a g a g a g a g a a a g a g a a g ...
+</pre></blockquote>
+
+A Markov model of order 0 assumes that each letter is chosen independently.
+This independence does not coincide with statistical properties of English text
+because there a high correlation among successive characters in a 
+word or sentence.
+For example,
+<tt>'w'</tt> is more likely to be followed by <tt>'e'</tt> than by <tt>'u'</tt>,
+and <tt>'q'</tt> is much more likely to be followed by <tt>'u'</tt> than by <tt>'e'</tt>.
+
+<p>
+We obtain a more refined model by allowing the probability of
+choosing each successive letter to depend on the preceding letter or letters.
+A <em>Markov model of order k</em> predicts that each letter occurs with
+a fixed probability, but that probability can depend on the previous
+<em>k</em> characters, which we refer to as a <em>k</em>-gram.
+For example, suppose that the input text has 100 occurrences of <tt>"th"</tt>,
+with 60 occurrences of <tt>"the"</tt>,
+25 occurrences of <tt>"thi"</tt>,
+10 occurrences of <tt>"tha"</tt>,
+and 5 occurrences of <tt>"tho"</tt>.
+Then, the Markov model of order 2 predicts that the letter immediately
+following any occurrence of <tt>"th"</tt> is
+<tt>'e'</tt> with probability 3/5, 
+<tt>'i'</tt> with probability 1/4, 
+<tt>'a'</tt> with probability 1/10, and
+<tt>'o'</tt> with probability 1/20. 
+
+
+
+
+</p><p><strong>A brute-force solution.</strong>
+Claude Shannon proposed the following brute-force scheme to generate text according to
+a Markov model of order 1:
+
+</p><blockquote>
+<em>
+“
+To construct [a Markov model of order 1],
+for example, one opens a book at random and
+selects a letter at random on the page.
+This letter is recorded. The book is then opened to another page and
+one reads until this letter is encountered. The succeeding letter is then
+recorded. Turning to another page this second letter is
+searched for and the succeeding letter recorded, etc. It would be
+interesting if further approximations could be constructed, but the labor
+involved becomes enormous at the next stage. ”
+</em>
+</blockquote>
+
+
+Your task is to write a Java program to automate this laborious task,
+in an efficient manner—Shannon's approach
+is prohibitively slow when the length of the input text is large.
+
+
+<p><strong>Markov model data type.</strong>
+Create an immutable data type <tt>MarkovModel</tt> to represent a
+Markov model of order <em>k</em> from a given text string.
+The data type must implement the following API:
+
+</p><p>
+</p><blockquote>
+<pre><b>public class MarkovModel {</b>
+
+    <font color="gray">// creates a Markov model of order k for the specified text</font>
+    <b>public MarkovModel(String text, int k)</b>
+
+    <font color="gray">// returns the order k of this Markov model</font>
+    <b>public int order()</b>
+
+    <font color="gray">// returns the number of times the specified kgram appears in the text</font>
+    <b>public int freq(String kgram)</b>
+
+    <font color="gray">// returns the number of times the character c follows the specified</font>
+    <font color="gray">// kgram in the text</font>
+    <b>public int freq(String kgram, char c)</b>
+
+    <font color="gray">// returns a random character that follows the specified kgram in the text,</font>
+    <font color="gray">// chosen with weight proportional to the number of times that character</font>
+    <font color="gray">// follows the specified kgram in the text</font>
+    <b>public char random(String kgram)</b>
+
+    <font color="gray">// unit tests this class</font>
+    <b>public static void main(String[] args)</b>
+<b>}</b>
+</pre></blockquote>
+
+The following describe the API in more detail.
+<ul>
+
+<p></p><li><em>Constructor.</em>
+You may assume that the input text is a sequence of characters over the 
+ASCII alphabet, so that all <tt>char</tt> values are between 0 and 127.
+<p>
+
+<!--
+<p><li><em>Order.</em>
+Return the order <em>k</em> of the Markov Model.
+
+<p><li><em>Frequency.</em>
+There are two frequency methods.
+<ul>
+<p><li><tt>freq(kgram)</tt> returns the number of times the specified <em>k</em>-gram 
+appears in the original text.
+<p><li><tt>freq(kgram, c)</tt> returns the number of times the specified <em>k</em>-gram 
+is followed by the character <tt>c</tt> in the original text. 
+</ul>
+<p>If the <tt>kgram</tt> does not appear in the text, return <tt>0</tt>.
+-->
+
+</p><p></p></li><li><em>Randomly generate a character.</em>
+The <tt>random()</tt> method must return a character that immediately follows the specified
+<em>k</em>-gram and do so with probability proportional to the number of times
+that character follows the specified <em>k</em>-gram. For example if the <em>k</em>-gram
+<tt>"ga"</tt> appears in the text five times, once followed by the character
+<tt>'a'</tt> and four times followed by the character <tt>'g'</tt>, then <tt>random("ga")</tt>
+should return <tt>'a'</tt> with probability 1/5 and <tt>'g'</tt> with probability
+4/5, independently for each call.
+
+<p></p></li><li><em>Corner cases.</em>
+Throw an <tt>IllegalArgumentException</tt>
+in <tt>freq()</tt> and <tt>random()</tt>
+if the argument <tt>kgram</tt> is not of length <em>k</em>.
+Throw an <tt>IllegalArgumentException</tt>
+exception in <tt>random()</tt> if <tt>kgram</tt> does not appear in the text.
+
+
+<p></p></li><li><em>Circular string.</em>
+To avoid dead ends, treat the input text 
+as a <em>circular</em> string: the last character is considered
+to precede the first character.
+For example, if <em>k</em> = 2 and the text is the 17-character string
+<tt>"gagggagaggcgagaaa"</tt>, then the salient features of the 
+Markov model are captured in the table below:
+
+<blockquote><pre>               frequency of   probability that
+                next char       next char is 
+kgram   freq    a   c   g        a    c    g
+----------------------------------------------
+ aa      2      1   0   1       1/2   0   1/2  
+ ag      5      3   0   2       3/5   0   2/5  
+ cg      1      1   0   0        1    0    0
+ ga      5      1   0   4       1/5   0   4/5  
+ gc      1      0   0   1        0    0    1  
+ gg      3      1   1   1       1/3  1/3  1/3  
+----------------------------------------------
+        17      7   1   9
+</pre></blockquote>
+
+Note that the frequency of
+<tt>"ag"</tt> is 5 (and not 4) because we treat the string as circular.
+
+<p></p></li><li><em>Performance requirements.</em>
+If <em>k</em> is a fixed constant, 
+then the constructor should take <em>n</em> log <em>n</em> time;
+the <tt>order()</tt> method should take constant time; 
+and all other instance methods should take log <em>n</em> time,
+where <em>n</em> is the number of characters in the input text.
+
+<!--
+order: 1
+freq1: k log n
+freq2: k log n
+random: k log n + R
+construtor: n (R + k log n)
+-->
+
+To achieve these performance requirements, use one (or more) symbol tables
+whose keys are <tt>String</tt> <em>k</em>-grams and whose values 
+enable efficient implementation of the two <tt>freq()</tt> methods.
+
+<!-- The value type of your symbol table needs to be
+a data structure that can represent the frequency of each possible next character. -->
+
+
+</li></ul>
+
+
+
+
+<p><strong>Text generation client.</strong>
+A <em>Markov chain</em> is a stochastic process where the state change depends 
+on only the current state. For text generation, the current state is a 
+<i>k</i>-gram. 
+<!--A <em>Markov chain</em> is a stochastic process where the state change
+depends on only the current state.
+For text generation, the current state is a <em>k</em>-gram
+(initially, the first <em>k</em> characters in the input text).-->
+The next character is selected at random, using the probabilities
+from the Markov model. For example, if the current state
+is <tt>"ga"</tt> in the Markov model of order 2 discussed above,
+then the next character will be <tt>'a'</tt> with probability 
+1/5 and <tt>'g'</tt> with probability 4/5.
+The next state in the Markov chain is obtained by appending
+the new character to the end of the <em>k</em>-gram and discarding the first
+character.
+A <em>trajectory</em> through the Markov chain is a sequence of 
+such states. Below is a possible trajectory consisting of 9 transitions.
+
+</p><blockquote><pre>trajectory:          ga  --&gt;  ag  --&gt;  gg  --&gt;  gc  --&gt;  cg  --&gt;  ga  --&gt;  ag  --&gt;  ga  --&gt;  aa  --&gt;  ag
+probability for a:       1/5      3/5      1/3       0        <b>1</b>       1/5      <b>3/5</b>      <b>1/5</b>      1/2
+probability for c:        0        0       <b>1/3</b>       0        0        0        0        0        0
+probability for g:       <b>4/5</b>      <b>2/5</b>      1/3       <b>1</b>        0       <b>4/5</b>      2/5      4/5      <b>1/2</b>
+</pre></blockquote>
+
+Treating the input text as a circular string ensures that the Markov chain never gets stuck
+in a state without any next characters.
+
+<p>
+To generate random text from a Markov model of order <em>k</em>,
+set the initial state to the first <em>k</em> characters in the input text.
+Then, simulate a trajectory through the Markov chain by performing
+<em>T − k</em> transitions, printing the random character selected at each step.
+For example, if <em>k</em> = 2 and <em>T</em> = 11,
+then the following is a possible trajectory, leading to the output <tt>gaggcgagaag</tt>.
+
+</p><blockquote><pre>trajectory:          ga  --&gt;  ag  --&gt;  gg  --&gt;  gc  --&gt;  cg  --&gt;  ga  --&gt;  ag  --&gt;  ga  --&gt;  aa  --&gt;  ag
+output:              <b>ga        g        g        c        g        a        g        a        a        g</b>
+</pre></blockquote>
+
+<p>
+Write a client program <tt>TextGenerator</tt> that takes
+two integer command-line arguments <em>k</em> and <em>T</em>;
+reads the input text from standard input;
+builds a Markov model of order <em>k</em> from the input text;
+then, starting with the <em>k</em>-gram consisting of the <emb>first <em>k</em> characters of the input text,
+prints <em>T</em> characters generated by simulating a trajectory through the corresponding Markov chain.
+
+
+</emb></p><blockquote><pre>% <b>more input17.txt</b>
+gagggagaggcgagaaa
+
+% <b>java-introcs TextGenerator 2 11 &lt; input17.txt </b>
+gaggcgagaag
+
+% <b>java-introcs TextGenerator 2 11 &lt; input17.txt </b>
+gaaaaaaagag
+</pre></blockquote>
+
+<p><em>Corner cases.</em>
+You may assume that the length of the text is at least <em>k</em> and <em>T</em> ≥ <em>k</em>. 
+
+</p><p><em>Performance requirement.</em>
+If <em>k</em> is a fixed constant,
+then the running time of <tt>TextGenerator</tt>
+should be proportional to <em>T</em> + <em>n</em> log <em>n</em>,
+where <em>n</em> is the number of characters in the input text and 
+<em>T</em> is the number of characters in the output.
+
+
+
+</p><p>
+<strong>Experimentation.</strong>
+Once you get the program working, test it on different inputs
+of different sizes and different orders. Does increasing the order
+have the effect you expect?
+Try your model on something that you have written 
+or some other text you know well.
+Make sure to test both long inputs (we provide several) and long outputs.
+<!-- You may wish to write small filters to clean up white space
+for pure text, but be careful, as the special characters sometimes drive
+the model, as illustrated in the Shakespeare example.
+-->
+
+<!----
+<p><b>Analysis.</b>&nbsp;
+After you have tested your program using many of the examples provided 
+in the <tt>markov</tt> subdirectory, it is time to analyze the memory usage
+(in bytes) of your program as a function of <tt>N</tt> assuming
+the input file size is <tt>N</tt>. Be sure to enter these results 
+in your <tt>readme.txt</tt> file and answer all the questions.
+------>
+
+</p><p><b>Files provided.</b>
+The file <a href="ftp://ftp.cs.princeton.edu/pub/cs126/markov.zip">markov.zip</a>
+contains sample test files,
+the <a href="ftp://ftp.cs.princeton.edu/pub/cs126/markov/readme.txt">readme.txt</a>
+template,
+the abbreviated
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/markov/partner/readme.txt">partner readme.txt</a>
+template, 
+and
+<a href="http://introcs.cs.princeton.edu/java/44st/ST.java.html">ST.java</a>.
+
+</p><p>
+<strong>Deliverables.</strong>
+Submit <tt>MarkovModel.java</tt>,
+<tt>TextGenerator.java</tt>, and 
+<tt>readme.txt</tt>. If working in a pair, one student should submit these, and the other should only submit the
+abbreviated partner <tt>readme.txt</tt>.
+Include in your <tt>readme.txt</tt> two of the most entertaining 
+language-modeling fragments that you discover. 
+
+</p><p>
+<strong>Challenge for the bored.</strong>
+Imagine you receive a message where some of the characters have been corrupted by noise. 
+We represent unknown characters by the ~ symbol (and assume the character ~ does not appear 
+in the original text).
+Devise a scheme based on the Markov model to determine the most likely value for
+each corrupted character.
+Assume unknown characters are at least <em>k</em> characters apart (and appear
+at least <em>k</em> characters away from the start and end of the message).
+Test your new method by writing a client program <tt>FixCorrupted.java</tt>
+that takes as arguments the model order and the noisy string.  The program should print out
+the most likely original string:
+</p><blockquote>
+<pre>Original:  it was the best of times, it was the worst of times.
+Noisy:     it w~s th~ bes~ of tim~s, i~ was ~he wo~st of~times.
+
+% <b>java-introcs FixCorrupted 4 "it w~s th~ bes~ of tim~s, i~ was ~he wo~st of~times." &lt; wiki_100k.txt </b>
+it was the best of times, it was the worst of times.
+</pre>
+</blockquote>
+
+
+<!--
+% <b>java-introcs FixCorrupted 2 "it w~s th~ bes~ of tim~s, i~ was ~he wo~st of~times." &lt; wiki_100k.txt </b>
+it was the best of times, is was the woust of times.
+00>
+
+<p>Here are some details on what it means to find the most likely replacement for each ~.
+For each unknown character, you should consider all possible replacement characters.  
+You want the replacement character that makes sense not only at the unknown position (given 
+the previous characters) but also when the replacement is used in the context of
+the <em>k</em> subsequent known characters. For example we expect the unknown character in 
+<tt>&quot;was ~he wo&quot;</tt> to be <tt>'t'</tt> and not simply
+the most likely character in the context of <tt>&quot;was &quot;</tt>.  You can 
+compute the probability of each hypothesis by multiplying the probabilities of generating each of <em>k</em>+1
+characters in sequence: the missing one, and the <em>k</em> next ones.
+
+
+<!--
+<br/><br/>
+<strong>Extra credit 2.</strong> The previous algorithm only works when unknown characters appear far apart from each other.
+The algorithm also only returns the single best hypothesis.
+Add a method <tt>replaceNbest</tt> to <tt>MarkovModel.java</tt> that returns the best 
+<em>n</em> messages given a noisy message that may have errors near each other:
+
+<blockquote><pre>
+String [] replaceNbest(String corrupted, int nbest) // return the nbest most probable 
+                                                    // versions of a corrupted message
+</pre></blockquote>
+
+Create a new client <tt>FixCorruptedNbest.java</tt> that takes as arguments the model
+order <em>k</em>, <em>n</em>, and the noisy string. 
+The program should display the top <em>n</em> hypotheses:
+<blockquote><pre>
+% <b>java FixCorruptedNbest 4 5 "it was the best of ti~e~, it was t~~ worst of times." &lt; wiki_100k.txt </b>
+Noisy    : it was the best of ti~e~, it was t~~ worst of times.
+Nbest 0  : it was the best of times, it was the worst of times.
+Nbest 1  : it was the best of tibet, it was the worst of times.
+Nbest 2  : it was the best of times, it was two worst of times.
+Nbest 3  : it was the best of tiger, it was the worst of times.
+Nbest 4  : it was the best of tiles, it was the worst of times.
+</pre></blockquote>
+
+<!--
+<blockquote><pre>
+% <b>java FixCorruptedNbest 5 5 "it wa~~t~~~b~~t~o~~t~m~s~ ~t~~as~t~~~~ors~~~~ ti~~~." &lt; wiki_100k.txt </b>
+Noisy   : it wa~~t~~~b~~t~o~~t~m~s~ ~t~~as~t~~~~ors~~~~ ti~~~.
+Nbest 0 : it was the best of times, it was the worst of times.
+Nbest 1 : it was the best of times, it was the worships title.
+Nbest 2 : it was the best of times, it was the worsenic times.
+Nbest 3 : it was the best of times, it was the horse of times.
+Nbest 4 : it was the best of times, it was the worsenic title.
+</pre></blockquote>
+-->
+
+<p>
+</p><address><small>
+This assignment was developed by Bob Sedgewick and Kevin Wayne,
+based on the classic idea of Claude Shannon.
+<br>Copyright © 2004.
+</small>
+</address>
+
+<p>
+</p><hr>
+<br>
+
+
+<!--
+
+<small>
+
+<H4><font color = green>Example 1 input: news item</font></H4>
+Microsoft said Tuesday the company would comply with a
+preliminary ruling by Federal District Court Judge Ronald H. Whyte that
+Microsoft is no longer able to use the Java Compatibility Logo on its
+packaging and websites for Internet Explorer and Software Developers
+Kit for Java. 
+<p>
+
+"We remain confident that once all the facts are presented in the larger
+case, the court will find Microsoft to be in full compliance with its contract
+with Sun," stated Tom Burt, Associate General Counsel for Microsoft
+Corporation. "We are disappointed with this decision, but we will
+immediately comply with the Court's order." 
+<p>
+
+Microsoft has been in the forefront of helping developers use the Java
+programming language to write cutting-edge applications. The company
+has committed significant resources so that Java developers have the
+option of taking advantage of Windows features when writing software
+using the Java language. Providing the best tools and programming
+options will continue to be Microsoft's goal. 
+<p>
+
+"We will continue to listen to our customers and provide them the tools
+they need to write great software using the Java language," added Tod
+Nielsen, General Manager for Microsoft's Developer Relations
+Group/Platform Marketing. 
+<p>
+
+<H4><font color = green>Example 1 output: random news item, using input as an order 7 model</font></H4>
+
+Microsoft said Tuesday the court will find Microsoft's goal. 
+<p>
+
+"We will continue to listen to our customers and programming option of
+taking advantage of Windows features when writing software using the Java
+Compatibility Logo on its packaging and websites for Internet
+Explorer and Software using the best tools a nd programming
+language. Providing the Java language. Providing the Java programming
+language to write great software Developers Kit for Java.
+<p>
+
+"We remain confident that once all the facts are presented in the
+forefront of helping developers have the option of taking advantage
+of Windows features when writing software Developers use the Java
+Compatibility Logo on its packaging and websites for Internet Explorer
+and Software using the best tools a nd provide them the tools they
+need to write cutting-edge applications. The company would comply with
+this decision, but we will immediately comply with this decision, but
+we will immediately comply with a preliminary ruling by Federal
+District Court Judge Ronald H. Whyte that Microsoft is no longer able
+to use the Java language," added Tod Nielsen, General Manager for
+Microsoft's goal.
+<p>
+
+</small>
+
+<br>
+<hr>
+<br>
+-->
+
+<small>
+
+<h4><font color="green">Example 1 input: Speech to class of 2018, excerpts
+<a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/markov-files/OpeningExercises2014.txt"> <u> [full text]</u></a>
+</font></h4>
+<p>Good afternoon and welcome to Opening Exercises. What a special pleasure it is to greet Princetons Great Class of 2018! I also offer a warm welcome to our new graduate students, faculty and staff members, and all of you who are returning to campus after the summer.
+
+</p><p>Today we carry on a tradition that dates back at least to 1802, when Nassau Hall was the site of an opening exercise for Princeton students. The event switched to other sites before moving in 1929 to the University Chapel, where we gather today. Todays interfaith ceremony is far different from the Christian services that greeted students in 1929, but the chapels soaring architecture and inspirational spaces continue to invite all of us, whatever our religious or ethical traditions might be, to reflect on the larger purposes that should guide our community as we begin another year on this glorious campus.
+
+</p><p>Today you join the ranks of students who have left their marks on the Princeton campus  and the world  for generations through their intellect, creativity and passion. You, the 1,312 members of the Class of 2018, are an extraordinarily accomplished, inspiring and diverse group. You hail from 46 states, as well as the District of Columbia. You come from 50 countries outside of the United States  from Chile to the Czech Republic, from Iceland to India, from Nigeria to New Zealand. You grew to become upstanding, compassionate citizens in Happy Valley, Oregon, and Niceville, Florida. You weathered the ups and downs of life in Boiling Springs, Pennsylvania, and Frostburg, Maryland. And you learned to appreciate the lyrical majesty of language in Ho Ho Kus, New Jersey, and Oologah, Oklahoma.
+
+</p><h4><font color="green">Example 1 output: random Eisgruber, using order 7 model, excerpts
+</font></h4>
+
+<p>Good afternoon and welcome to a universities around you here.
+
+</p><p>I often ask Princeton is a truly global institution. As scholars who matter most to you. And you here.
+
+</p><p>I often ask Princeton you have come to our social natures, and, more specifically, with drums and choirs and distinguished teachers, whose contributions will become upstanding.
+
+</p><p>This Universitys GREAT CLASS OF 2018! Welcome new members play indispensable roles in helping our Universitys GREAT CLASS OF 2018! I also offer insignificant, or puzzling, or uninteresting, or unsympathetic may turn out to be discourse in all disciplines here as rich with meaningful, not just of any story, can make it easy to feel  without knowing exactly what he was destined to appreciate the lyrical majesty of language in Ho Ho Kus, New Jersey, and
+
+</p></small><p><small>
+
+</small>
+
+<small>
+
+<br>
+</small></p><hr><small>
+<br>
+
+<h4><font color="green">Example 2 input: <i>As you Like It</i>, excerpts
+<a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/markov-files/model-shakes.txt"> <u> [full text]</u></a>
+</font></h4>
+
+<pre>	[Enter DUKE SENIOR, AMIENS, and two or three Lords,
+	like foresters]
+
+DUKE SENIOR	Now, my co-mates and brothers in exile,
+	Hath not old custom made this life more sweet
+	Than that of painted pomp? Are not these woods
+	More free from peril than the envious court?
+	Here feel we but the penalty of Adam,
+	The seasons' difference, as the icy fang
+	And churlish chiding of the winter's wind,
+	Which, when it bites and blows upon my body,
+	Even till I shrink with cold, I smile and say
+	'This is no flattery: these are counsellors
+	That feelingly persuade me what I am.'
+	Sweet are the uses of adversity,
+	Which, like the toad, ugly and venomous,
+	Wears yet a precious jewel in his head;
+	And this our life exempt from public haunt
+	Finds tongues in trees, books in the running brooks,
+	Sermons in stones and good in every thing.
+	I would not change it.
+
+AMIENS	Happy is your grace,
+	That can translate the stubbornness of fortune
+	Into so quiet and so sweet a style.
+
+DUKE SENIOR	Come, shall we go and kill us venison?
+	And yet it irks me the poor dappled fools,
+	Being native burghers of this desert city,
+	Should in their own confines with forked heads
+	Have their round haunches gored.
+
+</pre>
+
+<h4><font color="green">Example 2 output: random Shakespeare, using order 
+6 model, excerpts
+<a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/markov-files/model-shakes-out6.txt"> <u> [full text]</u></a>
+</font></h4>
+<pre>DUKE SENIOR	Now, my co-mates and thus bolden'd, man, how now, monsieur Jaques,
+	Unclaim'd of his absence, as the holly!
+	Though in the slightest for the fashion of his absence, as the only wear.
+
+TOUCHSTONE	I care not for meed!
+	This I must woo yours: your request than your father: the time,
+	That ever love I broke
+	my sword upon some kind of men
+	Then, heigh-ho! sing, heigh-ho! sing, heigh-ho! sing, heigh-ho! unto the needless stream;
+	'Poor deer,' quoth he,
+	'Call me not so keen,
+	Because thou the creeping hours of the sun,
+	As man's feasts and women merely players:
+	Thus we may rest ourselves and neglect the cottage, pasture?
+
+	[Exit]
+
+	[Enter DUKE FREDERICK	Can in his time in my heartily,
+	And have me go with your fortune
+	In all this fruit
+	Till than bear
+	the arm's end: I will through
+	Cleanse the uses of the way to look you.
+	Know you not, master,
+	Sighing like upon a stone another down his bravery is not so with his effigies with my food:
+	To speak my mind, and inquisition
+	And unregarded age in corners throat,
+	He will come hither:
+	He dies that hath engender'd:
+	And you to
+	the bed untreasured of the brutish sting it.
+</pre>
+
+</small>
+
+
+
+
+
+</body></html>

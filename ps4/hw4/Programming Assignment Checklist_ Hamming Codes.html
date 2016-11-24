@@ -1,0 +1,417 @@
+
+<!-- saved from url=(0080)http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/hamming.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+Programming Assignment Checklist: Hamming Codes
+</title>
+<style>
+.stop {
+  font-family: monospace;
+  font-weight: bold;
+  color: red;
+  font-size: 120%;
+}
+</style></head>
+
+
+
+<body data-gr-c-s-loaded="true">
+<h3>
+Programming Assignment Checklist: Hamming Codes
+</h3>
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (TOY programming)
+</font></td></tr></tbody></table>
+
+</p><p>
+<b>What are the goals of this assignment?</b>
+To learn about error-correcting codes; to learn to
+program in a machine language; and to 
+appreciate the programming and debugging
+advantages of a structured programming language like Java over
+machine language.
+
+</p><p><b>What preparation do I need before beginning this assignment?</b>
+Read Chapter 6 of the textbook and watch the accompanying lecture videos.
+
+</p><p><b>How do I edit and execute a TOY program?</b>
+Use either the command-line TOY simulator <tt>TOY.java</tt> or 
+the Visual X-TOY simulator. Both are available on the assignment page.
+See the section below for some frequently asked questions.
+
+</p><p>
+<b>What is the format of a <tt>.toy</tt> file?</b>
+To initialize a location in memory to have a value, write (on its own line) the 
+index of the memory location (two hex digits), followed by a colon,
+followed by a single space, followed by the value (four hex digits).
+Anything else on the line is ignored by the TOY simulator and
+treated as a comment. As well, lines not of this format are ignored.
+Read the sample TOY program
+<tt><a href="ftp://ftp.cs.princeton.edu/pub/cs126/hamming/multiply.toy">multiply.toy</a></tt>.
+
+
+</p><p>
+<b>The TOY simulator isn't following the TOY program that I gave it! What is going on?</b>
+We recommend checking for the following errors:
+
+</p><ul>
+<p></p><li> The program counter starts at <tt>10</tt> so make sure that you place your
+code starting at memory address <tt>10</tt>.
+
+<p></p></li><li>Be sure that each line follows the required format <tt>XX: XXXX</tt>. 
+
+<p></p></li><li>Check for duplicated line numbers or out-of-order line numbers.
+
+<p></p></li><li>Check for using
+a letter like <tt>O</tt> or <tt>l</tt> instead of the number <tt>0</tt> or <tt>1</tt>.
+
+<p></p></li><li>
+Remember that all values, "line numbers", and arithmetic are
+in hex. For example, memory address <tt>1A</tt> follows <tt>19</tt>.
+If you don't specify the value for a memory address, that memory address will
+have the default value of <tt>0000</tt>, which is a halt instruction.
+
+<p></p></li><li> Watch out for jump statements—if you insert a new line of code
+between existing lines, you will have to renumber the lines. Also, be sure to 
+update any jump statements that have hardwired line numbers.
+
+<p></p></li><li>
+Be very careful to update
+<em>both</em> your comments and your actual code at the same time! It is very common to 
+update only the pseudocode and not the machine instruction.
+
+<p></p></li><li>All registers are global variables, so be careful. One way to
+be sure that a register is not used for two different purposes is to
+fill in the question in the readme.txt about registers before or during
+debugging.
+
+</li></ul>
+
+<p><b>How much do I need to comment my TOY code?</b>
+At a minimum, you should:
+</p><ul>
+<p></p><li> Comment each TOY program with your name, login, and precept.
+Your header should also describe the purpose of the program,
+including what it reads from standard input and what it writes to standard output.
+
+<p></p></li><li> Comment each TOY instruction with its pseudocode
+equivalent.
+
+<p></p></li><li> Comment each block of code that serves a high-level purpose,
+e.g., <em>compute 3 parity bits</em>.
+
+</li></ul>
+
+<p><b>Can I assume that the input files are in the prescribed format?</b>
+Yes, as usual, you can make this assumption.
+For example, the input files will contain only a sequence of 
+<tt>0000</tt>'s and <tt>0001</tt>'s, followed by <tt>FFFF</tt>.
+Input files for <tt>encode.toy</tt> will have a multiple of four <tt>0000</tt>'s and <tt>0001</tt>'s;
+input files for <tt>decode.toy</tt> will have a multiple of seven <tt>0000</tt>'s and <tt>0001</tt>'s.
+
+
+
+</p><p>
+<b>How do I format the TOY output?</b>
+You can't. Just print one integer per line (0000 or 0001).
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (TOY.java simulator)
+</font></td></tr></tbody></table>
+
+
+
+</p><p><b>What is the command-line TOY simulator?</b>
+It is a Java program (from lecture) that lets you simulate the behavior 
+of a real TOY machine using a .toy file.
+
+</p><p><b>How do I use the command-line TOY simulator?</b>
+Download <tt>TOY.java</tt> and compile it with the following command:
+
+</p><blockquote><pre>% <b>javac-introcs TOY.java</b>
+</pre></blockquote>
+
+Execute it by specifying the name of the .toy file as the command-line argument.
+
+<blockquote><pre>% <b>java-introcs TOY multiply.toy</b>
+<b>0002</b>
+<b>0005</b>
+000A
+</pre></blockquote>
+When TOY asks for input, type it in (the <tt>0002</tt> and <tt>0005</tt> above).
+When TOY produces output, it will appear on the screen (the <tt>000A</tt> above).
+
+<p><b>How do I see a <em>core dump</em> (the contents of the PC,
+the registers, and main memory)?</b>
+Use <tt>--verbose</tt> command-line option.
+
+</p><blockquote><pre>% <b>java-introcs TOY --verbose multiply.toy</b>
+</pre></blockquote>
+
+<p><b>How do I edit a TOY program?</b>
+Use any text editor. If you use DrJava, we recommend (temporarily)
+turning off the auto-indentation.
+
+
+</p><p><b>When I run my TOY code in the simulator I get the error
+<tt>java.lang.ClassNotFoundException: TOY</tt>. What does this mean?</b>
+Did you download <tt>TOY.java</tt> and compile it? Is it in the same directory
+as <tt>encode.toy</tt> and <tt>decode.toy</tt>?
+
+</p><p><b>When I run my TOY code in the simulator I get the error
+<tt>java.util.NoSuchElementException</tt>. What does this mean?</b>
+This is the error that <tt>TOY.java</tt> produces when you try
+to read from standard input when there is no input left.
+Be sure that your TOY program terminates when it
+encounters <tt>FFFF</tt>.
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (Visual X-TOY simulator)
+</font></td></tr></tbody></table>
+
+
+</p><p><b>Why use the Visual X-TOY simulator instead of TOY.java?</b>
+The <a href="http://introcs.cs.princeton.edu/xtoy">Visual X-TOY simulator</a>
+provides lots of useful development features.
+There are three modes (edit, debug, and simulator).
+
+</p><p><b>I can't launch the Java Web Start version of the
+Visual X-TOY simulator. Any ideas?</b>
+The program requires something called <em>Web Start</em>.
+When you installed Java initially, this was included.
+However, the last Windows security patch I applied broke this.
+If this happens to you,
+go to <a href="http://java.com/">java.com</a> and click the
+<em>Get It Now</em> button.
+
+</p><p><b>How do I load a TOY program?</b>
+Select <em>File -&gt; Open</em>,
+then browse to find the program, e.g., <tt>multiply.toy</tt>.
+
+</p><p><b>How do I edit a TOY program?</b>
+Select <em>Mode -&gt; Edit Mode</em>.
+You can type your program directly in the edit window.
+You might wish to use <tt>multiply.toy</tt> as a reference for formatting
+and commenting.
+
+</p><p><b>How do I execute a TOY program?</b>
+Select <em>Mode -&gt; Debug Mode</em>.
+Then click the <em>Run</em> button at the bottom.
+You can enter data on standard input by typing the value in the <em>Stdin</em>
+tab and clicking the <em>Add</em> button.
+You will have to click the <em>Run</em> button to resume execution.
+You can see the results on standard output in the <em>Stdout</em> tab.
+
+</p><p><b>How do I redirect standard input from a file?</b>
+In <em>Edit Mode</em>, select <em>Mode -&gt; Load File to Stdin</em>.
+
+<!--<p><li>To auto-comment your program to include the assembly language
+code, select <em>Tools -> Auto-comment Code</em>. -->
+
+</p><p><b>I get the warning "There are undefined lines. Note that this may not be a fatal error,
+it may be the space between functions between lines 19 and 20, and 29 and 30."
+What did I do wrong?</b>
+Which memory address follows <tt>19</tt>?
+
+</p><p><b>I get the error "Fatal error at 10: This will be interpreted by the C Parser as 10: 81FF.
+ The simplest way to avoid this is to eliminate all colon usage outside intended instructions."
+What does this mean?</b>
+The X-TOY parser is confused. Did you put exactly one space between the colon and
+the TOY instruction?
+
+
+</p><p>
+
+
+
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Testing
+</font></td></tr></tbody></table>
+
+</p><p>
+<!--<b>Input.</b>
+Copy the <tt>hamming</tt> directory from the
+<a href = "ftp://ftp.cs.princeton.edu/pub/cs126/">COS 126 ftp site</a>
+to your computer.
+-->
+
+</p><p>
+<b>Input, Output and Testing.</b>&nbsp;
+Once you have written your first version of <tt>encode.toy</tt>, run
+</p><blockquote><pre>% <b>java-introcs TOY encode.toy</b></pre></blockquote>
+to type your inputs interactively, or
+<blockquote><pre>% <b>java-introcs TOY encode.toy &lt; encode1.txt</b></pre></blockquote>
+to read your inputs from a file instead. The file <tt>encode1.txt</tt>
+consists of a single test case for your <tt>encode.toy</tt>
+<blockquote><pre><span style="border: 1px solid black; display: inline-block; padding: 10px">0000 0001 0000 0001<br>FFFF</span>
+</pre></blockquote>
+and if your program is working correctly, testing on this input should
+produce the following output:
+<blockquote><pre><span style="border: 1px solid black; display: inline-block; padding: 10px">0000
+0001
+0000
+0001
+0000
+0001
+0000</span>
+</pre></blockquote>
+
+
+<p>This correct answer also appears in the file <tt>encode1-answer.txt</tt>.
+We provide several input test files of different sizes
+for both <tt>encode.toy</tt> and <tt>decode.toy</tt>,
+as well as the answers for each. Note that for convenience, the answer files list each input line and just a shortened version of
+the corresponding outputs.
+</p><p>
+The most complete way to test your TOY programs is to encode and decode all
+possible inputs. Use the sample inputs <tt>encode16.txt</tt> and <tt>decode128.txt</tt> to do this.
+
+<!--<ul>
+<p><li>  Use the input file
+<a href = "ftp://ftp.cs.princeton.edu/pub/cs126/hamming/encode16.txt"><tt>encode16.txt</tt></a>
+to debug <tt>encode.toy</tt>: it contains possible 4-bit inputs.
+The file 
+<a href = "ftp://ftp.cs.princeton.edu/pub/cs126/hamming/encode16.txt.ans"><tt>encode16.txt.ans</tt></a>
+contains the answer: for brevity, it displays
+each bit as <tt>0</tt> or <tt>1</tt> (instead of <tt>0000</tt> or
+<tt>0001</tt>) and groups the bits 7 per line (instead of 1 per line).
+
+<p><li>Use the input file
+<a href = "ftp://ftp.cs.princeton.edu/pub/cs126/hamming/decode128.txt"><tt>decode128.txt</tt></a>
+to debug <tt>decode.toy</tt>: it contains all possible 7-bit inputs,
+The file 
+<a href = "ftp://ftp.cs.princeton.edu/pub/cs126/hamming/decode128.txt.ans"><tt>decode128.txt.ans</tt></a>
+contains the answer: again, for brevity, it displays
+each bit as a <tt>0</tt> or <tt>1</tt> and groups the bits 4 per line.
+</ul>-->
+
+</p><p>
+<b>Reference solutions.</b>
+&nbsp;
+As a special bonus, we provide 
+<tt><!--<a href = "ftp://ftp.cs.princeton.edu/pub/cs126/hamming/HammingEncoder.java">-->
+HammingEncoder.java</tt>
+and
+<tt><!--<a href = "ftp://ftp.cs.princeton.edu/pub/cs126/hamming/HammingDecoder.java">-->
+HammingDecoder.java</tt>,
+which are two programs that encode or decode numbers in the same format as the assignment.
+You are welcome to examine or execute this code to help you in any way you see fit.
+
+
+<!--<p>
+
+<TABLE BORDER = 0 CELLPADDING = 2 CELLSPACING = 0 WIDTH = 100%>
+<tr align = center>
+<td bgcolor = "000000">
+<font size = +0 face = "helvetica" color = "ffffff">
+Devlopment and Debugging Tips
+</table>
+<p>
+
+<ul>
+
+
+</ul>
+-->
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Possible Progress Steps
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+If you get stumped or frustrated on some portion of the assignment,
+you should not hesitate to consult a preceptor.
+
+</p><p>
+</p><ol>
+
+ <li> Download/unzip <a href="ftp://ftp.cs.princeton.edu/pub/cs126/hamming.zip">hamming.zip</a> into your assignment 4 folder.
+
+  </li><li> Download / install X-TOY.
+
+  </li><li> Open X-TOY and experiment with some of the example programs (File -&gt; Open Example Program).  
+   <ul>
+      <li> Add, Echo and Sum are simple Toy programs.  
+      </li><li> Open and experiment with multiply.toy, which is included in the 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/hamming.zip">hamming.zip</a>.
+      </li><li> Try executing some of the precept exercises.
+   </li></ul>
+
+  </li><li> Read, compile and run the reference solutions: HammingEncoder.java and HammingDecoder.java.  Use these reference solutions as a "design" for TOY programs.
+
+  </li><li> As you write your TOY programs, remember:
+     <ul>
+       <li> The first section contains the TOY instruction - in HEX
+       </li><li> The second section contains the TOY pseudo-code
+       </li><li> The third section is used for your comments
+     </li></ul>
+
+   </li><li>  In X-TOY, create a new file (File -&gt; New).
+      <ul>
+        <li> Change the header to the standard header (you can copy-and-paste over the default header).
+        </li><li> Save the file (File -&gt; Save) as <tt>encode.toy</tt>  in your assignment 4 folder.
+
+   </li><li> Incrementally implement and test <tt>encode.toy</tt> , using HammingEncoder.java as a guide. Note: as you  revise your program, you will need to edit your TOY statement numbers accordingly.
+     <ol type="a">
+        <li> Write TOY code that inputs a number from standard input.  If the number is negative,    the program shall halt.  Otherwise, it prints the number and inputs the next number.
+
+        </li><li>  Edit your TOY program from step (a) so that it now reads in sequences of four numbers,  halting if the first number is negative.  Otherwise, it writes the four numbers and inputs  the next sequence of numbers.
+
+        </li><li> Edit your TOY program from step (b) so that it now computes the parity bits, and writes the parity bits.
+      </li></ol>
+     </li></ul>
+  </li><li> Incrementally implement and test <tt>decode.toy</tt>, using HammingDecoder.java as a guide.
+
+</li></ol>
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Enrichment
+</font></td></tr></tbody></table>
+</p><p>
+
+</p><ul>
+<p></p><li>Error correcting codes are used in CDs.
+You can drill a 2.5mm hole through it, and it will still play.
+Only 1/3 of data is music.
+
+<!--<p><li>Geneticists observe a lot of "extra junk" and
+redundancy in human DNA. Are you surprised?-->
+
+<p></p></li><li>Error correcting codes are also widely used on noisy analog
+channels such as radio links.
+This enables you to reduce the amount of power needed to transmit signals.
+Analogy: asking a bartender for a drink three times, rather than 
+screaming over the noise just once.
+
+</li></ul>
+
+
+
+</body></html>

@@ -1,0 +1,343 @@
+
+<!-- saved from url=(0082)http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/hamming.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>COS 126:  Hamming Codes in TOY</title><style>
+.stop {
+  font-family: monospace;
+  font-weight: bold;
+  color: red;
+  font-size: 120%;
+}
+</style></head>
+
+
+<body bgcolor="#FFFFFF" data-gr-c-s-loaded="true">
+
+<table width="100%" border="0">
+<tbody><tr align="LEFT" valign="BOTTOM">
+<td><strong>COS 126</strong><br><br>
+<strong><font size="+2">Hamming Codes in TOY</font></strong></td>
+<td align="RIGHT" valign="BOTTOM">
+<strong>Programming Assignment</strong><br><br>
+<!--<STRONG>Due</STRONG>: Wednesday-->
+</td></tr></tbody></table>
+<hr>
+<p>
+
+Write a TOY program to encode data using Hamming codes.  Then write a
+TOY program to correct encoded data that has been corrupted.
+
+</p><p>
+
+<b>Perspective.</b>&nbsp;
+<em>Error-correcting codes</em> enable data to be sent through a
+noisy communication channel without corruption.
+To accomplish this, the sender appends redundant
+information to the message, so that even if some of the original
+data is corrupted during transmission, the receiver can still recover
+the original message intact.
+Transmission errors are common and can arise from scratches on a CD,
+static on a cell phone, or atmospheric interference. 
+In a noisy environment, error-correcting codes can increase the throughput of
+a communication link since there is no need to retransmit the message
+if it becomes partially corrupted during transmission.
+For this reason, error-correcting codes are used in many common systems,
+such as storage devices (CD, DVD, DRAM), mobile communication (cell phones,
+wireless, microwave links), and digital television.
+<!-- and high-speed modems (ADSL, xDSL). -->
+
+</p><p>
+<b>Hamming Codes. </b>&nbsp;
+A <em>Hamming code</em> is a specific type of 
+error-correcting code that allows the detection and correction
+of <em>single-bit</em> transmission errors.
+Hamming codes are used in many applications where such errors are
+common, including
+DRAM memory chips and satellite communication hardware.
+
+
+Hamming codes work by repeatedly reading four <em>message bits</em>,
+which we denote by <i>m</i><sub>1</sub>, <i>m</i><sub>2</sub>,
+<i>m</i><sub>3</sub>, <i>m</i><sub>4</sub>, and then
+inserting three <i>parity bits</i>, which we denote by
+<i>p</i><sub>1</sub>, <i>p</i><sub>2</sub>, and <i>p</i><sub>3</sub>.
+If any <em>one</em> of these seven bits is corrupted during transmission, the receiver
+can detect the error and recover the original four message bits intact.
+This is called <em>single-bit error correction</em> because at most one
+bit can be corrected per unit of data sent.
+The overhead for using this method is a 75% increase in bandwidth
+because it requires three extra parity bits for every four message bits.
+An alternative approach of sending three copies of
+each bit (and using the one that appears most frequently) results
+in a 200% increase in bandwidth.
+
+</p><p>
+Before we describe the algebra of Hamming codes,
+we first visualize the calculation of the parity bits using Venn diagrams.
+As an example, suppose we wish to send the 4-bit message <tt>1101</tt>.
+We associate each of the four message bits with a specific intersection region of three
+pairwise overlapping circles, as illustrated below:
+
+</p><p align="center"><img src="./COS 126_ Hamming Codes in TOY_files/hamming1.png" width="450"></p>
+<!-- <p align="center"><img src="hamming-files/hamming1.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="hamming-files/hamming2.gif"></p> -->
+The Hamming code adds three parity bits
+so that each of the three circles has <em>even parity</em>.
+<p align="center"><img src="./COS 126_ Hamming Codes in TOY_files/hamming2.png" width="450"></p>
+<!-- <p align="center"><img src="hamming-files/hamming3.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="hamming-files/hamming2.png"></p> -->
+
+That is, the sum of the four bits contained in each of the three circles is even:
+
+<p align="center"><img src="./COS 126_ Hamming Codes in TOY_files/hamming3.png" width="675"></p>
+<!-- <p align="center"><img src="hamming-files/hamming4a.gif"> <img src="hamming-files/hamming4b.gif"> <img src="hamming-files/hamming4c.gif"></p> -->
+
+For this example, the three parity bits are 1 (top), 0 (left), and 0 (right).
+So, to send a version of the message <tt>1101</tt>
+that is robust against single-bit errors, the actual message we send is
+the 7-bit message <tt>1101</tt><font color="blue"><tt>100</tt></font>.
+
+
+<p>
+Now, imagine this picture is transmitted over a noisy communication channel, and that
+one bit is corrupted so that the following picture arrives at the
+receiving station (corresponding to <tt>1<font color="blue">0</font>01100</tt>):
+
+</p><p align="center"><img src="./COS 126_ Hamming Codes in TOY_files/hamming4.png" width="300"></p>
+
+<!-- <p align="center"><img src="hamming-files/hamming5.gif"></p> -->
+
+The receiver discovers that an error occurred by checking the parity 
+of the three circles.
+Moreover, the receiver can identify <em>where</em> the error
+occurred (the second bit) and recover the four original message bits!
+
+<p align="center"><img src="./COS 126_ Hamming Codes in TOY_files/hamming5.png" width="675"></p>
+<!-- <p align="center"><img src="hamming-files/hamming6a.gif"><img src="hamming-files/hamming6b.gif"> <img src="hamming-files/hamming6c.gif"></p> -->
+
+The parity check for the top circle and right circle failed, but the left
+circle was ok. So, the only 7-bit message that balances all three
+parity checks and has at most one changed bit is the one obtained 
+by flipping <i>m</i><sub>2</sub>, since <i>m</i><sub>2</sub> represents the intersection of
+exactly those two circles.
+Thus the receiver knows 
+that the message originally sent
+was <tt>1<font color="blue">1</font>01100</tt>—representing the
+four message bits <tt>1101</tt> plus the three parity check bits <tt>100</tt>.
+This achieves the goal, since the original message bits sent were indeed
+<tt>1101</tt>.
+
+<p>
+If the center bit <i>m</i><sub>4</sub> is corrupted, then all three parity checks
+will fail.  If a parity bit itself is corrupted, then only one
+parity check will fail. If the communication channel is so noisy that
+two or more bits
+are simultaneously corrupted, then the scheme will not work. Can you see why?
+More sophisticated types of error-correcting codes can handle such 
+situations.
+
+</p><p>
+Of course, in practice, only the seven bits are transmitted, rather than the
+Venn diagrams.
+
+
+</p><p><b>Part 1.</b>
+Write a TOY program <tt>encode.toy</tt> to encode a binary message 
+using the scheme described above. 
+<em>Repeatedly</em> read 4 bits 
+<i>m</i><sub>1</sub>,
+<i>m</i><sub>2</sub>,
+<i>m</i><sub>3</sub>, and
+<i>m</i><sub>4</sub>
+from TOY standard input and write the 7 bits 
+<i>m</i><sub>1</sub>,
+<i>m</i><sub>2</sub>,
+<i>m</i><sub>3</sub>,
+<i>m</i><sub>4</sub>,
+<i>p</i><sub>1</sub>,
+<i>p</i><sub>2</sub>,
+<i>p</i><sub>3</sub>
+to TOY standard output.
+Stop upon reading <tt>FFFF</tt> from standard input.
+</p><menu>
+<li><i>p</i><sub>1</sub> = <i>m</i><sub>1</sub> ^ <i>m</i><sub>2</sub> ^ <i>m</i><sub>4</sub>
+</li><li><i>p</i><sub>2</sub> = <i>m</i><sub>1</sub> ^ <i>m</i><sub>3</sub> ^ <i>m</i><sub>4</sub>
+</li><li><i>p</i><sub>3</sub> = <i>m</i><sub>2</sub> ^ <i>m</i><sub>3</sub> ^ <i>m</i><sub>4</sub>
+</li></menu>
+Recall that ^ is the <em>exclusive or</em> operator in Java and TOY. This
+captures the parity notion described above.
+
+<p><b>Part 2.</b>  
+Write a TOY program <tt>decode.toy</tt> to correct a Hamming encoded message.
+<em>Repeatedly</em> read 7 bits
+<i>m</i><sub>1</sub>,
+<i>m</i><sub>2</sub>,
+<i>m</i><sub>3</sub>,
+<i>m</i><sub>4</sub>,
+<i>p</i><sub>1</sub>,
+<i>p</i><sub>2</sub>,
+<i>p</i><sub>3</sub>
+from TOY standard input 
+and write 4 bits to TOY standard output.
+Stop upon reading <tt>FFFF</tt> from standard input.
+Recall, to determine which one, if any, of the message bits is 
+corrupted, perform the parity checks:
+</p><ol>
+<li><i>p</i><sub>1</sub> = <i>m</i><sub>1</sub> ^ <i>m</i><sub>2</sub> ^ <i>m</i><sub>4</sub>
+</li><li><i>p</i><sub>2</sub> = <i>m</i><sub>1</sub> ^ <i>m</i><sub>3</sub> ^ <i>m</i><sub>4</sub>
+</li><li><i>p</i><sub>3</sub> = <i>m</i><sub>2</sub> ^ <i>m</i><sub>3</sub> ^ <i>m</i><sub>4</sub>
+</li></ol>
+
+Compare the parity bits you computed with the parity bits you received.
+If they don't match, then some bit got flipped.
+Here's a summary of what to do with the results:
+
+<menu>
+<li> If exactly zero or one of the parity checks fail, then all four message
+bits are correct.
+</li><li> If checks 1 and 2 fail (but not check 3),
+then bit <i>m</i><sub>1</sub> is incorrect.
+</li><li> If checks 1 and 3 fail (but not check 2),
+then bit <i>m</i><sub>2</sub> is incorrect.  
+</li><li> If checks 2 and 3 fail (but not check 1),
+then bit <i>m</i><sub>3</sub> is incorrect.
+</li><li> If all three checks fail, then bit <i>m</i><sub>4</sub> is incorrect.
+</li></menu>
+Flip the corrupted message bit (if necessary) and write
+<i>m</i><sub>1</sub>, <i>m</i><sub>2</sub>, <i>m</i><sub>3</sub>,
+and <i>m</i><sub>4</sub> to standard output.
+
+<p>
+<b>Input format.</b>
+The input format for <tt>encode.toy</tt>
+is a text file that contains the sequence of bits to be transmitted.
+Each line consists of a sequence of 4 bits, with each bit specified as
+a 4-digit hexadecimal integer (either <tt>0000</tt> or <tt>0001</tt>),
+separated by whitespace.
+The last line consists of the single integer <tt>FFFF</tt>.
+The input format for <tt>decode.toy</tt> is the same, except that
+each line consists of a sequence of 7 bits.
+Here are input files for <tt>encode.toy</tt> and <tt>decode.toy</tt>
+in the specified format:
+
+</p><blockquote>
+<table>
+<tbody><tr>
+<td><pre><b>% more encode3.txt</b>
+0001 0001 0000 0001
+0001 0001 0001 0000
+0001 0001 0001 0001
+FFFF
+
+</pre></td>
+<td><pre>                             </pre></td>
+<td><pre>% <b>more decode4.txt</b>
+0001 0001 0000 0001 0001 0000 0000
+0001 0000 0000 0001 0001 0000 0000
+0001 0001 0000 0000 0001 0000 0000
+0001 0001 0000 0001 0001 0000 0001
+FFFF 
+</pre></td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>
+<b>Files for this assignment.</b> &nbsp;
+The file
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/hamming.zip">hamming.zip</a>
+includes two Java programs that illustrate the encoding and decoding procedures;
+sample input and output files for both <tt>encode.toy</tt> and <tt>decode.toy</tt>;
+the <a href="ftp://ftp.cs.princeton.edu/pub/cs126/hamming/TOY-reference.txt">TOY reference card</a>;
+the <tt><a href="ftp://ftp.cs.princeton.edu/pub/cs126/hamming/readme.txt">readme.txt</a></tt> template; 
+a sample TOY program;
+and the TOY simulator <tt>TOY.java</tt>.
+
+</p><p>
+<b>Using the TOY simulator. </b> &nbsp;
+To execute your TOY program using the command-line simulator <tt>TOY.java</tt>,
+type the commands that appear in bold below. You should see the following output:
+
+</p><blockquote>
+<table>
+<tbody><tr>
+<td><pre>% <b>java-introcs TOY encode.toy &lt; encode3.txt</b>
+0001
+0001
+0000
+0001
+0001
+0000
+0000
+0001
+0001
+0001
+0000
+0000
+0000
+0000
+0001
+0001
+0001
+0001
+0001
+0001
+0001
+</pre></td>
+<td><pre>    </pre></td>
+<td><pre>% <b>java-introcs TOY decode.toy &lt; decode4.txt</b>
+0001
+0001
+0000
+0001
+0001
+0001
+0000
+0001
+0001
+0001
+0000
+0001
+0001
+0001
+0000
+0001
+
+
+
+
+
+</pre></td>
+
+</tr>
+
+</tbody></table>
+</blockquote>
+
+
+Alternatively, you can use the 
+<a href="http://introcs.cs.princeton.edu/xtoy">Visual X-TOY simulator</a>. 
+
+
+<p><b>Documentation.</b> &nbsp;
+Include a standard header at the top of each TOY program;
+comment each line of TOY code with the corresponding pseudocode;
+optionally, include a comment describing the Java equivalent.
+See <a href="ftp://ftp.cs.princeton.edu/pub/cs126/hamming/multiply.toy">multiply.toy</a>
+for an example.
+In the
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/hamming/readme.txt">readme.txt</a>  file,
+describe what you used each of the registers for in your programs.
+
+</p><p>
+<b>Submission. </b> &nbsp;
+Submit <tt>encode.toy</tt>, <tt>decode.toy</tt>, and a completed <tt>readme.txt</tt>.
+
+</p><p>
+<b>Leaderboard (optional).</b> &nbsp;
+Rewrite <tt>decode.toy</tt> using the fewest number of (nonzero) words of TOY main memory.
+Submit <tt>decode.toy</tt> to the leaderboard for class fame and glory. Under 40 (in decimal)
+is very good; under 35 is great; the all-time record is 29.
+
+
+
+
+</p></body></html>

@@ -1,0 +1,537 @@
+
+<!-- saved from url=(0076)http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/tsp.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+Programming Assignment Checklist: Traveling Salesperson Problem
+</title>
+</head>
+
+<body data-gr-c-s-loaded="true">
+<h3>
+Programming Assignment Checklist: Traveling Salesperson Problem
+</h3>
+
+
+
+<p>
+<br>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (general)</center>
+</font></td></tr></tbody></table>
+
+
+</p><p><b>What are the main goals of this assignment?</b>
+The goals of this assignment are to:
+</p><ul>
+<p></p><li>Learn about the notorious traveling salesperson problem.
+<p></p></li><li>Learn to use linked lists.
+<p></p></li><li>Get more practice with data types.
+</li></ul>
+
+<p><b>What preparation do I need before beginning this assignment?</b>
+Read Section 4.3. Pay particular attention to the parts that deal with
+linked lists.
+
+</p><p><b>Can I program with a partner on this assignment?</b>
+Yes. You are encouraged (not required) to work with 
+a partner provided you practice pair programming.
+
+</p><p><b>Do I need to follow the prescribed API?</b>
+Yes, we will be testing the methods in the API directly. If your method has a different 
+signature or does not behave as specified, you will lose a substantial number of points.
+You may not add public methods to the API; however, you may add private methods 
+(which are only accessible in the class in which they are declared).
+
+
+</p><p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Frequently Asked Questions (Tour)</center>
+</font></td></tr></tbody></table>
+
+</p><p>
+<b>What should the various methods do if the tour has no points?</b>
+The <tt>size()</tt> method should return 0; the <tt>length()</tt> method
+should return 0.0; the <tt>show()</tt> method should print nothing to
+standard output; the <tt>draw()</tt> method should draw nothing to standard
+drawing.
+
+</p><p>
+<b>How do I represent infinity in Java?</b>
+Use <tt>Double.POSITIVE_INFINITY</tt>.
+
+
+</p><p>
+<b>How can I produce an animation of the heuristic in action?</b>
+It's easy and instructive—just redraw the tour after each insertion.
+See the instructions in <tt>SmallestInsertion.java</tt>. It could take a
+while on a big input file, so you might want to modify it so that it redraws 
+only after every 20 insertions or so.
+<i>Note</i>: when timing your program, don't show the animation
+or else this may become the bottleneck.
+
+
+
+</p><p>
+<b>What is the file <tt>Tour$Node.class</tt>?</b>
+When you declare a <em>nested class</em> like <tt>Node</tt>,
+the Java compiler uses the <tt>$</tt> symbol to mark its name.
+
+</p><p><b>How can the suggested definition of <tt>private class Node</tt> work when it has no constructor declared?</b> 
+For any class, Java will by default already define a no-argument constructor that sets all
+of the instance variables to their default values (here <tt>null</tt> since <tt>Point</tt>
+and <tt>Node</tt> are reference types).
+
+</p><p>
+<b>What is a <tt>NullPointerException</tt>?</b>
+You can get one by initializing a variable of type
+<tt>Node</tt>, say <tt>x</tt>, to <tt>null</tt> and then accessing
+<tt>x.next</tt> or <tt>x.p</tt>.
+This can happen in your insertion routine if you inadvertently
+break up the circular linked list.
+
+</p><p>
+<b>When should I create a new linked-list node with the keyword <tt>new</tt>?</b>
+To create a tour with <em>n</em> points, you should use <tt>new</tt> exactly <em>n</em>
+times with <tt>Node</tt>, once per invocation of <tt>insert()</tt>.
+It is unnecessary (and bad style) to use <tt>new</tt> with your list traversal
+variables since this allocates memory that you never use.
+
+</p><p><b>Running <tt>TSPTimer.java</tt>
+with <em>n</em> = 10,000 already takes more than a minute. What should I do?</b>
+You have a performance error.
+It should take only a few seconds when <em>n</em> is 10,000.
+If your code takes much much longer, try to discover why (think
+analysis of algorithms), and explain it in your <tt>readme.txt</tt> file.
+
+
+</p><p><b>When I run <tt>TSPTimer.java</tt> for 10,000 points, my nearest insertion
+heuristic runs quickly, but my smallest insertion heuristic takes
+more than 10 seconds to run. How can I fix this?</b> 
+You probably have a loop that looks at inserting the new point at 
+each possible insertion point.  That is fine.  
+However, if you are calling the <tt>length()</tt> method to compute 
+the new tour length at each potential insertion point, you are 
+effectively adding a second loop inside your first loop 
+(even though it is a single method call), which is too slow.  
+You do not need to recompute the entire tour length for each possible insertion point.
+You only need to compute the <em>change</em> in the tour length and keep track of which
+insertion point results in the smallest such change.
+
+
+<!--
+<p><b>How can I implement the <tt>toString()</tt> so that it takes linear time
+(instead of quadratic time)?</b>
+If you use string concatenation, your <tt>toString()</tt> method will likely be to
+slow becasue each string concatenation operation takes time linear in the length 
+of the output. Instead, use Java's built-in <tt>StringBuffer</tt> data type.
+-->
+
+</p><p><b>Can I use Java's built in <tt>LinkedList</tt> class?</b>
+Absolutely not! One of the main goals of this assignment is to gain experience
+writing and using linked structures. The Java libraries can only take
+you so far, and you will quickly discover applications which cannot be solved
+without devising your own linked structures.
+
+
+</p><p>
+<b>Do I have to use a linked list for the leaderboard?</b>
+No, you are not required to use the <tt>Tour</tt>
+data type or linked lists for the leaderboard.
+Of course, you should exercise good modular design.
+
+</p><p>
+<b>What is the length of the best known tour for tsp1000.txt?</b>
+Eric Mitchell '18 holds the COS 126 record with a tour of
+length 15566.37.
+Using the <a href="http://www.tsp.gatech.edu/concorde.html">Concorde TSP solver</a>,
+we found a tour of length 15476.519.
+
+
+
+</p><p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Input, Output, and Testing</center>
+</font></td></tr></tbody></table>
+
+</p><p>
+<b>Input.</b>
+&nbsp;
+The files for this assignment include many sample inputs.
+<!--There are many sample data files (with extension .txt) available from the
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/">tsp directory</a>.-->
+Most are taken from
+<a href="http://www.iwr.uni-heidelberg.de/groups/comopt/software/TSPLIB95/index.html">
+TSPLIB</a>.
+
+</p><p>
+<b>Debugging.</b>
+&nbsp;
+A good debugging strategy for most programs is to test
+your code on inputs that you can easily solve by hand.
+Start with 1 and 2 city problems. Then, do a 4 city problem.
+Choose the data so that it is easy to work through
+the code by hand. Draw pictures.
+If your code does not do exactly what your hand calculations
+indicate, determine where they differ.
+Use the <tt>StdOut.println()</tt> method to trace.
+
+
+</p><p><b>Checking your work.</b>&nbsp;
+For <tt>usa13509.txt</tt> we get tour lengths of <tt>77449.9794</tt>
+and <tt>45074.7769</tt>
+for nearest insertion and smallest insertion, respectively.
+For <tt>circuit1290.txt</tt> we get <tt>25029.7905</tt> 
+and <tt>14596.0971</tt>.
+
+<!--
+(or <tt> 25091.6899</tt>)
+Note that there two possible correct answers with the nearest insertion
+heuristic because  after inserting the first 3 points, there are two distinct
+tours that have the same length: <tt>A->B->C</tt> and <tt>A->C->B</tt>.
+Depending on which one your program chooses, you can end up with a different
+tour length (possibly better, possibly worse) down the road.
+-->
+<!-- With the smallest insertion heuristic, you should get the same exact tour,
+just in the opposite order.
+-->
+
+</p><p>
+<b>Timing.</b>
+&nbsp;
+You may use the client program <tt>TSPTimer.java</tt> to help you estimate
+the running time as a function of the input size <em>n</em>. It takes a
+command-line argument <em>n</em>, runs the two heuristics on a random input
+of size <em>n</em>, and prints how long each took.
+
+
+</p><p>
+<b>Interactive visualizer.</b>
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/TspVisualizer.java">TspVisualizer.java</a>
+in an interactive visualizer. It
+reads the points from standard input: it displays both the
+nearest neighbor heuristic tour (in red) and the
+smallest insertion heuristic (in blue).
+When you click a point in the window, it will add it to your tour.
+You can toggle the visibility o the two tours by typing <tt>n</tt> (for nearest neighbor) or
+<tt>s</tt> (for smallest insertion).
+
+</p><p><br>
+<table border="0" cellpadding="2" cellspacing="0">
+<tbody><tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td>
+<blockquote><pre>% <b>java-introcs TspVisualizer tsp1000.txt</b>
+</pre></blockquote>
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td><td>
+</td>
+</tr>
+<tr>
+<td>
+</td><td><img width="300" height="298" src="./Programming Assignment Checklist_ Traveling Salesperson Problem_files/tsp-visualizer-all.png" alt="1000 points both smallest and nearest"></td>
+<td>
+</td><td><img width="300" height="298" src="./Programming Assignment Checklist_ Traveling Salesperson Problem_files/tsp-visualizer-small.png" alt="1000 points smallest"></td>
+</tr>
+</tbody></table>
+
+</p><p>
+If you want to test <tt>Tour.java</tt> afterimplementing only one of the insertion methods,
+you must declare the other method (even if it does nothing).</p>
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Possible Progress Steps</center>
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+
+</p><ol>
+<p></p><li>Make sure you fully understand the CircularQuote exercise from precept.  This exercise also demonstrates how to use the <tt>do {...} while (...)</tt> loop.
+<p></p></li><li>Download the <tt>.zip</tt> file mentioned on the assignment page.
+Extract it; later you should save <tt>Tour.java</tt> in the same directory.
+<!--The subdirectory <tt>tsp</tt> from the
+<a href = "ftp://ftp.cs.princeton.edu/pub/cs126/tsp/">COS 126 ftp site</a>
+contains <tt>Point.java</tt> and two client programs, one for 
+each heuristic.  There are several small data files for debugging
+purposes,
+as well as the larger data files that you need for the <tt>readme.txt</tt>
+questions.  There is also a client program to help you
+do the performance analysis part of the assignment.
+The directory also contains <tt>StdIn.java</tt>,
+<tt>StdDraw.java</tt>, <tt>StdOut.java</tt> and
+this assignment's <tt>readme.txt</tt> file.-->
+
+
+<p></p></li><li>Study the
+<a href="http://introcs.cs.princeton.edu/32class/Point.java.html"><tt>Point</tt></a>
+API. Its <tt>main()</tt> method
+reads in data from standard input in the TSP input format
+and draws the points to standard draw.
+In this assignment, you will use <tt>distanceTo()</tt> to compute the distance
+between two points and the <tt>drawTo()</tt> method to draw a line segment
+connecting two points.
+
+<p></p></li><li>
+Create a file <tt>Tour.java</tt>.
+Include the standard linked list data type <tt>Node</tt>.
+Include one instance variable, say <tt>first</tt>, of type <tt>Node</tt>
+that is a reference to the "first" node of the circular linked list.
+<!-- 
+Here's a <a href = "Tour.java.html">template Tour.java file</a>.
+-->
+
+<p></p></li><li>
+For debugging purposes only, make a constructor that takes four points as arguments,
+and constructs a circular linked list using those four Point objects.
+First, create four nodes
+and assign one point to each.  Then, link the nodes one to another in a circle.
+<!--
+<blockquote><pre><font size = "-1">public Tour(Point a, Point b, Point c, Point d) {
+    // create four nodes to store the four points
+    Node aNode = new Node();
+    aNode.p = a;
+    Node bNode = new Node();
+    bNode.p = b;
+    Node cNode = new Node();
+    cNode.p = c;
+    Node dNode = new Node();
+    dNode.p = d;
+    
+    // link the nodes a to b to c to d to a
+    first = aNode;
+    aNode.next = bNode;
+    bNode.next = cNode;
+    cNode.next = dNode;
+    dNode.next = first;
+  }
+</font>
+</pre>
+</blockquote>
+-->
+
+
+
+
+<p></p></li><li>Implement the method <tt>show()</tt>.
+It should traverse each <tt>Node</tt> in the <em>circular</em> linked list,
+starting at <tt>first</tt>, and printing each <tt>Point</tt>
+using <tt>StdOut.println()</tt>.
+This method requires only a few lines of code, but it is important to think
+about it carefully, because debugging 
+linked-list code is notoriously difficult and frustrating.
+Start by just printing out the first <tt>Point</tt>.
+With circular linked-lists the last node on the list points back to the first node,
+so watch out for infinite loops.
+
+<p>
+Test your method by writing a <tt>main()</tt> function that defines four points,
+creates a new <tt>Tour</tt>
+object using those four points, and calls its <tt>show()</tt> method.
+Below is a suggested four point Tour for  <tt>main()</tt>.  Use it for testing.
+<!--
+Use the <tt>main()</tt> method given below for testing.  This <tt>main()</tt> defines the 
+four points, creates a <tt>Tour</tt> with them, and outputs the <tt>Tour</tt>.
+-->
+</p><blockquote><pre>  // main method for testing
+  public static void main(String[] args) {
+    // define 4 points forming a square
+    Point a = new Point(100.0, 100.0);
+    Point b = new Point(500.0, 100.0);
+    Point c = new Point(500.0, 500.0);
+    Point d = new Point(100.0, 500.0);
+
+    // Set up a Tour with those four points
+    // The constructor should link a-&gt;b-&gt;c-&gt;d-&gt;a
+    Tour squareTour = new Tour(a, b, c, d);
+
+    // Output the Tour
+    squareTour.show();
+  }
+</pre>
+</blockquote>
+
+
+
+If your method is working properly, you will get
+the following output for the 4 city problem above.
+<blockquote>
+<pre>(100.0, 100.0)
+(500.0, 100.0)
+(500.0, 500.0)
+(100.0, 500.0)
+</pre>
+</blockquote>
+
+Test your method <tt>show()</tt> on tours with 0, 1 and 2 points to 
+check that it still works. You can create such instances by 
+modifying the 4-node debugging constructor to only link 0, 1 or 2 of the 
+four points to the <tt>Tour</tt>.  (If you don't define <tt>first</tt>, you 
+will have an empty <tt>Tour</tt>.  If you define <tt>first</tt> and link it 
+back to itself,
+you will have a 1 point <tt>Tour</tt>.)  
+
+<p>Put the debugging constructor back to 
+the 
+original four point <tt>Tour</tt> before continuing.
+
+</p><p></p></li><li>
+Implement the method <tt>size()</tt>.
+It is very similar to <tt>show()</tt>.
+<p>
+Test the <tt>size()</tt> method on some sample Tour objects in the <tt>main</tt> method. 
+</p><p></p></li><li>
+Implement the method <tt>length()</tt>. It is very similar to
+<tt>show()</tt>, except that you will need to invoke the method
+<tt>distanceTo()</tt> in the <tt>Point</tt> data type.
+<p>
+Test! Add a call to the <tt>length()</tt> method in the 
+<tt>main()</tt> and print the length and size.
+The 4-point example has a length of 1600.0.
+
+</p><p></p></li><li>
+Implement the method <tt>draw()</tt>. It is also very similar to <tt>show()</tt>,
+except that you will need to invoke the method
+<tt>drawTo()</tt> in the <tt>Point</tt> data type.
+<p>
+Test! You will also need to include the statements
+</p><blockquote>
+<pre> <tt>
+StdDraw.setXscale(0, 600);
+StdDraw.setYscale(0, 600);
+</tt> </pre>
+</blockquote>
+in your <tt>main()</tt> before you call the <tt>Tour</tt> <tt>draw()</tt> 
+method.
+The four point example above should produce a square.
+</li></ol>
+
+
+<em>After arriving at this point, you should feel
+a sense of accomplishment: working with a linked list is quite difficult at first!</em>
+
+<ol start="8">
+
+<p></p><li>
+Implement <tt>insertNearest()</tt>.
+To determine which node to insert the point <tt>p</tt> after,
+compute the Euclidean distance between each point in the tour and
+<tt>p</tt> by traversing the circular linked list.
+As you proceed, store the node containing the closest point <em>and</em>
+its distance to <tt>p</tt>. After you have found the closest node,
+create a node containing <tt>p</tt>, and insert it
+<em>after</em> the closest node. This involves changing the <tt>next</tt>
+field of both the newly created node and the closest node.
+As a check, here is the
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/tsp10-nearest.ans">
+resulting tour</a> for the 10 city problem which has length 
+<tt>1566.1363</tt>.
+Note that the 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/tsp10-optimal.ans">optimal tour</a>
+has length <tt>1552.9612</tt> so this rule does not, in general, yield the
+best tour.
+
+<p></p></li><li> After doing the nearest insertion heuristic, you should be able
+write the method <tt>insertSmallest()</tt> by yourself, without any hints.
+The only difference is that you
+want to insert the point <tt>p</tt> where it will result
+in the least possible increase in the total tour length.
+As a check, here is the 
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/tsp/tsp10-smallest.ans">
+resulting tour</a> which has length <tt>1655.7462</tt>.
+In this case, the smallest insertion
+heuristic actually does worse than the nearest insertion heuristic
+(although this is not typical).
+
+
+</li></ol>
+
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="left">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+<center>Enrichment</center>
+</font></td></tr></tbody></table>
+</p><p>
+
+
+</p><ul>
+<p></p><li>
+Here's a <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/tsp13509.gif"> 13,509 city problem</a> that
+contains each of the 13,509 cities in the continental US with
+population over 500. The <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/tsp13509-sol.jpg">optimal solution</a>
+was discovered in 1998 by Applegate, Bixby, Chvatal and Cook
+using theoretical ideas from <em>linear and integer programming</em>.
+The "record" for the largest TSP problem ever solved exactly
+is a <a href="http://www.tsp.gatech.edu/pla85900/index.html">
+85,900-point</a> instance that arose from microchip design in
+the 1980s. It took over 136 CPU-years to solve.
+
+<p></p></li><li>Here's a trailer for a recent movie about the Traveling Salesperson Problem.<br>
+<center>
+<iframe width="640" height="360" src="./Programming Assignment Checklist_ Traveling Salesperson Problem_files/6ybd5rbQ5rU.html" frameborder="0" allowfullscreen=""></iframe>
+</center>
+</li>
+
+<p></p><li>Here's an excellent and very accessible 
+<a href="http://www.amazon.com/Pursuit-Traveling-Salesman-Mathematics-Computation/dp/0691152705">book</a> 
+ about the TSP.</li>
+
+<!--The following 
+<A HREF = "tsp15112.pdf">15,112 city problem</A> was solved
+to optimality in April, 2001, and is the current world record.
+It took 585,936,700 CPU seconds (along with alot of cleverness)
+to find the optimal tour through 15,112 cities in Germany.-->
+
+<p></p><li> Here's a nice pictorial survey of the
+<a href="http://www.tsp.gatech.edu/history/pictorial/pictorial.html"> 
+history of the TSP problem</a>.
+
+<p></p></li><li> Some folks even use the TSP to create and sell art.
+Check out <a href="http://www.oberlin.edu/math/faculty/bosch/tspart-page.html">
+Bob Bosch's page</a>.
+You can even
+<a href="http://www.oberlin.edu/math/faculty/bosch/making-tspart-page.html">make your
+own TSP artwork</a>.
+
+
+<!-----<P><LI>
+Here's a <A HREF = "http://www.research.att.com/~dsj/papers/TSPchapter.pdf">survey article</a>
+on heuristics for the TSP.
+
+<P><LI>
+Here are
+<A HREF = "http://www.tsp.gatech.edu//games/tspOnePlayer.html">two TSP games</a>.
+---------->
+
+</li></ul>
+
+
+
+
+</body></html>

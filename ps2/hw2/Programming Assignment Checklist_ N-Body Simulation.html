@@ -1,0 +1,738 @@
+
+<!-- saved from url=(0078)http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/nbody.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="./Programming Assignment Checklist_ N-Body Simulation_files/seasonal.css">
+<title>
+Programming Assignment Checklist: N-Body Simulation
+</title>
+</head>
+
+<body data-gr-c-s-loaded="true">
+<h3>
+Programming Assignment Checklist: N-Body Simulation
+</h3>
+
+<p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Goals
+</font></td></tr></tbody></table>
+
+
+</p><p>
+
+</p><ul>
+<li> Learn about a scientific computing application.
+</li><li> Learn about reading input using the <tt>StdIn</tt> library
+and printing formatted output using  the <tt>StdOut</tt> library.
+</li><li> Learn about plotting graphics using the <tt>StdDraw</tt> library.
+</li><li> Learn about using the command line to redirect standard input to read from a file.
+</li><li> Use arrays.
+</li></ul>
+
+<p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (Operating System and Configuration)
+</font></td></tr></tbody></table>
+
+<a name="java-introcs">
+</a></p><p><a name="java-introcs"><b>I used the auto-installer, but when I compile in Terminal/Command Prompt,
+the Java compiler reports that it <em>cannot resolve symbol StdDraw</em>.
+Why is this?</b>
+Be sure to use the commands <code>javac-introcs</code>
+and <code>java-introcs</code> (instead of <code>javac</code> and <code>java</code>);
+these wrapper commands tell Java where to find our standard libraries.
+If you are using the wrapper commands, try re-rerunning the autoinstaller;
+this should fix situations where 
+you moved files that the auto-installer added. Otherwise, check with a lab TA.
+
+</a></p><p><a name="java-introcs"><b>I used the auto-installer.  I can compile my program in <em>DrJava</em>, but when I try
+to run it in Terminal/Command Prompt using <tt>java-introcs</tt>, it complains.</b>
+A common reason is that <em>DrJava</em> is using one version of Java and
+your Terminal/Command Prompt is using a different version. See a lab TA.
+In the meantime, try compiling and executing in Terminal/Command Prompt 
+(instead of compiling in DrJava and executing in Terminal/Command Prompt).
+
+</a></p><p><a name="java-introcs"><b>I did not use the auto-installer. How do I access stdlib.jar?</b>
+We highly recommend using the auto-installer.
+If you are unable to use the auto-installer,
+here are a few
+</a><a href="http://introcs.cs.princeton.edu/java/stdlib/#jar">alternatives</a>.
+
+</p><p><b>I am using an OIT cluster machine.
+How can I access stdlib.jar?</b>
+It may work automatically. If not,
+here are a few
+<a href="http://introcs.cs.princeton.edu/java/stdlib/#jar">alternatives</a>.
+The simplest is to copy 
+<code>StdIn.java</code>, <code>StdOut.java</code>, <code>StdAudio.java</code> and <code>StdDraw.java</code> 
+into the same folder as <code>NBody.java</code>
+(but you'll have to do this for each assignment).
+The lab TAs can help you with this.
+
+</p><p><b>DrJava doesn't let me redirect standard input. What should I do instead?</b>
+Sorry, <em>DrJava</em> does not support redirection or piping; use the 
+Terminal/Command Prompt.
+
+
+
+</p><p><b>What is the best way to download the helper
+files associated with this assignment?
+</b>
+See the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/faq.html#zip">programming assignment FAQ</a>.
+
+
+</p><p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Frequently Asked Questions (Programming)
+</font></td></tr></tbody></table>
+
+</p><p><b>What preparation do I need before beginning this assignment?</b>
+Read Sections 1.4 and 1.5 of the textbook. Also, you should familiarize yourslef
+with the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/cmdline.html">command line</a>.
+
+</p><p><b>Any advice on completing this programming assignment?</b>
+This program is more involved than the previous ones, so
+you should budget more time accordingly.
+The best advice we can give you is to carefully test, debug, and
+re-test your code <em>as you write it</em>. Do <em>not</em> attempt
+to write the whole program at once—if you do, then you will have
+no idea where to find the errors when the program doesn't work.
+Proactive testing will save you enormous amounts of time in the long run.
+Trust us!
+
+</p><p><b>Do I have to follow the assignment specifications for reading input
+from command-line arguments and standard input, and writing output to standard drawing
+and standard output?</b>
+Yes, or you will lose a substantial number of points.
+
+</p><p><b>Checkstyle complains about the variable I named <tt>T</tt>
+because it begins with an uppercase letter. Which name should I use instead?</b>
+By convention, a variable in Java should begin with a lowercase letter
+and use camel case, such as <tt>isLeapYear</tt>.
+A constant variable (a variable whose value does not change during the execution of a program,
+or from one execution of the program to the next) should begin with an
+uppercase letter and use underscores to separate any word boundaries, such as
+<tt>GRAVITATIONAL_CONSTANT</tt>.
+So, a Java variable name might not always perfect align with the corresponding
+domain-specific mathematical notation.
+In this case, <tt>tao</tt> or <tt>stoppingTime</tt> would be fine choices.
+
+
+</p><p><b>Where can I find the APIs for <tt>StdIn</tt>, <tt>StdOut</tt>,
+<tt>StdDraw</tt>, and <tt>StdAudio</tt>?</b>
+They are on pp. 1140–1141 of the textbook. They also appear in
+this <a href="http://introcs.cs.princeton.edu/11cheatsheet/#stdlib">Java cheatsheet</a>.
+
+</p><p><b>Why do I get an <tt>InputMismatchException</tt> or a <tt>NoSuchElementException</tt>
+when I try to read data using <tt>StdIn</tt>?</b>
+</p><ul>
+<p></p><li><tt>InputMismatchException</tt> means that your program is attempting to
+read data of one type but the next piece of data on standard input is of an incompatible type.
+For example, if you use <tt>StdIn.readInt()</tt> and the next token on standard input is <tt>3.14</tt>.
+
+<p></p></li><li><tt>NoSuchElementException</tt> means that your program is trying to read data
+from standard input when there is no more data available from standard input.
+For example, if you use <tt>StdIn.readInt()</tt> to read two integers but standard
+input contains only a single integer.
+(This can also happen if you wipe out an input file, such as <tt>planets.txt</tt>,
+by errantly typing <tt>&gt;</tt> instead of a <tt>&lt;</tt> during a redirection command.)
+
+</li></ul>
+ 
+<p><b>How do I draw an image to standard drawing?</b>
+The command <tt>StdDraw.picture(x, y, filename)</tt> reads the image
+(either JPEG, GIF, or PNG format) from the specified file
+and draws it to standard drawing, 
+centered at (<em>x</em>, <em>y</em>).
+
+<!--
+<p><b>May I write my own functions (static methods)?</b>
+It's not required and not expected for this assignment,
+but it is permitted if you want.
+Here are
+two possibile ways to modularize your program.
+<blockquote><pre>
+// return Euclidean distance between (x1, y1) and (x2, y2)
+private static double distance(double x1, double y1, double x2, double y2)
+
+// return the magnitude of the gravitational force between two bodies
+// of mass m1 and m2 that are distance r apart
+private static double force(double m1, double m2, double r)
+</pre></blockquote>
+
+<p><b>May I write my own objects/classes?</b> 
+There are organizational advantages to using objects, which we'll explore 
+later.  However, for this assignment, for full credit, you must adhere to the parallel array data structure specified in the assignment. Many well-used programming languages do not allow data abstraction and it is good to be able to write readable, well-organized code subject to that limitation.
+-->
+
+</p><p>
+<b>My computer doesn't display the animation smoothly.
+Is there anything I can do?</b>
+Be sure to follow the template in <a href="http://introcs.cs.princeton.edu/java/15inout/BouncingBall.java.html">BouncingBall.java</a>.
+In particular, call <tt>StdDraw.enableDoubleBuffering()</tt> once at the beginning of your program;
+and call <tt>StdDraw.show()</tt> and <tt>StdDraw.pause(20)</tt> at the end of each time step (frame), not
+after each call to <tt>StdDraw.picture()</tt>.
+
+</p><p>
+<b>Can I combine Steps 1, 2, and 3 for each body?</b>
+
+No, as indicated in the assignment, you must separate
+Step 1 (compute all of the forces) from Step 2 (update the positions);
+otherwise, you will be computing the forces at time <em>t</em>
+using the positions of some of bodies at time <em>t</em> and others at 
+time <em>t</em> + Δ<em>t</em>.
+
+</p><p>
+<b>My animation looks fine, but the numbers are off a little bit when I follow 
+the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/checklist/nbody.html#tests">tests</a> below, what could be causing this?</b> 
+Read the question just above — this is the most common cause. Double-check
+that you followed the assignment instructions exactly in the order of how
+positions and velocities are updated.
+
+
+</p><p><b>I draw the bodies, but they do not appear on the screen. Why?</b>
+Did you use <tt>StdDraw.setXscale()</tt> and
+<tt>StdDraw.setYscale()</tt> to change the <em>x</em>- and <em>y</em>-coordinate
+systems to use the physics coordinates instead of the unit box? Since
+you want it centered on the origin with a "square radius" of <em>radius</em>,
+the minimum of each axis should be <em>–radius</em> and the maximum
+should be <em>+radius</em>.
+
+<!--
+<p>
+<b>My bodies don't move.</b>
+Make sure that you are using a large enough value of &Delta;t from 
+the command line.
+(we specify 25000.0, but you might want a smaller one when debugging).
+-->
+
+<!--
+<p><b>I'm confused about all of the &Delta;<em>t</em> / 2 terms. Do I need to worry about them
+to get the physics right?</b>
+No! The update formulas for velocity and position already take this into account.
+As a technicality, the leapfrog method should be initialized with the velocity at time 
+<em>t</em> = -&Delta;<em>t</em> / 2, so we'll assume this is the value in the input file.
+In real codes, special care must be made to deal with this.
+-->
+
+
+
+</p><p><b>My bodies repel each other. Why don't they attract each other?</b>
+Make sure that you get the sign right when you apply Newton's law of gravitation:
+<tt>(x[j] - x[i])</tt> vs. <tt>(x[i] - x[j])</tt>.
+Note that Δ<em>x</em> and Δ<em>y</em> can be positive or negative
+so do not use <tt>Math.abs()</tt>.
+Do not consider changing the universal gravitational constant <em>G</em> to
+patch your code!
+
+<!--
+<p><b>How should I compute x<sup>2</sup>?</b>
+The simplest way is <tt>x*x</tt>. In Java, the <tt>^</tt> operator means
+XOR (not exponentiation).
+-->
+<!-- Don't use <tt>Math.pow(x, 2)</tt>. -->
+
+</p><p><b>What is Δx?</b>
+It's the change in <em>x</em>-coordinate between two bodies (not between
+a body at time <em>t</em> and at time <em>t</em> + Δ<em>t</em>).
+
+</p><p>
+<b>How many steps should my program simulate if <em>Τ</em> is not a multiple of
+Δ<em>t</em>?</b>
+Simulate the universe as long as <em>t</em> &lt; <em>Τ</em>.
+For example, if <em>Τ</em> is 50,000 and Δ<em>t</em> is 25,000, you should
+simulate the system for two steps (<em>t</em> = 0 and 25,000).
+If <em>Τ</em> is 60,000 and Δ<em>t</em>
+is 25,000, you should simulate
+the system for three steps (<em>t</em> = 0, 25,000 and 50,000).
+
+</p><p>
+<b>Does my program need to plot anything if <em>T</em> equals 0?</b>
+No.
+
+<!--
+<p><b>How do I submit the extra credit?</b>
+Submit the extra credit file in the <em>Additional Files</em> dropbox window. 
+Document what you did in
+your <tt>readme.txt</tt> file.
+-->
+
+
+
+<!--
+<p>
+<TABLE BORDER = 0 CELLPADDING = 2 CELLSPACING = 0 WIDTH = 100%>
+<tr align = center>
+<td bgcolor = "000000">
+<font size = +0 face = "helvetica" color = "ffffff">
+Frequently Asked Questions (Sound)
+</table>
+
+<p><b>Everything works until I add StdAudio.play("2001.mid") then 
+everything hangs.  What do I do?</b> On some machines there may be a 
+timing conflict (known in computer science as a "race") between
+between sending things to the drawing window and sending things to 
+the sound card.  Try moving <tt>StdAudio.play()</tt> to a place in the 
+program after your initial calls to <tt>StdDraw.setXscale()</tt> and 
+<tt>StdDraw.setYscale()</tt>.
+
+<p><b>I can play MP3s using my favorite media player, but no sound plays
+in Java. What could be wrong?</b>
+If you are running Windows XP, be sure that the audio stream that Java uses
+is not muted via
+<em>Start -> Programs -> Accessories -> Multimedia -> Volume Control -> Wave Out</em>.
+
+<p><b>When I add the music, I get the following error message on Windows. How can I fix it?</b>
+
+<blockquote><pre>
+java.util.prefs.WindowsPreferences (init).
+Could not open/create prefs root node Software\JavaSoft\Prefs at root 0x80000002.
+Windows RegCreateKeyEx(...) returned error code 5.
+</pre></blockquote>
+
+Try running your command prompt as administrator (right-click on the shortcut icon). Then use it as before and try again.
+If this doesn't help, consult a lab TA.
+
+<p><b>When I add the music, I get the following error message on OS X. How can I fix it?</b>
+
+<blockquote><pre>
+This application, or a library it uses, is using the deprecated Carbon Component Manager
+for hosting Audio Units. Support for this will be removed in a future release.
+</pre></blockquote>
+
+You can ignore it. It is a warning intended for the authors of the Mac OS X Java sound library.
+-->
+
+
+
+</p><p id="tests">
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Testing and Debugging
+</font></td></tr></tbody></table>
+<!--
+<p>Use the following calls to the formatted printing routine <tt>printf</tt>
+
+...
+
+<p>By running your universe for 0, 1, 2, or 3 steps,
+and looking at the resulting final state, you can
+determine the first time your program does something
+different from what we asked for. Here are some sample
+runs to help you check this.
+
+-->
+</p><p>Inserting print statements is a good way to trace what your program is doing. 
+Our input files were created with the following <tt>StdOut.printf()</tt> statements.
+
+</p><blockquote><pre>StdOut.printf("%d\n", n);
+StdOut.printf("%.2e\n", radius);
+for (int i = 0; i &lt; n; i++) {
+    StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+                   px[i], py[i], vx[i], vy[i], mass[i], image[i]);
+}
+</pre></blockquote>
+
+<p><em>As indicated in the collaboration policy, you may not copy or adapt
+code (except from the course materials). Moreover, you need to cite any code
+that you copy or adapt (except for code provided with the assignment).
+So, you are free to copy or adapt this code, with or without citation.</em></p>
+
+<p>
+Here are our results for a few sample inputs.
+
+</p><blockquote><pre>% <b>java-introcs NBody 0.0 25000.0 &lt; planets.txt</b>           <font color="gray">// zero steps</font>
+5
+2.50e+11
+ 1.4960e+11  0.0000e+00  0.0000e+00  2.9800e+04  5.9740e+24    earth.gif
+ 2.2790e+11  0.0000e+00  0.0000e+00  2.4100e+04  6.4190e+23     mars.gif
+ 5.7900e+10  0.0000e+00  0.0000e+00  4.7900e+04  3.3020e+23  mercury.gif
+ 0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  1.9890e+30      sun.gif
+ 1.0820e+11  0.0000e+00  0.0000e+00  3.5000e+04  4.8690e+24    venus.gif
+
+% <b>java-introcs NBody 25000.0 25000.0 &lt; planets.txt</b>       <font color="gray">// one step</font>
+5
+2.50e+11
+ 1.4960e+11  7.4500e+08 -1.4820e+02  2.9800e+04  5.9740e+24    earth.gif
+ 2.2790e+11  6.0250e+08 -6.3860e+01  2.4100e+04  6.4190e+23     mars.gif
+ 5.7875e+10  1.1975e+09 -9.8933e+02  4.7900e+04  3.3020e+23  mercury.gif
+ 3.3087e+01  0.0000e+00  1.3235e-03  0.0000e+00  1.9890e+30      sun.gif
+ 1.0819e+11  8.7500e+08 -2.8329e+02  3.5000e+04  4.8690e+24    venus.gif
+
+% <b>java-introcs NBody 50000.0 25000.0 &lt; planets.txt</b>       <font color="gray">// two steps</font>
+5
+2.50e+11
+ 1.4959e+11  1.4900e+09 -2.9640e+02  2.9799e+04  5.9740e+24    earth.gif
+ 2.2790e+11  1.2050e+09 -1.2772e+02  2.4100e+04  6.4190e+23     mars.gif
+ 5.7826e+10  2.3945e+09 -1.9789e+03  4.7880e+04  3.3020e+23  mercury.gif
+ 9.9262e+01  2.8198e-01  2.6470e-03  1.1279e-05  1.9890e+30      sun.gif
+ 1.0818e+11  1.7499e+09 -5.6660e+02  3.4998e+04  4.8690e+24    venus.gif
+
+% <b>java-introcs NBody 60000.0 25000.0 &lt; planets.txt</b>       <font color="gray">// three steps</font>
+5
+2.50e+11
+ 1.4958e+11  2.2349e+09 -4.4460e+02  2.9798e+04  5.9740e+24    earth.gif
+ 2.2789e+11  1.8075e+09 -1.9158e+02  2.4099e+04  6.4190e+23     mars.gif
+ 5.7752e+10  3.5905e+09 -2.9682e+03  4.7839e+04  3.3020e+23  mercury.gif
+ 1.9852e+02  1.1280e+00  3.9705e-03  3.3841e-05  1.9890e+30      sun.gif
+ 1.0816e+11  2.6248e+09 -8.4989e+02  3.4993e+04  4.8690e+24    venus.gif
+
+
+% <b>java-introcs NBody 31557600.0 25000.0 &lt; planets.txt</b>    <font color="gray">// one year</font>
+5
+2.50e+11
+ 1.4959e+11 -1.6531e+09  3.2949e+02  2.9798e+04  5.9740e+24    earth.gif
+-2.2153e+11 -4.9263e+10  5.1805e+03 -2.3640e+04  6.4190e+23     mars.gif
+ 3.4771e+10  4.5752e+10 -3.8269e+04  2.9415e+04  3.3020e+23  mercury.gif
+ 5.9426e+05  6.2357e+06 -5.8569e-02  1.6285e-01  1.9890e+30      sun.gif
+-7.3731e+10 -7.9391e+10  2.5433e+04 -2.3973e+04  4.8690e+24    venus.gif
+
+<font color="gray">// this test should take only a few seconds. 4.294E9 is bigger than the largest int</font>
+% <b>java-introcs NBody 4.294E9 2.147E9 &lt; 3body.txt</b>       
+3
+1.25e+11
+ 2.1470e+12 -7.8082e-03  5.0000e+02 -3.6368e-12  5.9740e+24    earth.gif
+ 1.2882e+14 -1.5100e+17  3.0000e+04 -3.5165e+07  1.9890e+30      sun.gif
+-1.2882e+14  1.5100e+17 -3.0000e+04  3.5165e+07  1.9890e+30      sun.gif
+</pre></blockquote>
+
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Possible Progress Steps
+</font></td></tr></tbody></table>
+</p><p>
+
+These are purely suggestions for how you might make progress.  You do
+not have to follow these steps.
+If you get stumped or frustrated on some portion of the assignment,
+you should not hesitate to consult a preceptor.
+
+</p><ul>
+
+<p></p><li>
+Download the helper files, by following the instructions in the 
+<a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/faq.html#zip">programming assignment FAQ</a>.
+
+<p></p></li><li> 
+Read Section 1.5.
+Review <a href="http://introcs.cs.princeton.edu/15inout/DeluxeBouncingBall.java.html">
+DeluxeBouncingBall.java</a> for help with standard drawing. There are many 
+methods in <tt>StdDraw</tt>, but for this assignment, you won't need only those in
+<tt>DeluxeBouncingBall.java</tt>.
+Review <a href="http://introcs.cs.princeton.edu/15inout/Students.java.html">
+Students.java</a> for help with standard input.
+Compile and execute both of these programs to make sure your system is 
+configured properly.
+For <tt>DeluxeBouncingBall.java</tt> you will also need the sound files
+<a href="http://introcs.cs.princeton.edu/15inout/laser.wav">
+laser.wav</a> and
+<a href="http://introcs.cs.princeton.edu/15inout/pop.wav">
+pop.wav</a>.
+For <tt>Students.java</tt> you can use the file
+<a href="http://introcs.cs.princeton.edu/15inout/students.txt">
+students.txt</a> as input.
+
+
+
+<p></p></li><li> Review the input format specified on the assignment page. The sample input files
+<a href="ftp://ftp.cs.princeton.edu/pub/cs126/nbody/planets.txt">planets.txt</a>
+and <a href="ftp://ftp.cs.princeton.edu/pub/cs126/nbody/3body.txt">3body.txt</a>
+conform to this format. Your program should be able to read either of these files,
+via redirection from standard input.
+
+<p>Read the data from standard input,
+storing the number of bodies in an
+integer variable <tt>n</tt>, the radius of the universe in a floating-point
+variable <tt>radius</tt>, and the remaining information
+in six parallel arrays: Let <tt>px[i]</tt>, <tt>py[i]</tt>,
+<tt>vx[i]</tt>, <tt>vy[i]</tt>, and <tt>mass[i]</tt>
+be floating-point numbers which store the current
+position (<em>x</em>- and <em>y</em>-coordinates),
+velocity (<em>x</em>- and <em>y</em>-components), and mass of body <tt>i</tt>;
+let <tt>image[i]</tt> be a string which represents
+the filename of the image used to display body <tt>i</tt>.
+
+</p><p>
+Print the information back out in the specified format.
+Right now, you are printing the information to aid in debugging;
+later, you will use this code to print the state of the universe
+at the end of the simulation. Does it work? Try running
+
+</p><pre>% <b>java-introcs NBody 0 1 &lt; planets.txt</b> 
+5
+2.50e+11
+ 1.4960e+11  0.0000e+00  0.0000e+00  2.9800e+04  5.9740e+24    earth.gif
+ 2.2790e+11  0.0000e+00  0.0000e+00  2.4100e+04  6.4190e+23     mars.gif
+ 5.7900e+10  0.0000e+00  0.0000e+00  4.7900e+04  3.3020e+23  mercury.gif
+ 0.0000e+00  0.0000e+00  0.0000e+00  0.0000e+00  1.9890e+30      sun.gif
+ 1.0820e+11  0.0000e+00  0.0000e+00  3.5000e+04  4.8690e+24    venus.gif
+</pre>
+
+<p>
+Next,
+parse the two command-line arguments <em>Τ</em> and Δ<em>t</em>
+and store their values for later. Name the first command-line argument <tt>tau</tt>
+or <tt>stoppingTime</tt> since you should not begin a Java variable name with an uppercase letter.
+
+</p><p>
+<em>Do not even think of continuing
+until you have tested and debugged this part.</em>
+
+
+</p><p></p></li><li>
+Between the code for your input and printed output, create the
+"time" loop. Its body will perform a single
+time step of the simulation, and increase the current time counter
+by Δ<i>t</i>. 
+Steps 3, 2 and 1 (below) will go inside this time loop.  
+Use the information you parsed from the command-line arguments
+to control this loop.
+Check that your code still compiles and runs.
+
+
+<p></p></li><li> <b>Step 3.</b> Get a basic stationary picture working. 
+
+<ul>
+<p></p><li>First, set the scale of the standard drawing window so that (0, 0) 
+is at the center, (−<em>radius</em>, −<em>radius</em>) is 
+the lower-left corner, and 
+(+<em>radius</em>, +<em>radius</em>) is the upper-right corner.
+
+<p></p></li><li>Next, use <tt>StdDraw.picture(x, y, filename)</tt> to draw the background 
+image <tt>starfield.jpg</tt>, centered at (0, 0).
+
+<p></p></li><li>Then, write a loop to
+display the <em>n</em> bodies.
+
+If all goes correctly, you should see the four stationary planets 
+and the sun. Test that it works with <tt>planets.txt</tt>.
+Then, test it on another input file.
+
+<p>
+</p><center>
+<img src="./Programming Assignment Checklist_ N-Body Simulation_files/nbody-stationary.jpg" width="256" height="256" alt="N-body simulation">
+</center>
+
+</li></ul>
+
+
+
+
+<p></p></li><li> <b>Step 2.</b>
+Write a loop to calculate the new velocity and position for each body.
+(This code goes before the plotting code you wrote in Step 3.)
+Since we haven't yet incorporated gravity, assume the acceleration
+acting on each body is zero.
+<!--Add an outer loop to repeat Steps 2 and 3 until the time reaches T.-->
+You should now see the four planets moving off the screen in a straight
+line, with constant velocity.
+
+<p>
+You will like notice that the planets are flickering. To make a smooth animation,
+use <em>double buffering</em>, following the template in
+<a href="http://introcs.cs.princeton.edu/java/15inout/BouncingBall.java.html">BouncingBall.java</a>.
+In particular, call <tt>StdDraw.enableDoubleBuffering()</tt> once at the beginning of your program;
+and call <tt>StdDraw.show()</tt> and <tt>StdDraw.pause(20)</tt> at the end of each time step (frame),
+not after each call to <tt>StdDraw.picture()</tt>.
+<em>Test it</em> on <tt>planets.txt</tt>, and then on another data file.
+
+</p><p></p></li><li> <b>Step 1.</b>
+Now, calculate the net force acting on each body.
+(This code goes before the stuff you wrote in Step 2.)
+You will need two additional arrays <tt>fx[i]</tt> and <tt>fy[i]</tt>
+to store the net force acting on body <tt>i</tt>.
+First, initialize all the net forces to 0.0.
+Then write two nested <tt>for</tt>
+loops to calculate the net force exerted by body <tt>j</tt> on body <tt>i</tt>.
+Add these values to <tt>fx[i]</tt> and <tt>fy[i]</tt>, but skip the
+case when <tt>i</tt> equals <tt>j</tt>. Once you have these values computed, go back
+to Step 2 and use them to compute the acceleration (instead of 
+assuming it is zero).
+Test your program on <em>several</em> data files.
+
+<!--
+<p><li>
+Finally, add the music.  At the beginning of the simulation (outside of any loop), 
+use <tt>StdAudio.play("2001.mid")</tt> to play the 2001 theme.
+Test it.
+-->
+
+</li></ul>
+
+<!--
+<a name="review"></a><p id="style">
+<TABLE BORDER = 0 CELLPADDING = 2 CELLSPACING = 0 WIDTH = 100%>
+<tr align = left>
+<td bgcolor = "000000">
+<font size = +0 face = "helvetica" color = "ffffff">
+<center>Reviewing your Program</center>
+</table>
+
+<ul>
+<p><li>Review your header, comments, and style, keeping in
+mind the
+guidelines from <a href="http://www.cs.princeton.edu/courses/archive/spring13/cos126/checklist/loops.html#style">
+previous weeks</a>. 
+
+
+<p><li>Upon submission, does checkstyle give you any important warnings? 
+
+<p><li><b>Avoid hard-wired, unexplained constants.</b>
+   <ul><li>For example, in a program about generating and 
+    counting digits where <code>9</code> is used in several places,
+     define a variable <code>MAX_DIGIT = 9;</code> and change
+   all relevant <code>9</code>s to <code>MAX_DIGIT</code>.
+<p>
+<li>An all-capital name
+ is often understood by readers 
+to indicate a constant that does not depend on
+   the input to the program.
+<p>
+<li>This makes your program 
+   easy to understand <i>and</i> easy to modify 
+  if you want to use a different base (say, binary instead of decimal).
+<p>
+ <li>0, 1 or 2 used in an
+   obvious manner is OK, but anything else should either be named,
+   or have a comment explaining where it comes from. This is especially
+   true if the same constant is used more than once.
+</ul>
+
+</ul>
+
+-->
+
+<p>
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr align="center">
+<td bgcolor="000000">
+<font size="+0" face="helvetica" color="ffffff">
+Enrichment
+</font></td></tr></tbody></table>
+</p><p>
+
+<!--
+<p><b>What is the music in <tt>2001.mid</tt>?</b>
+It's the fanfare to
+<a href = "http://en.wikipedia.org/wiki/Also_sprach_Zarathustra_(Richard_Strauss)">
+Also sprach Zarathustra</a> by Richard Strauss. 
+It was popularized as the key musical motif in Stanley Kubrick's 1968 film
+<a href = "http://www.tcm.com/mediaroom/index.jsp?cid=193186">2001: A Space Odyssey</a>.
+-->
+
+</p><p><b>I'm a physicist. Why should I use the leapfrog method instead of  
+the formula I derived in high school?
+In other words, why does the position update formula use the velocity at the 
+<em>updated</em> time step rather than the previous one?
+Why not use the 1/2 a t^2 formula?
+</b>
+The leapfrog method is more stable for integrating Hamiltonian systems
+than conventional numerical methods like Euler's method or Runge–Kutta.
+The leapfrog method is <em>symplectic</em>, which means it preserves properties
+specific to Hamiltonian systems (conservation of linear and angular momentum,
+time-reversibility, and conservation of energy of the discrete Hamiltonian).
+In contrast, ordinary numerical methods become dissipative and exhibit
+qualitatively different long-term behavior. For example, the earth would slowly
+spiral into (or away from) the sun. For these reasons, symplectic methods
+are extremely popular for <em>n</em>-body calculations in practice. You asked!
+
+</p><p>
+Here's a more complete explanation of how you should interpret the variables.
+The classic <em>Euler method</em> updates the position uses the velocity
+at time <em>t</em> instead of using the updated velocity
+at time <em>t</em> + Δ<em>t</em>.
+A better idea is to use the velocity at the midpoint
+<em>t</em> + Δ<em>t</em> / 2.
+The leapfrog method does this in a clever way. It maintains the
+position and velocity one-half time step out of phase: At
+the beginning of an iteration, 
+(<em>p<sub>x</sub></em>, <em>p<sub>y</sub></em>) represents
+the position at time <em>t</em> and 
+(<em>v<sub>x</sub></em>, <em>v<sub>y</sub></em>) represents
+the velocity at time <em>t</em> − Δ<em>t</em> / 2. Interpreting
+the position and velocity in this way, the updated position
+(<em>p<sub>x</sub></em> + Δ<em>t</em> <em>v<sub>x</sub></em>,
+ <em>p<sub>y</sub></em> + Δ<em>t</em> <em>v<sub>y</sub></em>).
+uses the velocity at time <em>t</em> + Δ<em>t</em> / 2. 
+Almost magically, the only special care needed to deal with the
+half time-steps is to initialize the system's
+velocity at time <em>t</em> = −Δ<em>t</em> / 2 (instead of
+<em>t</em> = 0.0), and you can assume that we have already done this for you.
+Note also that the acceleration is computed at time <em>t</em>
+so that when we update the velocity, we are using the acceleration
+at the midpoint of the interval under consideration.
+
+</p><p><b>Are there analytic solutions known for n-body systems?</b>
+Yes, Sundman and Wang developed global analytical solutions using
+convergent power series. However, the series converge so slowly that they
+are not useful in practice.
+See <a href="http://www.math.uvic.ca/faculty/diacu/diacuNbody.pdf">The Solution
+of the N-body Problem</a> for a brief history of the problem.
+
+
+</p><p><b>Who uses n-body simulation?</b>
+N-body simulations play a crucial role in our understanding of the
+universe. Astrophysicists use it to study stellar dynamics at the galactic 
+center, stellar dynamics in a globular cluster, colliding galaxies, and
+the formation of the structure of the Universe. The strongest evidence we have
+for the belief that there is a black hole in the center of the Milky Way comes
+from very accurate <em>n</em>-body simulations. Many of the problems that astrophysicists
+want to solve have millions or billions of particles. More sophisticated computational
+techniques are needed. 
+
+</p><p>
+The same methods are also widely used in molecular dynamics, except
+that the heavenly bodies are replaced by atoms, gravity is replaced by some other
+force, and the leapfrog method is called <em>Verlet's method</em>.
+With van der Waals forces, the interaction energy may decay as 1/<em>R</em><sup>6</sup> instead of
+an inverse square law. Occasionally, 3-way interactions must be taken into 
+account, e.g., to account for the covalent bonds in diamond crystals.
+<!--
+To simulate bulk pieces of matter (10^23 atoms) scientists often use periodic
+boundary conditions since it's not possible to simulate nearly that many
+atoms.-->
+
+</p><p>
+<a href="http://www.art.net/~simran/GenerativeMusic/Kepler.html">Kepler's Orrery</a>
+uses an <em>n</em>-body simulator to compose and play music.
+
+</p><p><b>What techniques are used to do n-body simulation in practice?</b>
+Here's a wealth of information on
+<a href="http://www.midwestcs.com/xstar/n-body.pdf">n-body simulation</a>.
+
+</p><p><b>Any ideas for creating my own universe?</b>
+Here are some interesting
+<a href="http://en.wikipedia.org/wiki/Barycenter">
+two-body systems</a>.
+Here is beautiful <a href="http://cosmicvariance.com/2006/07/23/n-bodies/">21-body system</a>
+in a figure-8 —reproducing this system (in a data file in our format)
+will earn you a small amount extra credit.
+
+
+
+
+
+
+
+
+
+
+
+</p></body></html>

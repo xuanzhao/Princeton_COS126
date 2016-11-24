@@ -1,0 +1,537 @@
+
+<!-- saved from url=(0080)http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/loops.html -->
+<html class="gr__cs_princeton_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="./COS 126 Programming Assignment_ Conditionals and Loops_files/seasonal.css">
+<title>COS 126 Programming Assignment: Conditionals and Loops</title><script type="text/javascript" src="./COS 126 Programming Assignment_ Conditionals and Loops_files/MathJax.js"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax.MathJax_FullWidth {text-align: center; display: table-cell!important; width: 10000em!important}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax_LineBox {display: table!important}
+.MathJax_LineBox span {display: table-cell!important; width: 10000em!important; min-width: 0; max-width: none; padding: 0; border: 0; margin: 0}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Blank; src: url('about:blank')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+
+
+<body bgcolor="#FFFFFF" data-gr-c-s-loaded="true"><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"></div></div><div id="MathJax_Message" style="display: none;"></div>
+<table width="100%" border="0">
+<tbody><tr align="LEFT" valign="BOTTOM">
+<td><strong>COS 126</strong><br><br>
+<strong><font size="+2">Conditionals, Loops<span class="spring-only">, Arrays<span></span></span></font></strong></td>
+<td align="RIGHT" valign="BOTTOM">
+<strong>Programming Assignment</strong><br><br>
+</td></tr></tbody></table>
+<hr>
+<p>
+
+
+</p><div class="spring-only">
+The goal of this assignment is to write five short Java programs
+to gain practice with loops, conditionals, and arrays.
+</div>
+<div class="fall-only">
+The goal of this assignment is to write five short Java programs
+to gain practice with loops and conditionals.
+</div>
+
+
+<ol>
+
+<li class="spring-only"><b>Bits.</b>
+Write a program <tt>Bits.java</tt>
+that takes an integer command-line argument <tt>n</tt> and uses 
+a <tt>while</tt> loop to compute the number of times
+you need to divide <tt>n</tt> by 2 until it is strictly less than 1.
+Print the error message "<tt>Illegal input</tt>" if <tt>n</tt> is negative.
+
+
+<blockquote>
+<table>
+<tbody><tr><td><pre>% <b>java Bits 0</b>                     % <b>java Bits 8</b>
+0                                 4
+
+% <b>java Bits 1</b>                     % <b>java Bits 16</b>
+1                                 5
+
+% <b>java Bits 2</b>                     %<b> java Bits 1000</b>
+2                                 10
+
+% <b>java Bits 4</b>                     %<b> java Bits -23</b>
+3                                 Illegal input
+</pre></td></tr>
+</tbody></table>
+</blockquote>
+
+<p>
+<em>This computes the number of bits in the binary 
+representation of <em>n</em>, which also equals 1 + floor(log<sub>2</sub> <em>n</em>)
+when <em>n</em> is positive.
+This quantity arises in information theory and the analysis of algorithms.</em>
+
+</p></li><li class="fall-only"><b>Boolean and integer variables.</b>
+Write a program <tt>Ordered.java</tt> 
+that takes three integer command-line arguments, 
+<em>x</em>, <em>y</em>, and <em>z</em>.
+<!-- (You may assume that exactly three 
+integers will be entered when the program is run.)
+-->
+Define a <tt>boolean</tt> variable whose
+value is <tt>true</tt> if the three values are either in
+strictly ascending order  (<em>x &lt; y &lt; z</em>) or
+in strictly descending order (<em>x &gt; y &gt; z</em>),
+and <tt>false</tt> otherwise.
+<blockquote><pre>% <b>java Ordered 10 17 49</b>
+true
+
+% <b>java Ordered 49 17 10</b>
+true
+
+% <b>java Ordered 10 49 17</b>
+false
+</pre></blockquote>
+
+Do <em>not</em> use a conditional or loop
+(such as an <tt>if</tt>, <tt>while</tt>, or <tt>for</tt> statement) on this question.
+
+<p>
+</p></li><li class="fall-only"> <b>Type conversion and conditionals.</b> &nbsp;
+Several different formats are used to represent color. For 
+example, the primary format for LCD displays, digital cameras, and web pages—known
+as the <em>RGB format</em>—specifies the level of red (R), green (G), and blue (B) 
+on an integer scale from 0 to 255. The primary format for publishing books and 
+magazines—known as the <em>CMYK format</em>—specifies the level of cyan (C), magenta 
+(M), yellow (Y), and black (K) on a real scale from 0.0 to 1.0. 
+
+<p>
+Write a program
+<tt>RGBtoCMYK.java</tt> that converts from RGB format to CMYK format. 
+Your program should read three integer command-line arugments
+<tt>red</tt>, <tt>green</tt>, and <tt>blue</tt>;
+print the RGB values; then print
+the equivalent CMYK values using these mathematical formulas: 
+
+
+</p><blockquote>
+<span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-1-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mtable columnalign=&quot;right left right left right left right left right left right left&quot; rowspacing=&quot;3pt&quot; columnspacing=&quot;0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em&quot; displaystyle=&quot;true&quot;&gt;&lt;mtr&gt;&lt;mtd&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;/mtd&gt;&lt;mtd&gt;&lt;mi&gt;&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mo movablelimits=&quot;true&quot; form=&quot;prefix&quot;&gt;max&lt;/mo&gt;&lt;mrow&gt;&lt;mo&gt;{&lt;/mo&gt;&lt;mrow&gt;&lt;mspace width=&quot;thinmathspace&quot; /&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;/mrow&gt;&lt;mn&gt;255&lt;/mn&gt;&lt;/mfrac&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thinmathspace&quot; /&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mi&gt;g&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/mrow&gt;&lt;mn&gt;255&lt;/mn&gt;&lt;/mfrac&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mspace width=&quot;thinmathspace&quot; /&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/mrow&gt;&lt;mn&gt;255&lt;/mn&gt;&lt;/mfrac&gt;&lt;mspace width=&quot;thinmathspace&quot; /&gt;&lt;/mrow&gt;&lt;mo&gt;}&lt;/mo&gt;&lt;/mrow&gt;&lt;/mtd&gt;&lt;/mtr&gt;&lt;mtr&gt;&lt;mtd&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;/mtd&gt;&lt;mtd&gt;&lt;mi&gt;&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mrow class=&quot;MJX-TeXAtom-OPEN&quot;&gt;&lt;mo maxsize=&quot;1.623em&quot; minsize=&quot;1.623em&quot;&gt;(&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;/mrow&gt;&lt;mn&gt;255&lt;/mn&gt;&lt;/mfrac&gt;&lt;mrow class=&quot;MJX-TeXAtom-CLOSE&quot;&gt;&lt;mo maxsize=&quot;1.623em&quot; minsize=&quot;1.623em&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mo&gt;&amp;#x00F7;&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/mtd&gt;&lt;/mtr&gt;&lt;mtr&gt;&lt;mtd&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;g&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;/mtd&gt;&lt;mtd&gt;&lt;mi&gt;&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mrow class=&quot;MJX-TeXAtom-OPEN&quot;&gt;&lt;mo maxsize=&quot;1.623em&quot; minsize=&quot;1.623em&quot;&gt;(&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mi&gt;g&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/mrow&gt;&lt;mn&gt;255&lt;/mn&gt;&lt;/mfrac&gt;&lt;mrow class=&quot;MJX-TeXAtom-CLOSE&quot;&gt;&lt;mo maxsize=&quot;1.623em&quot; minsize=&quot;1.623em&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mo&gt;&amp;#x00F7;&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/mtd&gt;&lt;/mtr&gt;&lt;mtr&gt;&lt;mtd&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;/mtd&gt;&lt;mtd&gt;&lt;mi&gt;&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mrow class=&quot;MJX-TeXAtom-OPEN&quot;&gt;&lt;mo maxsize=&quot;1.623em&quot; minsize=&quot;1.623em&quot;&gt;(&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/mrow&gt;&lt;mn&gt;255&lt;/mn&gt;&lt;/mfrac&gt;&lt;mrow class=&quot;MJX-TeXAtom-CLOSE&quot;&gt;&lt;mo maxsize=&quot;1.623em&quot; minsize=&quot;1.623em&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mo&gt;&amp;#x00F7;&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/mtd&gt;&lt;/mtr&gt;&lt;mtr&gt;&lt;mtd&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;/mtd&gt;&lt;mtd&gt;&lt;mi&gt;&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mspace width=&quot;thickmathspace&quot; /&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;/mtd&gt;&lt;/mtr&gt;&lt;/mtable&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-1" style="width: 18.152em; display: inline-block;"><span style="display: inline-block; position: relative; width: 17.431em; height: 0px; font-size: 104%;"><span style="position: absolute; clip: rect(-3.543em 1017.13em 7.275em -999.997em); top: -2.1em; left: 0em;"><span class="mrow" id="MathJax-Span-2"><span class="mtable" id="MathJax-Span-3" style="padding-right: 0.183em; padding-left: 0.183em;"><span style="display: inline-block; position: relative; width: 17.07em; height: 0px;"><span style="position: absolute; clip: rect(5.652em 1003.79em 15.628em -999.997em); top: -10.634em; left: 0em;"><span style="display: inline-block; position: relative; width: 3.789em; height: 0px;"><span style="position: absolute; clip: rect(3.188em 1002.53em 4.21em -999.997em); top: -8.17em; right: 0em;"><span class="mtd" id="MathJax-Span-4"><span class="mrow" id="MathJax-Span-5"><span class="mi" id="MathJax-Span-6" style="font-family: STIXGeneral-Italic;">w</span><span class="mi" id="MathJax-Span-7" style="font-family: STIXGeneral-Italic;">h</span><span class="mi" id="MathJax-Span-8" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-9" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-10" style="font-family: STIXGeneral-Italic;">e</span><span class="mspace" id="MathJax-Span-11" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.428em 1002.23em 4.39em -999.997em); top: -5.706em; right: 0em;"><span class="mtd" id="MathJax-Span-49"><span class="mrow" id="MathJax-Span-50"><span class="mi" id="MathJax-Span-51" style="font-family: STIXGeneral-Italic;">c</span><span class="mi" id="MathJax-Span-52" style="font-family: STIXGeneral-Italic;">y</span><span class="mi" id="MathJax-Span-53" style="font-family: STIXGeneral-Italic;">a</span><span class="mi" id="MathJax-Span-54" style="font-family: STIXGeneral-Italic;">n</span><span class="mspace" id="MathJax-Span-55" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.308em 1003.79em 4.39em -999.997em); top: -3.483em; right: 0em;"><span class="mtd" id="MathJax-Span-87"><span class="mrow" id="MathJax-Span-88"><span class="mi" id="MathJax-Span-89" style="font-family: STIXGeneral-Italic;">m</span><span class="mi" id="MathJax-Span-90" style="font-family: STIXGeneral-Italic;">a</span><span class="mi" id="MathJax-Span-91" style="font-family: STIXGeneral-Italic;">g</span><span class="mi" id="MathJax-Span-92" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-93" style="font-family: STIXGeneral-Italic;">n</span><span class="mi" id="MathJax-Span-94" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-95" style="font-family: STIXGeneral-Italic;">a</span><span class="mspace" id="MathJax-Span-96" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1002.95em 4.39em -999.997em); top: -1.079em; right: 0em;"><span class="mtd" id="MathJax-Span-130"><span class="mrow" id="MathJax-Span-131"><span class="mi" id="MathJax-Span-132" style="font-family: STIXGeneral-Italic;">y</span><span class="mi" id="MathJax-Span-133" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-134" style="font-family: STIXGeneral-Italic;">l<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-135" style="font-family: STIXGeneral-Italic;">l<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-136" style="font-family: STIXGeneral-Italic;">o</span><span class="mi" id="MathJax-Span-137" style="font-family: STIXGeneral-Italic;">w</span><span class="mspace" id="MathJax-Span-138" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1002.53em 4.21em -999.997em); top: 0.784em; right: 0em;"><span class="mtd" id="MathJax-Span-171"><span class="mrow" id="MathJax-Span-172"><span class="mi" id="MathJax-Span-173" style="font-family: STIXGeneral-Italic;">b</span><span class="mi" id="MathJax-Span-174" style="font-family: STIXGeneral-Italic;">l<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-175" style="font-family: STIXGeneral-Italic;">a</span><span class="mi" id="MathJax-Span-176" style="font-family: STIXGeneral-Italic;">c</span><span class="mi" id="MathJax-Span-177" style="font-family: STIXGeneral-Italic;">k<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mspace" id="MathJax-Span-178" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span></span><span style="display: inline-block; width: 0px; height: 10.64em;"></span></span><span style="position: absolute; clip: rect(5.772em 1013.16em 16.529em -999.997em); top: -11.415em; left: 3.789em;"><span style="display: inline-block; position: relative; width: 13.344em; height: 0px;"><span style="position: absolute; clip: rect(2.467em 1013.16em 4.991em -999.997em); top: -8.17em; left: 0em;"><span class="mtd" id="MathJax-Span-12"><span class="mrow" id="MathJax-Span-13"><span class="mi" id="MathJax-Span-14"></span><span class="mo" id="MathJax-Span-15" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mspace" id="MathJax-Span-16" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-17" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">max</span><span class="mrow" id="MathJax-Span-18" style="padding-left: 0.183em;"><span class="mo" id="MathJax-Span-19" style="vertical-align: -0.478em;"><span><span style="font-size: 111%; font-family: STIXSizeTwoSym;">{</span></span></span><span class="mrow" id="MathJax-Span-20"><span class="mspace" id="MathJax-Span-21" style="height: 0em; vertical-align: 0em; width: 0.183em; display: inline-block; overflow: hidden;"></span><span class="mfrac" id="MathJax-Span-22"><span style="display: inline-block; position: relative; width: 1.626em; height: 0px; margin-right: 0.123em; margin-left: 0.123em;"><span style="position: absolute; clip: rect(3.188em 1001.38em 4.21em -999.997em); top: -4.684em; left: 50%; margin-left: -0.718em;"><span class="mrow" id="MathJax-Span-23"><span class="mi" id="MathJax-Span-24" style="font-family: STIXGeneral-Italic;">r<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-25" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-26" style="font-family: STIXGeneral-Italic;">d<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1001.45em 4.21em -999.997em); top: -3.362em; left: 50%; margin-left: -0.718em;"><span class="mn" id="MathJax-Span-27" style="font-family: STIXGeneral-Regular;">255</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(0.844em 1001.63em 1.265em -999.997em); top: -1.319em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 1.626em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.085em;"></span></span></span></span><span class="mo" id="MathJax-Span-28" style="font-family: STIXGeneral-Regular;">,</span><span class="mspace" id="MathJax-Span-29" style="height: 0em; vertical-align: 0em; width: 0.183em; display: inline-block; overflow: hidden;"></span><span class="mfrac" id="MathJax-Span-30" style="padding-left: 0.183em;"><span style="display: inline-block; position: relative; width: 2.407em; height: 0px; margin-right: 0.123em; margin-left: 0.123em;"><span style="position: absolute; clip: rect(3.428em 1002.29em 4.39em -999.997em); top: -4.745em; left: 50%; margin-left: -1.139em;"><span class="mrow" id="MathJax-Span-31"><span class="mi" id="MathJax-Span-32" style="font-family: STIXGeneral-Italic;">g</span><span class="mi" id="MathJax-Span-33" style="font-family: STIXGeneral-Italic;">r<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-34" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-35" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-36" style="font-family: STIXGeneral-Italic;">n</span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1001.45em 4.21em -999.997em); top: -3.362em; left: 50%; margin-left: -0.718em;"><span class="mn" id="MathJax-Span-37" style="font-family: STIXGeneral-Regular;">255</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(0.844em 1002.41em 1.265em -999.997em); top: -1.319em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 2.407em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.085em;"></span></span></span></span><span class="mo" id="MathJax-Span-38" style="font-family: STIXGeneral-Regular;">,</span><span class="mspace" id="MathJax-Span-39" style="height: 0em; vertical-align: 0em; width: 0.183em; display: inline-block; overflow: hidden;"></span><span class="mfrac" id="MathJax-Span-40" style="padding-left: 0.183em;"><span style="display: inline-block; position: relative; width: 1.866em; height: 0px; margin-right: 0.123em; margin-left: 0.123em;"><span style="position: absolute; clip: rect(3.188em 1001.69em 4.21em -999.997em); top: -4.684em; left: 50%; margin-left: -0.838em;"><span class="mrow" id="MathJax-Span-41"><span class="mi" id="MathJax-Span-42" style="font-family: STIXGeneral-Italic;">b</span><span class="mi" id="MathJax-Span-43" style="font-family: STIXGeneral-Italic;">l<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-44" style="font-family: STIXGeneral-Italic;">u</span><span class="mi" id="MathJax-Span-45" style="font-family: STIXGeneral-Italic;">e</span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1001.45em 4.21em -999.997em); top: -3.362em; left: 50%; margin-left: -0.718em;"><span class="mn" id="MathJax-Span-46" style="font-family: STIXGeneral-Regular;">255</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(0.844em 1001.87em 1.265em -999.997em); top: -1.319em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 1.866em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.085em;"></span></span></span></span><span class="mspace" id="MathJax-Span-47" style="height: 0em; vertical-align: 0em; width: 0.183em; display: inline-block; overflow: hidden;"></span></span><span class="mo" id="MathJax-Span-48" style="vertical-align: -0.478em;"><span><span style="font-size: 111%; font-family: STIXSizeTwoSym;">}</span></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(2.467em 1011.84em 4.931em -999.997em); top: -5.706em; left: 0em;"><span class="mtd" id="MathJax-Span-56"><span class="mrow" id="MathJax-Span-57"><span class="mi" id="MathJax-Span-58"></span><span class="mo" id="MathJax-Span-59" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mspace" id="MathJax-Span-60" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="texatom" id="MathJax-Span-61" style="padding-left: 0.303em;"><span class="mrow" id="MathJax-Span-62"><span class="mo" id="MathJax-Span-63" style="vertical-align: -0.418em;"><span style="font-family: STIXSizeTwoSym;">(</span></span></span></span><span class="mi" id="MathJax-Span-64" style="font-family: STIXGeneral-Italic;">w</span><span class="mi" id="MathJax-Span-65" style="font-family: STIXGeneral-Italic;">h</span><span class="mi" id="MathJax-Span-66" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-67" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-68" style="font-family: STIXGeneral-Italic;">e</span><span class="mo" id="MathJax-Span-69" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mfrac" id="MathJax-Span-70" style="padding-left: 0.243em;"><span style="display: inline-block; position: relative; width: 1.626em; height: 0px; margin-right: 0.123em; margin-left: 0.123em;"><span style="position: absolute; clip: rect(3.188em 1001.38em 4.21em -999.997em); top: -4.684em; left: 50%; margin-left: -0.718em;"><span class="mrow" id="MathJax-Span-71"><span class="mi" id="MathJax-Span-72" style="font-family: STIXGeneral-Italic;">r<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-73" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-74" style="font-family: STIXGeneral-Italic;">d<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1001.45em 4.21em -999.997em); top: -3.362em; left: 50%; margin-left: -0.718em;"><span class="mn" id="MathJax-Span-75" style="font-family: STIXGeneral-Regular;">255</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(0.844em 1001.63em 1.265em -999.997em); top: -1.319em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 1.626em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.085em;"></span></span></span></span><span class="texatom" id="MathJax-Span-76" style=""><span class="mrow" id="MathJax-Span-77"><span class="mo" id="MathJax-Span-78" style="vertical-align: -0.418em;"><span style="font-family: STIXSizeTwoSym;">)</span></span></span></span><span class="mspace" id="MathJax-Span-79" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-80" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">÷</span><span class="mspace" id="MathJax-Span-81" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="mi" id="MathJax-Span-82" style="font-family: STIXGeneral-Italic; padding-left: 0.243em;">w</span><span class="mi" id="MathJax-Span-83" style="font-family: STIXGeneral-Italic;">h</span><span class="mi" id="MathJax-Span-84" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-85" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-86" style="font-family: STIXGeneral-Italic;">e</span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(2.647em 1012.62em 4.931em -999.997em); top: -3.483em; left: 0em;"><span class="mtd" id="MathJax-Span-97"><span class="mrow" id="MathJax-Span-98"><span class="mi" id="MathJax-Span-99"></span><span class="mo" id="MathJax-Span-100" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mspace" id="MathJax-Span-101" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="texatom" id="MathJax-Span-102" style="padding-left: 0.303em;"><span class="mrow" id="MathJax-Span-103"><span class="mo" id="MathJax-Span-104" style="vertical-align: -0.418em;"><span style="font-family: STIXSizeTwoSym;">(</span></span></span></span><span class="mi" id="MathJax-Span-105" style="font-family: STIXGeneral-Italic;">w</span><span class="mi" id="MathJax-Span-106" style="font-family: STIXGeneral-Italic;">h</span><span class="mi" id="MathJax-Span-107" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-108" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-109" style="font-family: STIXGeneral-Italic;">e</span><span class="mo" id="MathJax-Span-110" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mfrac" id="MathJax-Span-111" style="padding-left: 0.243em;"><span style="display: inline-block; position: relative; width: 2.407em; height: 0px; margin-right: 0.123em; margin-left: 0.123em;"><span style="position: absolute; clip: rect(3.428em 1002.29em 4.39em -999.997em); top: -4.745em; left: 50%; margin-left: -1.139em;"><span class="mrow" id="MathJax-Span-112"><span class="mi" id="MathJax-Span-113" style="font-family: STIXGeneral-Italic;">g</span><span class="mi" id="MathJax-Span-114" style="font-family: STIXGeneral-Italic;">r<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-115" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-116" style="font-family: STIXGeneral-Italic;">e</span><span class="mi" id="MathJax-Span-117" style="font-family: STIXGeneral-Italic;">n</span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1001.45em 4.21em -999.997em); top: -3.362em; left: 50%; margin-left: -0.718em;"><span class="mn" id="MathJax-Span-118" style="font-family: STIXGeneral-Regular;">255</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(0.844em 1002.41em 1.265em -999.997em); top: -1.319em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 2.407em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.085em;"></span></span></span></span><span class="texatom" id="MathJax-Span-119" style=""><span class="mrow" id="MathJax-Span-120"><span class="mo" id="MathJax-Span-121" style="vertical-align: -0.418em;"><span style="font-family: STIXSizeTwoSym;">)</span></span></span></span><span class="mspace" id="MathJax-Span-122" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-123" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">÷</span><span class="mspace" id="MathJax-Span-124" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="mi" id="MathJax-Span-125" style="font-family: STIXGeneral-Italic; padding-left: 0.243em;">w</span><span class="mi" id="MathJax-Span-126" style="font-family: STIXGeneral-Italic;">h</span><span class="mi" id="MathJax-Span-127" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-128" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-129" style="font-family: STIXGeneral-Italic;">e</span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(2.467em 1012.08em 4.931em -999.997em); top: -1.079em; left: 0em;"><span class="mtd" id="MathJax-Span-139"><span class="mrow" id="MathJax-Span-140"><span class="mi" id="MathJax-Span-141"></span><span class="mo" id="MathJax-Span-142" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mspace" id="MathJax-Span-143" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="texatom" id="MathJax-Span-144" style="padding-left: 0.303em;"><span class="mrow" id="MathJax-Span-145"><span class="mo" id="MathJax-Span-146" style="vertical-align: -0.418em;"><span style="font-family: STIXSizeTwoSym;">(</span></span></span></span><span class="mi" id="MathJax-Span-147" style="font-family: STIXGeneral-Italic;">w</span><span class="mi" id="MathJax-Span-148" style="font-family: STIXGeneral-Italic;">h</span><span class="mi" id="MathJax-Span-149" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-150" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-151" style="font-family: STIXGeneral-Italic;">e</span><span class="mo" id="MathJax-Span-152" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mfrac" id="MathJax-Span-153" style="padding-left: 0.243em;"><span style="display: inline-block; position: relative; width: 1.866em; height: 0px; margin-right: 0.123em; margin-left: 0.123em;"><span style="position: absolute; clip: rect(3.188em 1001.69em 4.21em -999.997em); top: -4.684em; left: 50%; margin-left: -0.838em;"><span class="mrow" id="MathJax-Span-154"><span class="mi" id="MathJax-Span-155" style="font-family: STIXGeneral-Italic;">b</span><span class="mi" id="MathJax-Span-156" style="font-family: STIXGeneral-Italic;">l<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-157" style="font-family: STIXGeneral-Italic;">u</span><span class="mi" id="MathJax-Span-158" style="font-family: STIXGeneral-Italic;">e</span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1001.45em 4.21em -999.997em); top: -3.362em; left: 50%; margin-left: -0.718em;"><span class="mn" id="MathJax-Span-159" style="font-family: STIXGeneral-Regular;">255</span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(0.844em 1001.87em 1.265em -999.997em); top: -1.319em; left: 0em;"><span style="display: inline-block; overflow: hidden; vertical-align: 0em; border-top: 1.3px solid; width: 1.866em; height: 0px;"></span><span style="display: inline-block; width: 0px; height: 1.085em;"></span></span></span></span><span class="texatom" id="MathJax-Span-160" style=""><span class="mrow" id="MathJax-Span-161"><span class="mo" id="MathJax-Span-162" style="vertical-align: -0.418em;"><span style="font-family: STIXSizeTwoSym;">)</span></span></span></span><span class="mspace" id="MathJax-Span-163" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-164" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">÷</span><span class="mspace" id="MathJax-Span-165" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="mi" id="MathJax-Span-166" style="font-family: STIXGeneral-Italic; padding-left: 0.243em;">w</span><span class="mi" id="MathJax-Span-167" style="font-family: STIXGeneral-Italic;">h</span><span class="mi" id="MathJax-Span-168" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-169" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-170" style="font-family: STIXGeneral-Italic;">e</span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span><span style="position: absolute; clip: rect(3.188em 1005.41em 4.33em -999.997em); top: 0.784em; left: 0em;"><span class="mtd" id="MathJax-Span-179"><span class="mrow" id="MathJax-Span-180"><span class="mi" id="MathJax-Span-181"></span><span class="mo" id="MathJax-Span-182" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">=</span><span class="mspace" id="MathJax-Span-183" style="height: 0em; vertical-align: 0em; width: 0.303em; display: inline-block; overflow: hidden;"></span><span class="mn" id="MathJax-Span-184" style="font-family: STIXGeneral-Regular; padding-left: 0.303em;">1</span><span class="mo" id="MathJax-Span-185" style="font-family: STIXGeneral-Regular; padding-left: 0.243em;">−</span><span class="mi" id="MathJax-Span-186" style="font-family: STIXGeneral-Italic; padding-left: 0.243em;">w</span><span class="mi" id="MathJax-Span-187" style="font-family: STIXGeneral-Italic;">h</span><span class="mi" id="MathJax-Span-188" style="font-family: STIXGeneral-Italic;">i</span><span class="mi" id="MathJax-Span-189" style="font-family: STIXGeneral-Italic;">t<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-190" style="font-family: STIXGeneral-Italic;">e</span></span></span><span style="display: inline-block; width: 0px; height: 4.029em;"></span></span></span><span style="display: inline-block; width: 0px; height: 11.421em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.106em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -5.247em; border-left: 0px solid; width: 0px; height: 11.003em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mtable columnalign="right left right left right left right left right left right left" rowspacing="3pt" columnspacing="0em 2em 0em 2em 0em 2em 0em 2em 0em 2em 0em" displaystyle="true"><mtr><mtd><mi>w</mi><mi>h</mi><mi>i</mi><mi>t</mi><mi>e</mi><mspace width="thickmathspace"></mspace></mtd><mtd><mi></mi><mo>=</mo><mspace width="thickmathspace"></mspace><mo movablelimits="true" form="prefix">max</mo><mrow><mo>{</mo><mrow><mspace width="thinmathspace"></mspace><mfrac><mrow><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>255</mn></mfrac><mo>,</mo><mspace width="thinmathspace"></mspace><mfrac><mrow><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mi>n</mi></mrow><mn>255</mn></mfrac><mo>,</mo><mspace width="thinmathspace"></mspace><mfrac><mrow><mi>b</mi><mi>l</mi><mi>u</mi><mi>e</mi></mrow><mn>255</mn></mfrac><mspace width="thinmathspace"></mspace></mrow><mo>}</mo></mrow></mtd></mtr><mtr><mtd><mi>c</mi><mi>y</mi><mi>a</mi><mi>n</mi><mspace width="thickmathspace"></mspace></mtd><mtd><mi></mi><mo>=</mo><mspace width="thickmathspace"></mspace><mrow class="MJX-TeXAtom-OPEN"><mo maxsize="1.623em" minsize="1.623em">(</mo></mrow><mi>w</mi><mi>h</mi><mi>i</mi><mi>t</mi><mi>e</mi><mo>−</mo><mfrac><mrow><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>255</mn></mfrac><mrow class="MJX-TeXAtom-CLOSE"><mo maxsize="1.623em" minsize="1.623em">)</mo></mrow><mspace width="thickmathspace"></mspace><mo>÷</mo><mspace width="thickmathspace"></mspace><mi>w</mi><mi>h</mi><mi>i</mi><mi>t</mi><mi>e</mi></mtd></mtr><mtr><mtd><mi>m</mi><mi>a</mi><mi>g</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>a</mi><mspace width="thickmathspace"></mspace></mtd><mtd><mi></mi><mo>=</mo><mspace width="thickmathspace"></mspace><mrow class="MJX-TeXAtom-OPEN"><mo maxsize="1.623em" minsize="1.623em">(</mo></mrow><mi>w</mi><mi>h</mi><mi>i</mi><mi>t</mi><mi>e</mi><mo>−</mo><mfrac><mrow><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mi>n</mi></mrow><mn>255</mn></mfrac><mrow class="MJX-TeXAtom-CLOSE"><mo maxsize="1.623em" minsize="1.623em">)</mo></mrow><mspace width="thickmathspace"></mspace><mo>÷</mo><mspace width="thickmathspace"></mspace><mi>w</mi><mi>h</mi><mi>i</mi><mi>t</mi><mi>e</mi></mtd></mtr><mtr><mtd><mi>y</mi><mi>e</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>w</mi><mspace width="thickmathspace"></mspace></mtd><mtd><mi></mi><mo>=</mo><mspace width="thickmathspace"></mspace><mrow class="MJX-TeXAtom-OPEN"><mo maxsize="1.623em" minsize="1.623em">(</mo></mrow><mi>w</mi><mi>h</mi><mi>i</mi><mi>t</mi><mi>e</mi><mo>−</mo><mfrac><mrow><mi>b</mi><mi>l</mi><mi>u</mi><mi>e</mi></mrow><mn>255</mn></mfrac><mrow class="MJX-TeXAtom-CLOSE"><mo maxsize="1.623em" minsize="1.623em">)</mo></mrow><mspace width="thickmathspace"></mspace><mo>÷</mo><mspace width="thickmathspace"></mspace><mi>w</mi><mi>h</mi><mi>i</mi><mi>t</mi><mi>e</mi></mtd></mtr><mtr><mtd><mi>b</mi><mi>l</mi><mi>a</mi><mi>c</mi><mi>k</mi><mspace width="thickmathspace"></mspace></mtd><mtd><mi></mi><mo>=</mo><mspace width="thickmathspace"></mspace><mn>1</mn><mo>−</mo><mi>w</mi><mi>h</mi><mi>i</mi><mi>t</mi><mi>e</mi></mtd></mtr></mtable></math></span></span><script type="math/tex" id="MathJax-Element-1">
+\begin{align*}
+
+white \;&=\; \max \left \{ \, \frac{red}{255}, \, \frac{green}{255}, \, \frac{blue}{255} \, \right \} \\
+
+cyan \;&=\; \Bigl(white - \frac{red}{255} \Bigr) \; \div \; white \\
+
+magenta \;&=\; \Bigl(white-\frac{green}{255}\Bigr) \; \div \; white \\
+
+yellow \;&=\; \Bigl(white-\frac{blue}{255}\Bigr) \; \div \; white \\
+
+black \;&=\; 1 - white
+
+\end{align*}
+</script>
+</blockquote>
+
+<!--
+<blockquote>
+<img src = "loops-files/rgb2cmyk.png" alt = "RGB to CMYK formula">
+</blockquote>
+-->
+
+<p><em>Hint.</em> <tt>Math.max(x, y)</tt> returns the maximum of <tt>x</tt> and <tt>y</tt>.
+</p><p>
+<table>
+<tbody><tr>
+<td>
+<blockquote><pre>% <b>java RGBtoCMYK 75 0 130</b>    <font color="gray">// indigo</font>
+red     = 75
+green   = 0
+blue    = 130
+cyan    = 0.423076923076923
+magenta = 1.0
+yellow  = 0.0
+black   = 0.4901960784313726
+</pre></blockquote>
+</td>
+<td>
+<blockquote><pre>% <b>java RGBtoCMYK 255 143 0</b>   <font color="gray">// Princeton orange</font>
+red     = 255
+green   = 143
+blue    = 0
+cyan    = 0.0
+magenta = 0.4392156862745098
+yellow  = 1.0
+black   = 0.0
+</pre></blockquote>
+</td>
+
+</tr></tbody></table>
+
+</p><p>
+If the red, green, and blue values are each 0, the resulting
+color is black. Here is what your program should do: 
+
+</p><blockquote><pre>% <b>java RGBtoCMYK 0 0 0</b>       <font color="gray">// black</font>
+red     = 0
+green   = 0
+blue    = 0
+cyan    = 0.0
+magenta = 0.0
+yellow  = 0.0
+black   = 1.0
+</pre></blockquote>
+
+
+</li><li class="spring-only">
+<b>Noon snooze.</b>
+Write a program <tt>NoonSnooze.java</tt> that takes an integer command-line
+argument <tt>snooze</tt> and prints the time of day (using a 12-hour clock)
+that is <tt>snooze</tt> minutes after 12:00pm (noon).
+
+<blockquote><pre>% <b>java NoonSnooze 50</b>
+12:50pm
+
+% <b>java NoonSnooze 100</b>
+1:40pm
+
+% <b>java NoonSnooze 720</b>
+12:00am
+
+% <b>java NoonSnooze 11111</b>
+5:11am
+</pre></blockquote>
+
+<p><em>Note</em>: you may assume that <tt>snooze</tt> is a nonnegative integer.
+
+</p><p><em>Hint</em>: use the integer division and remainder operators.
+
+</p><p>
+</p></li><li class="fall-only">
+<b>Checkerboard.</b>
+Write a program <tt>Checkerboard.java</tt> that takes an integer command-line argument
+<em>n</em>, and uses a nested <tt>for</tt> loop to print
+an <em>n</em>-by-<em>n</em> checkerboard pattern like the one below:
+a total of <em>n</em><sup>2</sup> asterisks, where each row
+has 2<em>n</em> characters (alternating between asterisks and spaces).
+
+<blockquote>
+<table>
+<tbody><tr><td><pre>% <b>java Checkerboard 4</b>             % <b>java Checkerboard 5</b>
+* * * *                           * * * * * 
+ * * * *                           * * * * *
+* * * *                           * * * * * 
+ * * * *                           * * * * *
+                                  * * * * * 
+</pre></td></tr>
+</tbody></table>
+</blockquote>
+
+
+<p><br>
+<img src="./COS 126 Programming Assignment_ Conditionals and Loops_files/random-walk.png" align="right" hspace="25" alt="Random walk in the plane">
+</p><p></p></li><li><b>A drone's flight.</b>
+A drone begins flying aimlessly, starting at Nassau Hall.
+At each time step, the drone flies one meter in a random direction, either
+north, east, south, or west, with probability 25%.
+How far will the drone be from Nassau Hall after <em>n</em> steps?
+This process is known as a two-dimensional <em>random walk</em>.
+
+<!--
+<p><br>
+<IMG SRC="loops-files/random-walk.png" align=right hspace=25 alt = "Random walk in the plane"></a>
+<p><li><b>A drunkard's walk.</b>
+A drunkard begins walking aimlessly, starting at a lamp post.
+At each time step, the drunkard forgets
+where he or she is, and takes one step at random, either
+north, east, south, or west, with probability 25%.
+How far will the drunkard be from the lamp post after <em>n</em> steps?
+-->
+
+<ol type="a">
+<p></p><li>
+Write a program <tt>RandomWalker.java</tt> that takes an integer command-line
+argument <tt>n</tt> and simulates the motion of a random walk for <tt>n</tt> steps.
+Print the location at each step (including the starting point),
+treating the starting point as the origin (0, 0).
+Also, print the <em>square</em> of the final Euclidean distance from the origin.
+
+<blockquote><pre>% <b>java RandomWalker 10</b>             % <b>java RandomWalker 20</b>
+(0, 0)                            (0, 0)
+(0, -1)                           (0, 1)
+(0, 0)                            (-1, 1)
+(0, 1)                            (-1, 2)
+(0, 2)                            (0, 2)
+(-1, 2)                           (1, 2)
+(-2, 2)                           (1, 3)
+(-2, 1)                           (0, 3)
+(-1, 1)                           (-1, 3)
+(-2, 1)                           (-2, 3)
+(-3, 1)                           (-3, 3)
+squared distance = 10             (-3, 2)
+                                  (-4, 2)
+                                  (-4, 1)
+                                  (-3, 1)
+                                  (-3, 0)
+                                  (-4, 0)
+                                  (-4, -1)
+                                  (-3, -1)
+                                  (-3, -2)
+                                  (-3, -3)
+                                  squared distance = 18
+</pre></blockquote>
+
+<p></p></li><li>
+Write a program <tt>RandomWalkers.java</tt> that takes two integer
+command-line arguments <tt>n</tt> and <tt>trials</tt>.
+In each of <tt>trials</tt> independent experiments,
+simulate a random walk of <tt>n</tt> steps and compute the squared distance.
+Output the <em>mean squared distance</em> (the average of the <tt>trials</tt> squared distances).
+
+<blockquote><pre>% <b>java RandomWalkers 100 10000</b>         % <b>java RandomWalkers 400 2000</b>
+mean squared distance = 101.446         mean squared distance = 383.12
+
+% <b>java RandomWalkers 100 10000</b>         % <b>java RandomWalkers 800 5000</b>
+mean squared distance = 99.1674         mean squared distance = 811.8264
+
+% <b>java RandomWalkers 200 1000</b>         % <b>java RandomWalkers 1600 100000</b>
+mean squared distance = 195.75          mean squared distance = 1600.13064
+</pre></blockquote>
+
+
+<p>
+As <tt>n</tt> increases, we expect the random walk to end up farther and
+farther away from the origin. But how much farther?
+Use <tt>RandomWalkers</tt> to formulate a hypothesis as to how the mean
+squared distance grows as a function of <tt>n</tt>.
+Use <tt>trials</tt> = 100,000 to get a sufficiently accurate estimate.
+
+</p></li></ol>
+
+<p><em>This process is a discrete version of a natural phenomenon
+known as Brownian motion. It serves as a scientific model
+for an astonishing range of physical processes from the dispersion of 
+ink flowing in water, to the formation of polymer chains in chemistry,
+to cascades of neurons firing in the brain.
+</em>
+
+</p></li><li class="spring-only"><b>Dice and the Gaussian distribution.</b>
+Write a program <tt>TenDice.java</tt> that takes an integer command-line 
+argument <tt>n</tt>, and rolls 10 fair six-sided dice, <tt>n</tt> times.
+Use an integer array to tabulate the number of times each possible total (between 10 and 60)
+occurs.
+Then print a text histogram of the results, as illustrated below.
+
+<blockquote>
+<table>
+<tbody><tr><td><pre>% <b>java TenDice 1000</b>
+10: 
+11: 
+12: 
+13: 
+14: 
+15: 
+16: 
+17: 
+18: *
+19: ****
+20: 
+21: ***
+22: ******
+23: ********
+24: ****************
+25: *************
+26: **********
+27: *********************************
+28: ****************************************
+29: *********************************
+30: ***************************************************
+31: *****************************************************************
+32: ********************************************************
+33: **************************************************************************************
+34: ***********************************************************
+35: *********************************************************************
+36: ***********************************************************************************
+37: **************************************************************
+38: *****************************************************************
+39: ***************************************
+40: *****************************************************
+41: ************************************
+42: ****************************
+43: ************************
+44: ************************
+45: *********
+46: ***********
+47: *******
+48: ***
+49: **
+50: 
+51: 
+52: *
+53: 
+54: 
+55: 
+56: 
+57: 
+58: 
+59: 
+60: 
+</pre></td></tr>
+</tbody></table>
+</blockquote>
+
+<p><em>Note</em>: you should assume that <tt>n</tt> is a nonnegative integer.
+
+</p><p><em>The central limit theorem, a key result in
+ probability and statistics,
+asserts that the shape of the
+resulting histogram tends to the ubiquitous
+bell curve (Gaussian distribution) if the number of dice and rolls is large.</em>
+
+
+</p></li></ol>
+
+<p>
+<b>Program style and format.</b> 
+Follow the guidelines in the <a href="http://www.cs.princeton.edu/courses/archive/fall16/cos126/assignments/faq.html#stype">Assignment FAQ</a>.
+Is your header complete?
+Did you comment appropriately? 
+Is your code indented consistently?
+Did you use descriptive variable names?
+<span class="spring-only">Is your code littered with magic numbers?</span>
+Did you follow the input and output specifications?
+Are there any redundant conditions?
+Did you click the <em>Check All Submitted Files</em> button?
+
+</p><p>
+<b>Submission.</b>
+Submit the files 
+<span class="spring-only"><tt>Bits.java</tt>,</span> 
+<span class="spring-only"><tt>NoonSnooze.java</tt>,</span>
+<span class="fall-only"><tt>Ordered.java</tt>,</span> 
+<span class="fall-only"><tt>RGBtoCMYK.java</tt>,</span> 
+<span class="fall-only"><tt>Checkerboard.java</tt>,</span>
+<tt>RandomWalker.java</tt>,
+<tt>RandomWalkers.java</tt>, 
+<span class="spring-only"><tt>TenDice.java</tt>,</span> 
+and
+a completed <a href="ftp://ftp.cs.princeton.edu/pub/cs126/loops/readme.txt">readme.txt</a> file.
+
+</p><p>
+<span class="spring-only"><b>Challenge for the bored.</b>
+Implement <tt>NoonSnooze.java</tt> without using any <tt>if</tt> statements;
+also, handle negative snooze times.
+</span>
+
+
+
+</p><div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: STIXSizeOneSym, sans-serif;"></div></div></body></html>
